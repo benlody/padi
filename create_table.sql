@@ -27,3 +27,7 @@ CREATE TABLE `product` (
   `extra_info` CHAR(255)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+
+CREATE TABLE `crew_pak` (
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
