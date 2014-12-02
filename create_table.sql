@@ -19,3 +19,11 @@ CREATE TABLE `customer` (
   `extra_info` CHAR(255)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+
+CREATE TABLE `product` (
+  `id` CHAR(64) NOT NULL PRIMARY KEY,
+  `chinese_name` CHAR(255) ,
+  `english_name` CHAR(255) ,
+  `extra_info` CHAR(255)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
