@@ -29,5 +29,6 @@ CREATE TABLE `product` (
 
 
 CREATE TABLE `crew_pak` (
+  `id` CHAR(64) NOT NULL PRIMARY KEY
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 

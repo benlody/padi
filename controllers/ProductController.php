@@ -63,6 +63,10 @@ class ProductController extends Controller
         $model = new Product();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+
+            // add cloumn on tables
+            Yii::$app->db->createCommand()->addColumn('crew_pak', $model->id, 'int(8) DEFAULT 0')->execute();
+
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('create', [
