@@ -32,3 +32,58 @@ CREATE TABLE `crew_pak` (
   `id` CHAR(64) NOT NULL PRIMARY KEY
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+CREATE TABLE `tw_self_balance` (
+  `date` DATE,
+  `serial` CHAR(64),
+  `ts` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  `extra_info` CHAR(64)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `tw_padi_balance` (
+  `date` DATE,
+  `serial` CHAR(64),
+  `ts` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  `extra_info` CHAR(64)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `xm_self_balance` (
+  `date` DATE,
+  `serial` CHAR(64),
+  `ts` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  `extra_info` CHAR(64)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `xm_padi_balance` (
+  `date` DATE,
+  `serial` CHAR(64),
+  `ts` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  `extra_info` CHAR(64)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `tw_self_transaction` (
+  `date` DATE,
+  `serial` CHAR(64),
+  `ts` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  `extra_info` CHAR(64)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `tw_padi_transaction` (
+  `date` DATE,
+  `serial` CHAR(64),
+  `ts` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  `extra_info` CHAR(64)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `xm_self_transaction` (
+  `date` DATE,
+  `serial` CHAR(64),
+  `ts` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  `extra_info` CHAR(64)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `xm_padi_transaction` (
+  `date` DATE,
+  `serial` CHAR(64),
+  `ts` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  `extra_info` CHAR(64)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
