@@ -19,6 +19,7 @@ class ProductSearch extends Product
     {
         return [
             [['id', 'chinese_name', 'english_name', 'extra_info'], 'safe'],
+            [['favor'], 'integer'],
         ];
     }
 
@@ -49,6 +50,10 @@ class ProductSearch extends Product
         if (!($this->load($params) && $this->validate())) {
             return $dataProvider;
         }
+
+        $query->andFilterWhere([
+            'favor' => $this->favor,
+        ]);
 
         $query->andFilterWhere(['like', 'id', $this->id])
             ->andFilterWhere(['like', 'chinese_name', $this->chinese_name])

@@ -18,6 +18,8 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'english_name')->textInput(['maxlength' => 255]) ?>
 
+    <?= $form->field($model, 'favor')->textInput() ?>
+
     <?= $form->field($model, 'extra_info')->textInput(['maxlength' => 255]) ?>
 
     <div class="form-group">
