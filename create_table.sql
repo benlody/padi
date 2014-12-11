@@ -7,7 +7,7 @@ CREATE TABLE `country` (
 
 
 CREATE TABLE `customer` (
-  `id` INT(16) NOT NULL PRIMARY KEY,
+  `id` CHAR(255) NOT NULL PRIMARY KEY,
   `chinese_name` CHAR(255) NOT NULL,
   `english_name` CHAR(255) NOT NULL,
   `level` CHAR(255) NOT NULL,

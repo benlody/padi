@@ -7,7 +7,7 @@ use Yii;
 /**
  * This is the model class for table "customer".
  *
- * @property integer $id
+ * @property string $id
  * @property string $chinese_name
  * @property string $english_name
  * @property string $level
@@ -35,8 +35,7 @@ class Customer extends \yii\db\ActiveRecord
     {
         return [
             [['id', 'chinese_name', 'english_name', 'level', 'contact', 'tel', 'email', 'chinese_addr', 'english_addr'], 'required'],
-            [['id'], 'integer'],
-            [['chinese_name', 'english_name', 'level', 'contact', 'tel', 'email', 'chinese_addr', 'english_addr', 'extra_info'], 'string', 'max' => 255]
+            [['id', 'chinese_name', 'english_name', 'level', 'contact', 'tel', 'email', 'chinese_addr', 'english_addr', 'extra_info'], 'string', 'max' => 255]
         ];
     }
 
