@@ -87,3 +87,23 @@ CREATE TABLE `xm_padi_transaction` (
   `ts` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   `extra_info` CHAR(64)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+CREATE TABLE `order` (
+  `id` CHAR(255) NOT NULL PRIMARY KEY,
+  `customer_id` CHAR(255) NOT NULL,
+  `chinese_addr` CHAR(255) NOT NULL,
+  `english_addr` CHAR(255) NOT NULL,
+  `contact` CHAR(255) NOT NULL,
+  `tel` CHAR(255) NOT NULL,
+  `content` CHAR(255) NOT NULL,
+  `ship_type` INT(8),
+  `date` DATE NOT NULL,
+  `issue_by` CHAR(255) NOT NULL,
+  `check` BOOL DEFAULT FALSE,
+  `box_num` INT(8),
+  `weight` INT(16),
+  `shipping_no` CHAR(255) NOT NULL,
+  `status` INT(8),
+  `extra_info` CHAR(255)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
