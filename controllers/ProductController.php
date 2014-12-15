@@ -115,6 +115,15 @@ class ProductController extends Controller
 		return $this->redirect(['index']);
 	}
 
+
+	public function actionAjaxList()
+	{
+		$product = new Product();
+
+		return json_encode($product->find()->column(), JSON_FORCE_OBJECT);
+	}
+
+
 	/**
 	 * Finds the Product model based on its primary key value.
 	 * If the model is not found, a 404 HTTP exception will be thrown.

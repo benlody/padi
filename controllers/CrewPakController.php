@@ -61,4 +61,11 @@ class CrewPakController extends \yii\web\Controller
 		return $this->render('index');
 	}
 
+	public function actionAjaxList()
+	{
+		$crewpak = new CrewPak();
+
+		return json_encode($crewpak->find()->column(), JSON_FORCE_OBJECT);
+	}
+
 }

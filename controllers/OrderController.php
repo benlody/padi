@@ -15,12 +15,14 @@ class OrderController extends \yii\web\Controller
 		
 		$model = new Order;
 		$customer = new Customer();
+		$crewpak = new CrewPak();
+		$product = new Product();
 
-		$customer_col = $customer->find()->column();
 		return $this->render('add', [
 			'model' => $model,
-			'customer_model' => $customer,
-			'customer' => $customer_col
+			'customer' => $customer->find()->column(),
+			'crewpak' =>  $crewpak->find()->column(),
+			'product' =>  $product->find()->column()
 		]);
 	}
 
