@@ -21,7 +21,6 @@ $(document).ready(function() {
 				},
 				success: function(resp){
 					var crewpak_list = JSON.parse(resp);
-					console.log(crewpak_list);
 					var newIn = '<div><select class="form-group" name="crew_pak_' + crew_cnt +'"><option value=""></option>'
 					for	(idx = 0; idx < crewpak.length; idx++) {
 						newIn += '<option value="';
@@ -52,7 +51,6 @@ $(document).ready(function() {
 				},
 				success: function(resp){
 					var product_list = JSON.parse(resp);
-					console.log(product_list);
 					var newIn = '<div><select class="form-group" name="product_' + product_cnt +'"><option value=""></option>'
 					for	(idx = 0; idx < product.length; idx++) {
 						newIn += '<option value="';

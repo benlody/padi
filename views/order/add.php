@@ -9,13 +9,7 @@ use yii\jui\DatePicker;
 /* @var $form ActiveForm */
 $this->title = 'Order';
 $this->params['breadcrumbs'][] = $this->title;
-$this->registerJsFile('//code.jquery.com/jquery-1.10.2.js',['position' => yii\web\View::POS_BEGIN]);
-$this->registerJsFile('//code.jquery.com/ui/1.11.2/jquery-ui.js',['position' => yii\web\View::POS_BEGIN]);
-$this->registerCssFile("//code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css",['position' => yii\web\View::POS_BEGIN]);
-$this->registerCssFile("//jqueryui.com/resources/demos/style.css",['position' => yii\web\View::POS_BEGIN]);
-$this->registerCssFile("css/custom-combobox.css",['position' => yii\web\View::POS_BEGIN]);
-$this->registerJsFile('js/custom-combox.js',['position' => yii\web\View::POS_BEGIN]);
-$this->registerJsFile('js/crew_product_field.js',['position' => yii\web\View::POS_BEGIN]);
+$this->registerJsFile('/yii/basic/web/js/crew_product_field.js',['depends' => [yii\web\JqueryAsset::className()]]);
 ?>
 
 <div class="order-add">
@@ -32,8 +26,9 @@ $this->registerJsFile('js/crew_product_field.js',['position' => yii\web\View::PO
 
 		<div class="form-group field-order-customer_id required">
 			<label class="control-label" for="order-customer_id">Customer ID</label><br>
-			<select id="combobox" >
-				<option value="none"></option>
+
+			<select class="form-group" id="customer_id">
+				<option value='empty'></option>
 				<script>
 				var customer = <?php echo json_encode($customer); ?>;
 				var idx;
