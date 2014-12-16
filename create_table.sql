@@ -107,3 +107,13 @@ CREATE TABLE `order` (
   `status` INT(8),
   `extra_info` CHAR(255)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `purchase_order` (
+  `id` CHAR(255) NOT NULL PRIMARY KEY,
+  `content` CHAR(255) NOT NULL,
+  `date` DATE NOT NULL,
+  `done_date` DATE,
+  `status` INT(8)  NOT NULL,
+  `warehouse` CHAR(255) NOT NULL,
+  `extra_info` CHAR(255)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;

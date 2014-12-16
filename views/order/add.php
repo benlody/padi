@@ -53,7 +53,6 @@ $this->registerJsFile('js/crew_product_field.js',['position' => yii\web\View::PO
 		<?= $form->field($model, 'english_addr') ?>
 		<?= $form->field($model, 'contact') ?>
 		<?= $form->field($model, 'tel') ?>
-		<?= $form->field($model, 'content') ?>
 
 		<label class="control-label" for="order-content">Content</label>
 		<div style="margin-left: 50px">
