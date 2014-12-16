@@ -9,7 +9,7 @@ use yii\jui\DatePicker;
 /* @var $form ActiveForm */
 $this->title = 'Order';
 $this->params['breadcrumbs'][] = $this->title;
-$this->registerJsFile('/yii/basic/web/js/crew_product_field.js',['depends' => [yii\web\JqueryAsset::className()]]);
+$this->registerJsFile('/yii/basic/web/js/order_add.js',['depends' => [yii\web\JqueryAsset::className()]]);
 ?>
 
 <div class="order-add">
@@ -27,7 +27,7 @@ $this->registerJsFile('/yii/basic/web/js/crew_product_field.js',['depends' => [y
 		<div class="form-group field-order-customer_id required">
 			<label class="control-label" for="order-customer_id">Customer ID</label><br>
 
-			<select class="form-group" id="customer_id">
+			<select class="form-group" id="customer_id" onchange="fill_customer_info()">
 				<option value='empty'></option>
 				<script>
 				var customer = <?php echo json_encode($customer); ?>;

@@ -69,3 +69,27 @@ $(document).ready(function() {
 		}
 	});
 });
+
+
+function fill_customer_info() {
+	var customer_id = document.getElementById("customer_id").value;
+
+	jQuery.ajax({
+		// The url must be appropriate for your configuration;
+		// this works with the default config of 1.1.11
+		url: 'index.php?r=customer/ajax-get',
+		type: "POST",
+		data: {customer_id: customer_id},
+		error: function(xhr,tStatus,e){
+			console.log(arguments);
+		},
+		success: function(resp){
+			var cus_info = JSON.parse(resp);
+			document.getElementById("order-chinese_addr").value = cus_info.chinese_addr;
+			document.getElementById("order-english_addr").value = cus_info.english_addr;
+			document.getElementById("order-contact").value = cus_info.contact;
+			document.getElementById("order-tel").value = cus_info.tel;
+		}
+	});
+
+}

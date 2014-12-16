@@ -3,6 +3,7 @@
 namespace app\controllers;
 use app\models\Product;
 use app\models\PurchaseOrder;
+use app\models\PurchaseOrderSearch;
 use Yii;
 
 class PurchaseOrderController extends \yii\web\Controller
@@ -82,7 +83,15 @@ class PurchaseOrderController extends \yii\web\Controller
 
 	public function actionList()
 	{
-		return $this->render('list');
+
+		$searchModel = new PurchaseOrderSearch();
+		$dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+		return $this->render('list', [
+			'searchModel' => $searchModel,
+			'dataProvider' => $dataProvider,
+		]);
+
 	}
 
 }
