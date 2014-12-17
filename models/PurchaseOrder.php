@@ -17,40 +17,43 @@ use Yii;
  */
 class PurchaseOrder extends \yii\db\ActiveRecord
 {
-    /**
-     * @inheritdoc
-     */
-    public static function tableName()
-    {
-        return 'purchase_order';
-    }
 
-    /**
-     * @inheritdoc
-     */
-    public function rules()
-    {
-        return [
-            [['id', 'content', 'date', 'status', 'warehouse'], 'required'],
-            [['date', 'done_date'], 'safe'],
-            [['status'], 'integer'],
-            [['id', 'content', 'warehouse', 'extra_info'], 'string', 'max' => 255]
-        ];
-    }
+	const STATUS_NEW = 0;
+	const STATUS_DONE = 1;
+	/**
+	 * @inheritdoc
+	 */
+	public static function tableName()
+	{
+		return 'purchase_order';
+	}
 
-    /**
-     * @inheritdoc
-     */
-    public function attributeLabels()
-    {
-        return [
-            'id' => Yii::t('app', 'ID'),
-            'content' => Yii::t('app', 'Content'),
-            'date' => Yii::t('app', 'Date'),
-            'done_date' => Yii::t('app', 'Done Date'),
-            'status' => Yii::t('app', 'Status'),
-            'warehouse' => Yii::t('app', 'Warehouse'),
-            'extra_info' => Yii::t('app', 'Extra Info'),
-        ];
-    }
+	/**
+	 * @inheritdoc
+	 */
+	public function rules()
+	{
+		return [
+			[['id', 'content', 'date', 'status', 'warehouse'], 'required'],
+			[['date', 'done_date'], 'safe'],
+			[['status'], 'integer'],
+			[['id', 'content', 'warehouse', 'extra_info'], 'string', 'max' => 255]
+		];
+	}
+
+	/**
+	 * @inheritdoc
+	 */
+	public function attributeLabels()
+	{
+		return [
+			'id' => Yii::t('app', 'ID'),
+			'content' => Yii::t('app', 'Content'),
+			'date' => Yii::t('app', 'Date'),
+			'done_date' => Yii::t('app', 'Done Date'),
+			'status' => Yii::t('app', 'Status'),
+			'warehouse' => Yii::t('app', 'Warehouse'),
+			'extra_info' => Yii::t('app', 'Extra Info'),
+		];
+	}
 }

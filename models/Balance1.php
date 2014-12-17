@@ -4,22 +4,25 @@ namespace app\models;
 
 use yii\db\ActiveRecord;
 
-class Balance extends ActiveRecord
+class Balance1 extends ActiveRecord
 {
-	private $myTable;
+	protected static $myTable;
 
 	public function __construct($warehouse="tw", $type="padi") {
 
-		$this->myTable = $warehouse."_".$type."_balance";
 		parent::__construct();
+		if(!self::$myTable){
+			self::$myTable = $warehouse."_".$type."_balance";
+		}
 	}
 
 
 	/**
    	* @return string the associated database table name
    	*/
-	public function tableName() {
-		return $this->myTable;
+	public static function tableName() {
+		return self::$myTable;
 	}
 
 }
+

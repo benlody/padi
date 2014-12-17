@@ -11,16 +11,14 @@ require_once __DIR__  . '/../../utils/utils.php';
 
 $this->title = Yii::t('app', 'Purchase Orders');
 $this->params['breadcrumbs'][] = $this->title;
-$this->registerJsFile('/yii/basic/web/js/util.js');
-
-
-
 
 ?>
 <div class="purchase-order-list">
 
 	<h1><?= Html::encode($this->title) ?></h1>
 
+
+	<!--  FIXME switch done and working PO  -->
 	<?= GridView::widget([
 		'dataProvider' => $dataProvider,
 		'columns' => [
@@ -44,12 +42,17 @@ $this->registerJsFile('/yii/basic/web/js/util.js');
 				'attribute' => 'warehouse',
 				'format' => 'raw',
 				'value' => function ($model) {
-					return get_warehouse_name($model->status);
+					return get_warehouse_name($model->warehouse);
 				}
 			],
 			'extra_info',
-
-			['class' => 'yii\grid\ActionColumn'],
+			[
+				'attribute' => '',
+				'format' => 'raw',
+				'value' => function ($model) {
+					return '<a href="/yii/basic/web/index.php?r=purchase-order%2Fedit&amp;id='.$model->id.'" title="Edit" data-pjax="0"><span class="glyphicon glyphicon glyphicon-pencil"></span></a>';
+				}
+			],
 		],
 	]); ?>
 
