@@ -17,43 +17,81 @@ $this->params['breadcrumbs'][] = $this->title;
 
 	<h1><?= Html::encode($this->title) ?></h1>
 
-
-	<!--  FIXME switch done and working PO  -->
-	<?= GridView::widget([
-		'dataProvider' => $dataProvider,
-		'columns' => [
-			'id',
-			[
-				'attribute' => 'content',
-				'format' => 'raw',
-				'value' => function ($model) {
-					return product_content_to_table($model->content);
-				}
-			],
-			'date',
-			[
-				'attribute' => 'status',
-				'format' => 'raw',
-				'value' => function ($model) {
-					return get_puchase_order_status($model->status);
-				}
-			],
-			[
-				'attribute' => 'warehouse',
-				'format' => 'raw',
-				'value' => function ($model) {
-					return get_warehouse_name($model->warehouse);
-				}
-			],
-			'extra_info',
-			[
-				'attribute' => '',
-				'format' => 'raw',
-				'value' => function ($model) {
-					return '<a href="/yii/basic/web/index.php?r=purchase-order%2Fedit&amp;id='.$model->id.'" title="Edit" data-pjax="0"><span class="glyphicon glyphicon glyphicon-pencil"></span></a>';
-				}
-			],
-		],
-	]); ?>
+	<?php
+		if(0 == strcmp($status, 'done')){
+			$btn_lable = '列出未完工';
+			$btn_cfg = ['list', 'status' => ''];
+			$config = [
+				'dataProvider' => $dataProvider,
+				'columns' => [
+					'id',
+					[
+						'attribute' => 'content',
+						'format' => 'raw',
+						'value' => function ($model) {
+							return product_content_to_table($model->content);
+						}
+					],
+					'done_date:text:完工日期',
+					[
+						'attribute' => 'status',
+						'format' => 'raw',
+						'value' => function ($model) {
+							return get_puchase_order_status($model->status);
+						}
+					],
+					[
+						'attribute' => 'warehouse',
+						'format' => 'raw',
+						'value' => function ($model) {
+							return get_warehouse_name($model->warehouse);
+						}
+					],
+					'extra_info',
+				],
+			];
+		} else {
+			$btn_lable = '列出已完工';
+			$btn_cfg = ['list', 'status' => 'done'];
+			$config = [
+				'dataProvider' => $dataProvider,
+				'columns' => [
+					'id',
+					[
+						'attribute' => 'content',
+						'format' => 'raw',
+						'value' => function ($model) {
+							return product_content_to_table($model->content);
+						}
+					],
+					'date',
+					[
+						'attribute' => 'status',
+						'format' => 'raw',
+						'value' => function ($model) {
+							return get_puchase_order_status($model->status);
+						}
+					],
+					[
+						'attribute' => 'warehouse',
+						'format' => 'raw',
+						'value' => function ($model) {
+							return get_warehouse_name($model->warehouse);
+						}
+					],
+					'extra_info',
+					[
+						'attribute' => '',
+						'format' => 'raw',
+						'value' => function ($model) {
+							return '<a href="/yii/basic/web/index.php?r=purchase-order%2Fedit&amp;id='.$model->id.'" title="Edit" data-pjax="0"><span class="glyphicon glyphicon glyphicon-pencil"></span></a>';
+						}
+					],
+				],
+			];
+		}
+	?>
+	<?= Html::a($btn_lable, $btn_cfg, ['class' => 'btn btn-primary']) ?>
+	<?= GridView::widget($config); ?>
 
 </div>

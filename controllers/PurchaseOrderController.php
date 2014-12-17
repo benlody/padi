@@ -139,10 +139,13 @@ class PurchaseOrderController extends \yii\web\Controller
 	public function actionList($status='')
 	{
 
-
-		//FIXME check status
 		$searchModel = new PurchaseOrderSearch();
-		$dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+		if(0 == strcmp($status, 'done')){
+			$search_param['PurchaseOrderSearch'] = array('status' => PurchaseOrder::STATUS_DONE);
+		} else {
+			$search_param['PurchaseOrderSearch'] = array('status' => PurchaseOrder::STATUS_NEW);
+		}
+		$dataProvider = $searchModel->search($search_param);
 
 		return $this->render('list', [
 			'searchModel' => $searchModel,
