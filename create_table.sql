@@ -97,15 +97,16 @@ CREATE TABLE `order` (
   `contact` CHAR(255) NOT NULL,
   `tel` CHAR(255) NOT NULL,
   `content` CHAR(255) NOT NULL,
-  `ship_type` INT(8),
+  `ship_type` INT(8) NOT NULL,
   `date` DATE NOT NULL,
-  `issue_by` CHAR(255) NOT NULL,
-  `check` BOOL DEFAULT FALSE,
-  `box_num` INT(8),
-  `weight` INT(16),
-  `shipping_no` CHAR(255) NOT NULL,
-  `status` INT(8),
-  `extra_info` CHAR(255)
+  `done_date` DATE,
+  `warehouse` CHAR(255) NOT NULL,
+  `issue_by` CHAR(255) DEFAULT '',
+  `box_num` INT(8) DEFAULT 0,
+  `weight` INT(16) DEFAULT 0,
+  `shipping_no` CHAR(255) DEFAULT '',
+  `status` INT(8) NOT NULL,
+  `extra_info` CHAR(255) DEFAULT ''
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `purchase_order` (

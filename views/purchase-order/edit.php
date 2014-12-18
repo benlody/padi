@@ -10,15 +10,9 @@ use yii\jui\DatePicker;
 /* @var $form ActiveForm */
 $this->title = 'Purchase Order';
 $this->params['breadcrumbs'][] = $this->title;
-$this->registerJsFile('/yii/basic/web/js/purchase_order_add.js',['depends' => [yii\web\JqueryAsset::className()]]);
-
-//print_r($model->attributes['content']);
-
-//print_r($model->toArray());
-
 
 ?>
-<div class="purchase-order-add">
+<div class="purchase-order-edit">
 
 	<?php $form = ActiveForm::begin(); ?>
 
@@ -61,7 +55,6 @@ $this->registerJsFile('/yii/basic/web/js/purchase_order_add.js',['depends' => [y
 				echo $out;
 			?>
 		</div>
-
 		<div class="help-block"></div>
 		
 
@@ -73,4 +66,4 @@ $this->registerJsFile('/yii/basic/web/js/purchase_order_add.js',['depends' => [y
 		</div>
 	<?php ActiveForm::end(); ?>
 
-</div><!-- purchase-order-add -->
+</div><!-- purchase-order-edit -->

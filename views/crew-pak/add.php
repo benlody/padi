@@ -23,48 +23,55 @@ $this->params['breadcrumbs'][] = $this->title;
 			<?= $form->field($model, 'chinese_name') ?>
 			<?= $form->field($model, 'english_name') ?>
 
+			<?php
+				$option['empty'] = '';
+				foreach ($product as $key => $value) {
+					$option[$value] = $value;
+				}
 
+
+			?>
 
 			<!--  FIXME  -->
 
 			<div class="col-lg-offset-0 col-lg-20">
-				<?= Html::dropDownList('product_0', '', array_merge([''], $product)) ?>
+				<?= Html::dropDownList('product_0', '', $option) ?>
 				<?= Html::input('number', 'cnt_0', '0') ?>
 			</div>
 			<div class="col-lg-offset-0 col-lg-20">
-				<?= Html::dropDownList('product_1', '', array_merge([''], $product)) ?>
+				<?= Html::dropDownList('product_1', '', $option) ?>
 				<?= Html::input('number', 'cnt_1', '0') ?>
 			</div>
 			<div class="col-lg-offset-0 col-lg-20">
-				<?= Html::dropDownList('product_2', '', array_merge([''], $product)) ?>
+				<?= Html::dropDownList('product_2', '', $option) ?>
 				<?= Html::input('number', 'cnt_2', '0') ?>
 			</div>
 			<div class="col-lg-offset-0 col-lg-20">
-				<?= Html::dropDownList('product_3', '', array_merge([''], $product)) ?>
+				<?= Html::dropDownList('product_3', '', $option) ?>
 				<?= Html::input('number', 'cnt_3', '0') ?>
 			</div>
 			<div class="col-lg-offset-0 col-lg-20">
-				<?= Html::dropDownList('product_4', '', array_merge([''], $product)) ?>
+				<?= Html::dropDownList('product_4', '', $option) ?>
 				<?= Html::input('number', 'cnt_4', '0') ?>
 			</div>
 			<div class="col-lg-offset-0 col-lg-20">
-				<?= Html::dropDownList('product_5', '', array_merge([''], $product)) ?>
+				<?= Html::dropDownList('product_5', '', $option) ?>
 				<?= Html::input('number', 'cnt_5', '0') ?>
 			</div>
 			<div class="col-lg-offset-0 col-lg-20">
-				<?= Html::dropDownList('product_6', '', array_merge([''], $product)) ?>
+				<?= Html::dropDownList('product_6', '', $option) ?>
 				<?= Html::input('number', 'cnt_6', '0') ?>
 			</div>
 			<div class="col-lg-offset-0 col-lg-20">
-				<?= Html::dropDownList('product_7', '', array_merge([''], $product)) ?>
+				<?= Html::dropDownList('product_7', '', $option) ?>
 				<?= Html::input('number', 'cnt_7', '0') ?>
 			</div>
 			<div class="col-lg-offset-0 col-lg-20">
-				<?= Html::dropDownList('product_8', '', array_merge([''], $product)) ?>
+				<?= Html::dropDownList('product_8', '', $option) ?>
 				<?= Html::input('number', 'cnt_8', '0') ?>
 			</div>
 			<div class="col-lg-offset-0 col-lg-20">
-				<?= Html::dropDownList('product_9', '', array_merge([''], $product)) ?>
+				<?= Html::dropDownList('product_9', '', $option) ?>
 				<?= Html::input('number', 'cnt_9', '0') ?>
 			</div>
 

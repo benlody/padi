@@ -17,8 +17,9 @@ class CrewPakController extends \yii\web\Controller
 
 		$post_param = Yii::$app->request->post();
 
-		// FIXME:  chenck same name
-		// FIXME:  chenck must hase value
+		// FIXME:  check same name
+		// FIXME:  check must hase value
+		// FIXME: use dynamic
 
 		if($post_param["CrewPak"]){
 			for ($x = 0; $x < 10; $x++)  {
@@ -26,8 +27,8 @@ class CrewPakController extends \yii\web\Controller
 				$product_idx = "product_".$x;
 
 				if($post_param[$cnt_idx] > 0){
-					$product_list[$product_col[$post_param[$product_idx]]] = $post_param[$cnt_idx];
-					$post_param['CrewPak'][$product_col[$post_param[$product_idx]]] = $post_param[$cnt_idx];
+					$product_list[$post_param[$product_idx]] = $post_param[$cnt_idx];
+					$post_param['CrewPak'][$post_param[$product_idx]] = $post_param[$cnt_idx];
 				}
 			}
 
@@ -36,14 +37,16 @@ class CrewPakController extends \yii\web\Controller
 			}
 
 			$model->insert();
+			return $this->redirect(['index']);
+
+		} else {
+			return $this->render('add', [
+				'model' => $model,
+				'product' => $product_col,
+			]);
+
 		}
 
-		// FIXME: redirect
-
-		return $this->render('add', [
-			'model' => $model,
-			'product' => $product_col,
-			]);
 	}
 
 	public function actionDelete()

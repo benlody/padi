@@ -17,7 +17,24 @@ $this->registerJsFile('/yii/basic/web/js/order_add.js',['depends' => [yii\web\Jq
 	<?php $form = ActiveForm::begin(); ?>
 
 		<?= $form->field($model, 'id') ?>
-		<?= $form->field($model, 'date')->widget(DatePicker::className()) ?>
+
+		<div class="form-group field-order-date">
+		<label class="control-label" for="order-date">日期</label>
+		<?php
+			echo DatePicker::widget([
+				'name' => 'date',
+				'value' => date("Y-m-d", strtotime('today')),
+			]);
+		?>
+		<div class="help-block"></div>
+		</div>		
+
+		<?= $form->field($model, 'warehouse')->dropDownList([
+			'xm' => '廈門卡樂兒',
+			'tw' => '台灣光隆',
+			])
+		?>
+
 		<?= $form->field($model, 'ship_type')->dropDownList([
 			'標準快遞',
 			'順丰特惠',
@@ -27,7 +44,7 @@ $this->registerJsFile('/yii/basic/web/js/order_add.js',['depends' => [yii\web\Jq
 		<div class="form-group field-order-customer_id required">
 			<label class="control-label" for="order-customer_id">Customer ID</label><br>
 
-			<select class="form-group" id="customer_id" onchange="fill_customer_info()">
+			<select class="form-group" id="customer_id" name='customer_id' onchange="fill_customer_info()">
 				<option value='empty'></option>
 				<script>
 				var customer = <?php echo json_encode($customer); ?>;
@@ -102,7 +119,7 @@ $this->registerJsFile('/yii/basic/web/js/order_add.js',['depends' => [yii\web\Jq
 		<?= $form->field($model, 'extra_info')->textArea(['rows' => 6]) ?>
 	
 		<div class="form-group">
-			<?= Html::submitButton(Yii::t('app', 'Submit'), ['class' => 'btn btn-primary']) ?>
+			<?= Html::submitButton(Yii::t('app', 'Submit'), ['class' => 'btn btn-primary', 'name' => 'add']) ?>
 		</div>
 	<?php ActiveForm::end(); ?>
 
