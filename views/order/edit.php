@@ -11,7 +11,7 @@ require_once __DIR__  . '/../../utils/utils.php';
 /* @var $form ActiveForm */
 $this->title = 'Order';
 $this->params['breadcrumbs'][] = $this->title;
-$this->registerJsFile('/yii/basic/web/js/order_add.js',['depends' => [yii\web\JqueryAsset::className()]]);
+$this->registerJsFile('/yii/basic/web/js/order_edit.js',['depends' => [yii\web\JqueryAsset::className()]]);
 ?>
 
 <div class="order-edit">
@@ -36,47 +36,11 @@ $this->registerJsFile('/yii/basic/web/js/order_add.js',['depends' => [yii\web\Jq
 			'物流普運'])
 		?>
 
-		<label class="control-label" for="order-content">訂單日期</label>
-		<div style="margin-left: 50px">
-			<div class="input_fields_wrap_product">
-				<label class="control-label">套裝 / 數量</label><br>
+		<label class="control-label" for="order-content">訂單內容</label>
 
-				<?php
-					$content = json_decode($model->toArray()['content']);
-					$crewpak_content = $content->crewpak;
-					$idx = 0;
-					$out = '';
-					foreach ($crewpak_content as $key => $value) {
-						$out = $out.'<div>';
-						$out = $out.'<input type="text" name="crew_pak_'.$idx.'" value="'.$key.'" readonly>';
-						$out = $out.'<label>/</label>';
-						$out = $out.'<input type="number" name="crew_pak_cnt_'.$idx.'" value="'.$value.'" readonly>';
-						$out = $out.'</div>';
-						$idx++;
-					}
-					echo $out;
-				?>
+		<?= order_content_to_edit_table($model->toArray()['content']) ?>
 
-				<label class="control-label">品名 / 數量</label><br>
-
-				<?php
-					$product_content = $content->product;
-					$idx = 0;
-					$out = '';
-					foreach ($product_content as $key => $value) {
-						$out = $out.'<div>';
-						$out = $out.'<input type="text" name="product_'.$idx.'" value="'.$key.'" readonly>';
-						$out = $out.'<label>/</label>';
-						$out = $out.'<input type="number" name="product_cnt_'.$idx.'" value="'.$value.'" readonly>';
-						$out = $out.'</div>';
-						$idx++;
-					}
-					echo $out;
-
-				?>
-			</div>
-			<div class="help-block"></div>
-		</div>
+		<div class="help-block"></div>
 
 		<div class="form-group field-order-done_date">
 		<label class="control-label" for="order-done_date">出貨日期</label>

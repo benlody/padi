@@ -11,6 +11,7 @@ use app\models\Balance1;
 use app\models\Balance2;
 use app\models\Transaction1;
 use app\models\Transaction2;
+use yii\db\Query;
 use Yii;
 
 class OrderController extends \yii\web\Controller
@@ -75,9 +76,50 @@ class OrderController extends \yii\web\Controller
 
 		$model = $this->findModel($id);
 		$post_param = Yii::$app->request->post();
-		$content = $this->get_content($post_param);
+		$old_content = json_decode($model->content);
+		$content = $old_content;
 
 		if(isset($post_param['done'])){
+			$warehouse = $post_param['Order']['warehouse'];
+			$padi_balance_model = new Balance1($warehouse, 'padi');
+			$padi_transaction_model = new Transaction1($warehouse, 'padi');
+			$query = new Query;
+
+			$padi_balance = $query->select('*')
+								->from($warehouse.'_padi_balance')
+								->orderBy('ts DESC')
+								->one();
+
+			foreach ($padi_balance_model->attributes() as $key => $p_name) {
+				if($key < 4 ){
+					continue;
+				}
+				$padi_balance_model->$p_name = $padi_balance[$p_name];
+			}
+
+			if(isset($post_param['product'])){
+				foreach ($post_param['product'] as $product => $done) {
+					$content->product->$product->done = true;
+					$padi_transaction_model->$product -= $content->product->$product->cnt;
+					$padi_balance_model->$product -= $content->product->$product->cnt;
+				}
+			}
+
+			if(isset($post_param['crewpak'])){
+				foreach ($post_param['crewpak'] as $crewpak => $done) {
+					$content->crewpak->$crewpak->done = true;
+				}
+			}
+
+			if(isset($post_param['detail'])){
+				foreach ($post_param['detail'] as $crewpak => $detail) {
+					foreach ($detail as $product => $done) {
+						$content->crewpak->$crewpak->detail->$product->done = true;
+						$padi_transaction_model->$product -= $content->crewpak->$crewpak->detail->$product->cnt;
+						$padi_balance_model->$product -= $content->crewpak->$crewpak->detail->$product->cnt;
+					}
+				}
+			}
 
 			$post_param['Order']['content'] = json_encode($content);
 			$post_param['Order']['done_date'] = date("Y-m-d", strtotime($post_param['Order']['done_date']));
@@ -86,42 +128,34 @@ class OrderController extends \yii\web\Controller
 			}
 			$model->status = Order::STATUS_DONE;
 
-			$model->update();
-
-			$padi_balance_model = new Balance1($post_param['Order']['warehouse'], 'padi');
-			$padi_transaction_model = new Transaction1($post_param['Order']['warehouse'], 'padi');
-			$padi_balance = $padi_balance_model->find()
-				->orderBy('ts DESC')
-				->one();
-
-			$padi_transaction_model->serial = 'order_'.$post_param['Order']['id'];
-			$padi_transaction_model->date = $post_param['Order']['done_date'];
-			$padi_balance->serial = 'order_'.$post_param['Order']['id'];
-			$padi_balance->date = $post_param['Order']['done_date'];
-
-			foreach ($content['product'] as $key => $value) {
-				$padi_transaction_model->$key -= $value;
-				$padi_balance->$key -= $value;
-			}
-
-			foreach ($content['crewpak'] as $key1 => $value1) {
-				$crewpak = CrewPak::find()
-					->where(['id' => $key1])
-					->one();
-
-				foreach ($crewpak->attributes() as $key2 => $value2) {
-					if($key2 < 4){
-						continue;
-					}
-					$padi_transaction_model->$value2 -= ($crewpak->$value2) * $value1;
-					$padi_balance->$value2 -= ($crewpak->$value2) * $value1;
+			foreach ($content->product as $product => $value) {
+				if($value->done == false){
+					$model->status = Order::STATUS_NEW;
+					break;
 				}
 			}
 
-			$padi_transaction_model->insert();
-			$padi_balance->insert();
+			foreach ($content->crewpak as $crewpak => $value) {
+				if($value->done == false){
+					$model->status = Order::STATUS_NEW;
+					break;
+				}
+			}
 
-			return $this->redirect(['list', 'status' => 'done']);
+			$padi_transaction_model->serial = 'order_'.$post_param['Order']['id'];
+			$padi_transaction_model->date = $post_param['Order']['done_date'];
+			$padi_balance_model->serial = 'order_'.$post_param['Order']['id'];
+			$padi_balance_model->date = $post_param['Order']['done_date'];
+
+			$model->update();
+			$padi_transaction_model->insert();
+			$padi_balance_model->insert();
+
+			if($model->status == Order::STATUS_DONE){
+				return $this->redirect(['list', 'status' => 'done']);
+			} else {
+				return $this->redirect(['list']);
+			}
 
 		} else {
 
@@ -194,7 +228,8 @@ class OrderController extends \yii\web\Controller
 			}
 
 			$product_id =  $post_param[$product_idx];
-			$product_content[$product_id] = $product_cnt;
+			$product_content[$product_id]['cnt'] = $product_cnt;
+			$product_content[$product_id]['done'] = false;
 
 			$x++;
 		}
@@ -223,14 +258,27 @@ class OrderController extends \yii\web\Controller
 			}
 
 			$crewpak_id =  $post_param[$crewpak_idx];
-			$crewpak_content[$crewpak_id] = $crewpak_cnt;
+			$crewpak = CrewPak::find()
+				->where(['id' => $crewpak_id])
+				->one();
+
+			$crewpak_content[$crewpak_id]['cnt'] = $crewpak_cnt;
+			$detail = array();
+			foreach ($crewpak->attributes() as $key => $p_name) {
+				if($key < 4 || $crewpak->$p_name == 0){
+					continue;
+				}
+				$detail[$p_name]['cnt'] = $crewpak->$p_name * $crewpak_cnt;
+				$detail[$p_name]['done'] = false;
+			}
+			$crewpak_content[$crewpak_id]['detail'] = $detail;
+			$crewpak_content[$crewpak_id]['done'] = false;
 
 			$x++;
 		}
 
 		$content['product'] = $product_content;
 		$content['crewpak'] = $crewpak_content;
-
 
 		return $content;
 	}

@@ -96,7 +96,7 @@ CREATE TABLE `order` (
   `english_addr` CHAR(255) NOT NULL,
   `contact` CHAR(255) NOT NULL,
   `tel` CHAR(255) NOT NULL,
-  `content` CHAR(255) NOT NULL,
+  `content` TEXT NOT NULL,
   `ship_type` INT(8) NOT NULL,
   `date` DATE NOT NULL,
   `done_date` DATE,

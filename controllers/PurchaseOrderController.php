@@ -8,6 +8,7 @@ use app\models\Balance1;
 use app\models\Balance2;
 use app\models\Transaction1;
 use app\models\Transaction2;
+use yii\db\Query;
 use Yii;
 
 class PurchaseOrderController extends \yii\web\Controller
@@ -72,6 +73,7 @@ class PurchaseOrderController extends \yii\web\Controller
 		} else if(isset($post_param['done'])){
 
 			$done_date = date("Y-m-d", strtotime($post_param['done_date']));
+			$warehouse = $post_param['PurchaseOrder']['warehouse'];
 
 			$post_param['PurchaseOrder']['content'] = json_encode($content, JSON_FORCE_OBJECT);
 			$post_param['PurchaseOrder']['done_date'] = $done_date;
@@ -84,40 +86,51 @@ class PurchaseOrderController extends \yii\web\Controller
 			//FIXME error handle
 			$model->update();
 
-			$padi_balance_model = new Balance1($post_param['PurchaseOrder']['warehouse'], 'padi');
-			$self_balance_model = new Balance2($post_param['PurchaseOrder']['warehouse'], 'self');
-			$self_transaction_model = new Transaction1($post_param['PurchaseOrder']['warehouse'], 'self');
-			$padi_transaction_model = new Transaction2($post_param['PurchaseOrder']['warehouse'], 'padi');
+			$padi_balance_model = new Balance1($warehouse, 'padi');
+			$self_balance_model = new Balance2($warehouse, 'self');
+			$self_transaction_model = new Transaction1($warehouse, 'self');
+			$padi_transaction_model = new Transaction2($warehouse, 'padi');
 
-			$padi_balance = $padi_balance_model->find()
-				->orderBy('ts DESC')
-				->one();
+			$query = new Query;
+			$padi_balance = $query->select('*')
+								->from($warehouse.'_padi_balance')
+								->orderBy('ts DESC')
+								->one();
+			$self_balance = $query->select('*')
+								->from($warehouse.'_self_balance')
+								->orderBy('ts DESC')
+								->one();
 
-			$self_balance = $self_balance_model->find()
-				->orderBy('ts DESC')
-				->one();
+			foreach ($padi_balance_model->attributes() as $key => $p_name) {
+				if($key < 4 ){
+					continue;
+				}
+				$padi_balance_model->$p_name = $padi_balance[$p_name];
+				$self_balance_model->$p_name = $self_balance[$p_name];
+			}
+
 
 			$padi_transaction_model->serial = 'PO_'.$post_param['PurchaseOrder']['id'];
 			$self_transaction_model->serial = 'PO_'.$post_param['PurchaseOrder']['id'];
-			$padi_balance->serial = 'PO_'.$post_param['PurchaseOrder']['id'];
-			$self_balance->serial = 'PO_'.$post_param['PurchaseOrder']['id'];
+			$padi_balance_model->serial = 'PO_'.$post_param['PurchaseOrder']['id'];
+			$self_balance_model->serial = 'PO_'.$post_param['PurchaseOrder']['id'];
 			$padi_transaction_model->date = $done_date;
 			$self_transaction_model->date = $done_date;
-			$padi_balance->date = $done_date;
-			$self_balance->date = $done_date;
+			$padi_balance_model->date = $done_date;
+			$self_balance_model->date = $done_date;
 
 			foreach ($content as $key => $value) {
 				$padi_transaction_model->$key = $value['order_cnt'];
 				$self_transaction_model->$key = $value['print_cnt'] - $value['order_cnt'];
-				$padi_balance->$key = $padi_balance->$key + $padi_transaction_model->$key;
-				$self_balance->$key = $self_balance->$key + $self_transaction_model->$key;
+				$padi_balance_model->$key = $padi_balance_model->$key + $padi_transaction_model->$key;
+				$self_balance_model->$key = $self_balance_model->$key + $self_transaction_model->$key;
 			}
 
 
 			$padi_transaction_model->insert();
 			$self_transaction_model->insert();
-			$padi_balance->insert();
-			$self_balance->insert();
+			$padi_balance_model->insert();
+			$self_balance_model->insert();
 
 			return $this->redirect(['list', 'status' => 'done']);
 

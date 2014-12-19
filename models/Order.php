@@ -28,6 +28,7 @@ use Yii;
 class Order extends \yii\db\ActiveRecord
 {
 
+
 	const STATUS_NEW = 0;
 	const STATUS_DONE = 1;
 
@@ -46,9 +47,10 @@ class Order extends \yii\db\ActiveRecord
 	{
 		return [
 			[['id', 'customer_id', 'chinese_addr', 'english_addr', 'contact', 'tel', 'content', 'ship_type', 'date', 'warehouse', 'status'], 'required'],
+			[['content'], 'string'],
 			[['ship_type', 'box_num', 'weight', 'status'], 'integer'],
 			[['date', 'done_date'], 'safe'],
-			[['id', 'customer_id', 'chinese_addr', 'english_addr', 'contact', 'tel', 'content', 'warehouse', 'issue_by', 'shipping_no', 'extra_info'], 'string', 'max' => 255]
+			[['id', 'customer_id', 'chinese_addr', 'english_addr', 'contact', 'tel', 'warehouse', 'issue_by', 'shipping_no', 'extra_info'], 'string', 'max' => 255]
 		];
 	}
 

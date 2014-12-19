@@ -61,7 +61,7 @@ $this->params['breadcrumbs'][] = $this->title;
 			$config = [
 				'dataProvider' => $dataProvider,
 				'columns' => [
-					'id:text:Order編號',
+					'id:text:訂單編號',
 					'customer_id:text:會員編號',
 					'date:text:日期',
 					[
