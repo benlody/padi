@@ -29,6 +29,7 @@ $(document).ready(function() {
 						newIn += crewpak[idx];
 						newIn += '</option>';
 					}
+					newIn += '</select>';
 					newIn += '<input type="number" name="crew_pak_cnt_';
 					newIn += crew_cnt;
 					newIn += '" value="0"></div>';
@@ -59,6 +60,7 @@ $(document).ready(function() {
 						newIn += product[idx];
 						newIn += '</option>';
 					}
+					newIn += '</select>';
 					newIn += '<input type="number" name="product_cnt_';
 					newIn += product_cnt;
 					newIn += '" value="0"></div>';
