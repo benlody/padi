@@ -27,7 +27,7 @@ $this->registerJsFile('/yii/basic/web/js/order_add.js',['depends' => [yii\web\Jq
 			]);
 		?>
 		<div class="help-block"></div>
-		</div>		
+		</div>
 
 		<?= $form->field($model, 'warehouse')->dropDownList([
 			'xm' => '廈門卡樂兒',

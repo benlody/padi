@@ -2,8 +2,10 @@
 
 use app\models\Order;
 use app\models\PurchaseOrder;
+use app\models\Transfer;
 use app\models\Product;
 use app\models\CrewPak;
+use yii\db\Query;
 
 function get_puchase_order_status($status){
 		switch($status){
@@ -26,8 +28,23 @@ function get_warehouse_name($warehouse_id){
 		case 'xm':
 			$name = '廈門卡樂兒';
 			break;
+		case 'xm_padi':
+			$name = '廈門卡樂兒PADI庫存';
+			break;
+		case 'xm_self':
+			$name = '廈門卡樂兒自有庫存';
+			break;
 		case 'tw':
 			$name = '台灣光隆';
+			break;
+		case 'tw_padi':
+			$name = '台灣光隆PADI庫存';
+			break;
+		case 'tw_self':
+			$name = '台灣光隆自有庫存';
+			break;
+		case 'sydney':
+			$name = '雪梨PADI';
 			break;
 		default:
 			$name = $warehouse_id;
@@ -40,6 +57,17 @@ function product_content_to_table($content){
 	$content_array = json_decode($content);
 	foreach ($content_array as $key => $value) {
 		$table_out = $table_out.'<tr><td>'.$key.'</td><td>'.$value->order_cnt.'</td><td>'.$value->print_cnt.'</td></tr>';
+	}
+	$table_out = $table_out.'</tbody></table></div>';
+
+	return $table_out;
+}
+
+function transfer_content_to_table($content){
+	$table_out = '<div id="w0" class="grid-view"><table class="table table-striped table-bordered"><thead><tr><th>品名</th><th>數量</th></tr></thead><tbody>';
+	$content_array = json_decode($content);
+	foreach ($content_array as $key => $value) {
+		$table_out = $table_out.'<tr><td>'.$key.'</td><td>'.$value.'</td></tr>';
 	}
 	$table_out = $table_out.'</tbody></table></div>';
 
@@ -175,10 +203,24 @@ function get_checkbox($checked, $name, $id, $class){
 function get_order_status($status){
 		switch($status){
 		case Order::STATUS_NEW:
-			$ret = '未出貨';
+			$ret = '未完成出貨';
 			break;
 		case Order::STATUS_DONE:
-			$ret = '已完出貨';
+			$ret = '已完成出貨';
+			break;
+		default:
+			$ret = $status;
+	}
+	return $ret;
+}
+
+function get_transfer_status($status){
+		switch($status){
+		case Transfer::STATUS_NEW:
+			$ret = '尚未寄達';
+			break;
+		case Transfer::STATUS_DONE:
+			$ret = '已完成寄送';
 			break;
 		default:
 			$ret = $status;
@@ -187,5 +229,22 @@ function get_order_status($status){
 }
 
 
+function get_balance(&$balance_model, $warehouse, $warehouse_type){
+
+	$query = new Query;
+	$balance = $query->select('*')
+					->from($warehouse.'_'.$warehouse_type.'_balance')
+					->orderBy('ts DESC')
+					->one();
+
+	foreach ($balance_model->attributes() as $key => $p_name) {
+		if($key < 4 ){
+			continue;
+		}
+		$balance_model->$p_name = $balance[$p_name];
+	}
+
+
+}
 
 ?>

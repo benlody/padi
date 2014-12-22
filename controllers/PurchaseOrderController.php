@@ -11,6 +11,8 @@ use app\models\Transaction2;
 use yii\db\Query;
 use Yii;
 
+require_once __DIR__  . '/../utils/utils.php';
+
 class PurchaseOrderController extends \yii\web\Controller
 {
 	public function actionAdd()
@@ -90,25 +92,8 @@ class PurchaseOrderController extends \yii\web\Controller
 			$self_balance_model = new Balance2($warehouse, 'self');
 			$self_transaction_model = new Transaction1($warehouse, 'self');
 			$padi_transaction_model = new Transaction2($warehouse, 'padi');
-
-			$query = new Query;
-			$padi_balance = $query->select('*')
-								->from($warehouse.'_padi_balance')
-								->orderBy('ts DESC')
-								->one();
-			$self_balance = $query->select('*')
-								->from($warehouse.'_self_balance')
-								->orderBy('ts DESC')
-								->one();
-
-			foreach ($padi_balance_model->attributes() as $key => $p_name) {
-				if($key < 4 ){
-					continue;
-				}
-				$padi_balance_model->$p_name = $padi_balance[$p_name];
-				$self_balance_model->$p_name = $self_balance[$p_name];
-			}
-
+			get_balance($padi_balance_model, $warehouse, 'padi');
+			get_balance($self_balance_model, $warehouse, 'self');
 
 			$padi_transaction_model->serial = 'PO_'.$post_param['PurchaseOrder']['id'];
 			$self_transaction_model->serial = 'PO_'.$post_param['PurchaseOrder']['id'];
@@ -125,7 +110,6 @@ class PurchaseOrderController extends \yii\web\Controller
 				$padi_balance_model->$key = $padi_balance_model->$key + $padi_transaction_model->$key;
 				$self_balance_model->$key = $self_balance_model->$key + $self_transaction_model->$key;
 			}
-
 
 			$padi_transaction_model->insert();
 			$self_transaction_model->insert();

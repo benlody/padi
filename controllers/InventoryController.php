@@ -10,6 +10,8 @@ use app\models\Transaction2;
 use yii\db\Query;
 use Yii;
 
+require_once __DIR__  . '/../utils/utils.php';
+
 class InventoryController extends \yii\web\Controller
 {
 	public function actionAdjust()
@@ -19,26 +21,11 @@ class InventoryController extends \yii\web\Controller
 
 		if(isset($post_param['adjust'])){
 
-			print_r($post_param);
-
 			$warehouse = $post_param['warehouse'];
 			$warehouse_type = $post_param['warehouse_type'];
 			$balance_model = new Balance1($warehouse, $warehouse_type);
 			$transaction_model = new Transaction1($warehouse, $warehouse_type);
-			$query = new Query;
-
-			$balance = $query->select('*')
-								->from($warehouse.'_'.$warehouse_type.'_balance')
-								->orderBy('ts DESC')
-								->one();
-
-
-			foreach ($balance_model->attributes() as $key => $p_name) {
-				if($key < 4 ){
-					continue;
-				}
-				$balance_model->$p_name = $balance[$p_name];
-			}
+			get_balance($balance_model, $warehouse, $warehouse_type);
 
 			$x = 0;
 			while(1){

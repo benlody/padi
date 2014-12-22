@@ -14,6 +14,8 @@ use app\models\Transaction2;
 use yii\db\Query;
 use Yii;
 
+require_once __DIR__  . '/../utils/utils.php';
+
 class OrderController extends \yii\web\Controller
 {
 	public function actionAdd()
@@ -83,19 +85,7 @@ class OrderController extends \yii\web\Controller
 			$warehouse = $post_param['Order']['warehouse'];
 			$padi_balance_model = new Balance1($warehouse, 'padi');
 			$padi_transaction_model = new Transaction1($warehouse, 'padi');
-			$query = new Query;
-
-			$padi_balance = $query->select('*')
-								->from($warehouse.'_padi_balance')
-								->orderBy('ts DESC')
-								->one();
-
-			foreach ($padi_balance_model->attributes() as $key => $p_name) {
-				if($key < 4 ){
-					continue;
-				}
-				$padi_balance_model->$p_name = $padi_balance[$p_name];
-			}
+			get_balance($padi_balance_model, $warehouse, 'padi');
 
 			if(isset($post_param['product'])){
 				foreach ($post_param['product'] as $product => $done) {
