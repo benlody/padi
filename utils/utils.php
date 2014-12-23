@@ -269,7 +269,7 @@ function transaction_to_table($start_balance, $end_balance, $transaction, $produ
 
 	foreach ($transaction as $trans) {
 		$show_this_row = false;
-		$row = '<tr><th>'.$trans['date'].'</th><th>'.$trans['serial'].'</th><th>'.$trans['serial'].'</th>';
+		$row = '<tr><th>'.$trans['date'].'</th><th>'.$trans['desc'].'</th><th>'.$trans['id'].'</th>';
 		foreach ($product as $p_name) {
 			if(0 != $trans[$p_name]){
 				$show_this_row = true;

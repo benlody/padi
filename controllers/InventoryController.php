@@ -108,6 +108,14 @@ class InventoryController extends \yii\web\Controller
 						->orderBy('ts DESC')
 						->all();
 
+		foreach ($transaction as $key => $t) {
+			$pos1 = strpos($t['serial'], '_');
+			$pos2 = strrpos($t['serial'], '_');
+			$t['id'] = substr($t['serial'], $pos1 + 1, $pos2 - $pos1 - 1);
+			$t['desc'] = substr($t['serial'], 0, $pos1);
+			$transaction[$key] = $t;
+		}
+
 		$crewpak = $query2->select('*')
 						->from('crew_pak')
 						->all();

@@ -40,6 +40,7 @@ thead th {
 tbody th {
 	background-color: #fff;
 	font-weight: normal;
+    text-align: center;
 }
 tbody tr:nth-child(2n-1) {
     background-color: #fff;
