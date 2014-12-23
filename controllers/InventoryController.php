@@ -79,9 +79,40 @@ class InventoryController extends \yii\web\Controller
 		return $this->render('overview');
 	}
 
-	public function actionTransfer()
+	public function actionTransaction($warehouse='xm', $type='padi', $from='', $to='')
 	{
-		return $this->render('transfer');
+		$product = new Product();
+		$query = new Query;
+		$from='2014-12-19';
+		$to='2014-12-22';
+		$start_balance = $query->select('*')
+						->from($warehouse.'_'.$type.'_balance')
+						->where('ts < "'.$from.'"')
+						->orderBy('ts DESC')
+						->one();
+
+		$end_balance = $query->select('*')
+						->from($warehouse.'_'.$type.'_balance')
+						->where('ts <= "'.$to.'"')
+						->orderBy('ts DESC')
+						->one();
+
+		$transaction = $query->select('*')
+						->from($warehouse.'_'.$type.'_transaction')
+						->where('ts BETWEEN  "'.$from.'" AND "'.$to.'"')
+						->orderBy('ts DESC')
+						->all();
+
+		return $this->render('transaction',[
+			'warehouse' => $warehouse,
+			'type' => $type,
+			'from' => $from,
+			'to' => $to,
+			'start_balance' => $start_balance,
+			'end_balance' => $end_balance,
+			'transaction' => $transaction,
+			'product' => $product->find()->column()
+		]);
 	}
 
 }

@@ -17,7 +17,7 @@ class TransferController extends \yii\web\Controller
 {
 	public function actionAdd()
 	{
-		
+
 		$model = new Transfer;
 		$product = new Product();
 

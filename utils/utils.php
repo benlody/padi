@@ -247,4 +247,46 @@ function get_balance(&$balance_model, $warehouse, $warehouse_type){
 
 }
 
+
+function transaction_to_table($start_balance, $end_balance, $transaction, $product){
+	$table_out = '<div><table class="overflow-y"><thead><tr><th>日期</th><th>描述</th><th>編號</th>';
+
+	foreach ($product as $p_name) {
+		$table_out = $table_out.'<th>'.$p_name.'</th>';
+	}
+
+	$table_out = $table_out.'<th>備註</th></tr></thead><tbody><tr><th></th><th>期初餘額</th><th></th>';
+	foreach ($product as $p_name) {
+		$table_out = $table_out.'<td>'.$start_balance[$p_name].'</td>';
+	}
+
+	$table_out = $table_out.'<td></td></tr><tr><th></th><th>期末餘額</th><th></th>';
+	foreach ($product as $p_name) {
+		$table_out = $table_out.'<td>'.$end_balance[$p_name].'</td>';
+	}
+
+	$table_out = $table_out.'<td></td></tr>';
+
+	foreach ($transaction as $trans) {
+		$table_out = $table_out.'<tr><th>'.$trans['date'].'</th><th>'.$trans['serial'].'</th><th>'.$trans['serial'].'</th>';
+		foreach ($product as $p_name) {
+			$table_out = $table_out.'<td>'.(0 == $trans[$p_name] ? '' : $trans[$p_name]).'</td>';
+		}
+		$table_out = $table_out.'<td>'.$trans['extra_info'].'</td></tr>';
+	}
+
+
+/*
+	$content_array = json_decode($content);
+	foreach ($content_array as $key => $value) {
+		$table_out = $table_out.'<tr><td>'.$key.'</td><td>'.$value->order_cnt.'</td><td>'.$value->print_cnt.'</td></tr>';
+	}
+*/
+	$table_out = $table_out.'</tbody></table></div>';
+
+	return $table_out;
+}
+
+
+
 ?>
