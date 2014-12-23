@@ -1,9 +1,45 @@
 <?php
-/* @var $this yii\web\View */
-?>
-<h1>customer/index</h1>
 
-<p>
-    You may change the content of this page by modifying
-    the file <code><?= __FILE__; ?></code>.
-</p>
+use yii\helpers\Html;
+use yii\grid\GridView;
+
+/* @var $this yii\web\View */
+/* @var $searchModel app\models\CustomerSearch */
+/* @var $dataProvider yii\data\ActiveDataProvider */
+
+$this->title = Yii::t('app', 'Customers');
+$this->params['breadcrumbs'][] = $this->title;
+?>
+<div class="customer-index">
+
+    <h1><?= Html::encode($this->title) ?></h1>
+    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+
+    <p>
+        <?= Html::a(Yii::t('app', 'Create {modelClass}', [
+    'modelClass' => 'Customer',
+]), ['create'], ['class' => 'btn btn-success']) ?>
+    </p>
+
+    <?= GridView::widget([
+        'dataProvider' => $dataProvider,
+        'filterModel' => $searchModel,
+        'columns' => [
+            ['class' => 'yii\grid\SerialColumn'],
+
+            'id',
+            'chinese_name',
+            'english_name',
+            'level',
+            'contact',
+            // 'tel',
+            // 'email:email',
+            // 'chinese_addr',
+            // 'english_addr',
+            // 'extra_info',
+
+            ['class' => 'yii\grid\ActionColumn'],
+        ],
+    ]); ?>
+
+</div>
