@@ -81,10 +81,15 @@ class InventoryController extends \yii\web\Controller
 
 	public function actionTransaction($warehouse='xm', $type='padi', $from='', $to='')
 	{
-		$product = new Product();
+		$product = Product::find()->column();
 		$query = new Query;
-		$from='2014-12-19';
-		$to='2014-12-22';
+		$query2 = new Query;
+		if(!$from){
+			$from = date("Y-m-d", strtotime("first day of this month"));
+		}
+		if(!$to){
+			$to = date("Y-m-d", strtotime("last day of this month"));
+		}
 		$start_balance = $query->select('*')
 						->from($warehouse.'_'.$type.'_balance')
 						->where('ts < "'.$from.'"')
@@ -103,6 +108,19 @@ class InventoryController extends \yii\web\Controller
 						->orderBy('ts DESC')
 						->all();
 
+		$crewpak = $query2->select('*')
+						->from('crew_pak')
+						->all();
+
+		foreach ($crewpak as $c) {
+			$crew_list[$c['id']] = array();
+			foreach ($product as $p) {
+				if(0 != $c[$p]){
+					array_push($crew_list[$c['id']], $p);
+				}
+			}
+		}
+
 		return $this->render('transaction',[
 			'warehouse' => $warehouse,
 			'type' => $type,
@@ -111,7 +129,8 @@ class InventoryController extends \yii\web\Controller
 			'start_balance' => $start_balance,
 			'end_balance' => $end_balance,
 			'transaction' => $transaction,
-			'product' => $product->find()->column()
+			'product' => $product,
+			'crew_list' => $crew_list
 		]);
 	}
 

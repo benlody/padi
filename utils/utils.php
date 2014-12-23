@@ -268,11 +268,18 @@ function transaction_to_table($start_balance, $end_balance, $transaction, $produ
 	$table_out = $table_out.'<td></td></tr>';
 
 	foreach ($transaction as $trans) {
-		$table_out = $table_out.'<tr><th>'.$trans['date'].'</th><th>'.$trans['serial'].'</th><th>'.$trans['serial'].'</th>';
+		$show_this_row = false;
+		$row = '<tr><th>'.$trans['date'].'</th><th>'.$trans['serial'].'</th><th>'.$trans['serial'].'</th>';
 		foreach ($product as $p_name) {
-			$table_out = $table_out.'<td>'.(0 == $trans[$p_name] ? '' : $trans[$p_name]).'</td>';
+			if(0 != $trans[$p_name]){
+				$show_this_row = true;
+			}
+			$row = $row.'<td>'.(0 == $trans[$p_name] ? '' : $trans[$p_name]).'</td>';
 		}
-		$table_out = $table_out.'<td>'.$trans['extra_info'].'</td></tr>';
+		$row = $row.'<td>'.$trans['extra_info'].'</td></tr>';
+		if($show_this_row){
+			$table_out = $table_out.$row;
+		}
 	}
 
 
