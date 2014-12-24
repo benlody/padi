@@ -12,9 +12,9 @@ require_once __DIR__  . '/../../utils/utils.php';
 $this->title = Yii::t('app', 'Inventory');
 $this->params['breadcrumbs'][] = $this->title;
 
-$this->registerJsFile('/yii/basic/web/js/jquery.stickyheader.js',['depends' => [yii\web\JqueryAsset::className()]]);
-$this->registerJsFile('/yii/basic/web/js/transaction_table.js',['depends' => [yii\web\JqueryAsset::className()]]);
-$this->registerCssFile('/yii/basic/web/css/transaction_table_component.css');
+$this->registerJsFile(Yii::$app->request->getBaseUrl().'/js/jquery.stickyheader.js',['depends' => [yii\web\JqueryAsset::className()]]);
+$this->registerJsFile(Yii::$app->request->getBaseUrl().'/js/transaction_table.js',['depends' => [yii\web\JqueryAsset::className()]]);
+$this->registerCssFile(Yii::$app->request->getBaseUrl().'/css/transaction_table_component.css');
 
 ?>
 

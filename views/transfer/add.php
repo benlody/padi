@@ -10,7 +10,7 @@ use yii\jui\DatePicker;
 
 $this->title = 'Transfer';
 $this->params['breadcrumbs'][] = $this->title;
-$this->registerJsFile('/yii/basic/web/js/transfer_add.js',['depends' => [yii\web\JqueryAsset::className()]]);
+$this->registerJsFile(Yii::$app->request->getBaseUrl().'/js/transfer_add.js',['depends' => [yii\web\JqueryAsset::className()]]);
 
 ?>
 <div class="transfer-add">

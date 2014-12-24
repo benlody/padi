@@ -84,7 +84,7 @@ $this->params['breadcrumbs'][] = $this->title;
 						'attribute' => '',
 						'format' => 'raw',
 						'value' => function ($model) {
-							return '<a href="/yii/basic/web/index.php?r=purchase-order%2Fedit&amp;id='.$model->id.'" title="Edit" data-pjax="0"><span class="glyphicon glyphicon glyphicon-pencil"></span></a>';
+							return '<a href="'.Yii::$app->request->getBaseUrl().'?r=purchase-order%2Fedit&amp;id='.$model->id.'" title="Edit" data-pjax="0"><span class="glyphicon glyphicon glyphicon-pencil"></span></a>';
 						}
 					],
 				],

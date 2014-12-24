@@ -11,7 +11,7 @@ require_once __DIR__  . '/../../utils/utils.php';
 /* @var $form ActiveForm */
 $this->title = 'Order';
 $this->params['breadcrumbs'][] = $this->title;
-$this->registerJsFile('/yii/basic/web/js/order_edit.js',['depends' => [yii\web\JqueryAsset::className()]]);
+$this->registerJsFile(Yii::$app->request->getBaseUrl().'/js/order_edit.js',['depends' => [yii\web\JqueryAsset::className()]]);
 ?>
 
 <div class="order-edit">
