@@ -19,9 +19,11 @@ $this->params['breadcrumbs'][] = $this->title;
 
 	<?php
 		//FIXME 選擇是否顯示訂單內容
+
+
 		if(0 == strcmp($status, 'done')){
 			$btn_lable = '列出未出貨';
-			$btn_cfg = ['list', 'status' => ''];
+			$btn_cfg = ['list', 'status' => '', 'detail' => $detail];
 			$config = [
 				'dataProvider' => $dataProvider,
 				'columns' => [
@@ -57,7 +59,7 @@ $this->params['breadcrumbs'][] = $this->title;
 			];
 		} else {
 			$btn_lable = '列出已出貨';
-			$btn_cfg = ['list', 'status' => 'done'];
+			$btn_cfg = ['list', 'status' => 'done', 'detail' => $detail];
 			$config = [
 				'dataProvider' => $dataProvider,
 				'columns' => [
@@ -93,14 +95,26 @@ $this->params['breadcrumbs'][] = $this->title;
 						'attribute' => '',
 						'format' => 'raw',
 						'value' => function ($model) {
-							return '<a href="/yii/basic/web/index.php?r=order%2Fedit&amp;id='.$model->id.'" title="Edit" data-pjax="0"><span class="glyphicon glyphicon glyphicon-pencil"></span></a>';
+							return 	'<a href="/yii/basic/web/index.php?r=order%2Fedit&amp;id='.$model->id.'" title="Edit" data-pjax="0"><span class="glyphicon glyphicon glyphicon-pencil"></span></a>'.
+									'<a href="/yii/basic/web/index.php?r=order%2Fdownload&amp;id='.$model->id.'" title="Edit" data-pjax="0"><span class="glyphicon glyphicon glyphicon-download"></span></a>';
 						}
 					],
 				],
 			];
 		}
+
+		if($detail){
+			$detail_btn_lable = '隱藏詳細';
+			$detail_btn_cfg = ['list', 'status' => $staus, 'detail' => false];
+		} else {
+			$detail_btn_lable = '顯示詳細';
+			$detail_btn_cfg = ['list', 'status' => $staus, 'detail' => true];
+			unset($config['columns'][5]);
+		}
+
 	?>
 	<?= Html::a($btn_lable, $btn_cfg, ['class' => 'btn btn-primary']) ?>
+	<?= Html::a($detail_btn_lable, $detail_btn_cfg, ['class' => 'btn btn-primary']) ?>
 	<?= GridView::widget($config); ?>
 
 </div>

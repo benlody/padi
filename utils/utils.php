@@ -164,6 +164,70 @@ function product_detail_to_edit_table($product_name, $product_detail, $name, $id
 	return $table_out;
 }
 
+function order_content_to_download_table($content){
+
+	$content_array = json_decode($content);
+
+	echo '<table class="tg" style="undefined;table-layout: fixed; width: 560px">';
+	echo '<colgroup>';
+	echo '<col style="width: 100px">';
+	echo '<col style="width: 400px">';
+	echo '<col style="width: 60px">';
+	echo '</colgroup>';
+	echo '<tr>';
+	echo '<th class="tg-s6z2">'.chineseToUnicode('产品编号').'</th>';
+	echo '<th class="tg-031e">'.chineseToUnicode('产品名称').'</th>';
+	echo '<th class="tg-031e">'.chineseToUnicode('数量').'</th>';
+	echo '</tr>';
+
+	$crewpak_array = $content_array->crewpak;
+	foreach ($crewpak_array as $crewpak_name => $crewpak_detail) {
+		crewpak_to_download_table($crewpak_name, $crewpak_detail);
+	}
+
+	$product_array = $content_array->product;
+	foreach ($product_array as $product_name => $product_detail) {
+		product_detail_to_download_table($product_name, $product_detail);
+	}
+
+	return;
+}
+
+
+function crewpak_to_download_table($crewpak_name, $crewpak_detail){
+
+	echo '<tr><td>'.$crewpak_name.'</td><td>';
+	crewpak_detail_to_download_table($crewpak_name, $crewpak_detail->detail);
+	echo '</td><td>'.$crewpak_detail->cnt.'</td></tr>';
+	return;
+}
+
+function crewpak_detail_to_download_table($crewpak_name, $crewpak_detail){
+	echo chineseToUnicode(get_crewpk_name($crewpak_name)).'<br>';
+
+		echo '<table class="tg" style="undefined;table-layout: fixed; width: 360px">';
+		echo '<colgroup>';
+		echo '<col style="width: 100px">';
+		echo '<col style="width: 280px">';
+		echo '</colgroup>';
+
+	foreach ($crewpak_detail as $product_name => $product_detail) {
+		echo product_detail_to_download_table($product_name, $product_detail, false);
+	}
+
+	echo '</table></div>';
+	return;
+}
+
+function product_detail_to_download_table($product_name, $product_detail, $display_cnt = true){
+
+	if($display_cnt){
+		echo '<tr><td>'.$product_name.'</td><td>'.chineseToUnicode(get_product_name($product_name)).'</td><td>'.$product_detail->cnt.'</td></tr>';
+	} else {
+		echo '<tr><td>'.$product_name.'</td><td>'.chineseToUnicode(get_product_name($product_name)).'</td></tr>';		
+	}
+	return;
+}
 
 
 function get_product_name($id){
@@ -295,5 +359,15 @@ function transaction_to_table($start_balance, $end_balance, $transaction, $produ
 }
 
 
+function chineseToUnicode($str){
+    //split word
+    preg_match_all('/./u',$str,$matches);
+
+    $c = "";
+    foreach($matches[0] as $m){
+            $c .= "&#".base_convert(bin2hex(iconv('UTF-8',"UCS-4",$m)),16,10);
+    }
+    return $c;
+}
 
 ?>
