@@ -133,7 +133,7 @@ class PurchaseOrderController extends \yii\web\Controller
 		return $this->render('index');
 	}
 
-	public function actionList($status='')
+	public function actionList($status='', $detail = true, $sort='-date')
 	{
 
 		$searchModel = new PurchaseOrderSearch();
@@ -148,6 +148,8 @@ class PurchaseOrderController extends \yii\web\Controller
 			'searchModel' => $searchModel,
 			'dataProvider' => $dataProvider,
 			'status' => $status,
+			'detail' => $detail,
+			'sort' => $sort,
 		]);
 
 	}

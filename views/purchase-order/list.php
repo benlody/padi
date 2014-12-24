@@ -20,7 +20,7 @@ $this->params['breadcrumbs'][] = $this->title;
 	<?php
 		if(0 == strcmp($status, 'done')){
 			$btn_lable = '列出未完工';
-			$btn_cfg = ['list', 'status' => ''];
+			$btn_cfg = ['list', 'status' => '', 'detail' => $detail, 'sort' => $sort];
 			$config = [
 				'dataProvider' => $dataProvider,
 				'columns' => [
@@ -52,7 +52,7 @@ $this->params['breadcrumbs'][] = $this->title;
 			];
 		} else {
 			$btn_lable = '列出已完工';
-			$btn_cfg = ['list', 'status' => 'done'];
+			$btn_cfg = ['list', 'status' => 'done', 'detail' => $detail, 'sort' => $sort];
 			$config = [
 				'dataProvider' => $dataProvider,
 				'columns' => [
@@ -90,8 +90,17 @@ $this->params['breadcrumbs'][] = $this->title;
 				],
 			];
 		}
+		if($detail){
+			$detail_btn_lable = '隱藏詳細';
+			$detail_btn_cfg = ['list', 'status' => $status, 'detail' => false, 'sort' => $sort];
+		} else {
+			$detail_btn_lable = '顯示詳細';
+			$detail_btn_cfg = ['list', 'status' => $status, 'detail' => true, 'sort' => $sort];
+			unset($config['columns'][1]);
+		}
 	?>
 	<?= Html::a($btn_lable, $btn_cfg, ['class' => 'btn btn-primary']) ?>
+	<?= Html::a($detail_btn_lable, $detail_btn_cfg, ['class' => 'btn btn-primary']) ?>
 	<?= GridView::widget($config); ?>
 
 </div>

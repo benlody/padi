@@ -54,7 +54,7 @@ class OrderController extends \yii\web\Controller
 		}
 	}
 
-	public function actionList($status='', $detail = true)
+	public function actionList($status='', $detail = true, $sort='-date')
 	{
 
 		$searchModel = new OrderSearch();
@@ -70,6 +70,7 @@ class OrderController extends \yii\web\Controller
 			'dataProvider' => $dataProvider,
 			'status' => $status,
 			'detail' => $detail,
+			'sort' => $sort,
 		]);
 
 	}

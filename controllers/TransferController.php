@@ -271,7 +271,7 @@ class TransferController extends \yii\web\Controller
 		return $this->render('index');
 	}
 
-	public function actionList($status='')
+	public function actionList($status='', $detail = true, $sort='-send_date')
 	{
 		$searchModel = new TransferSearch();
 		if(0 == strcmp($status, 'done')){
@@ -285,6 +285,8 @@ class TransferController extends \yii\web\Controller
 			'searchModel' => $searchModel,
 			'dataProvider' => $dataProvider,
 			'status' => $status,
+			'detail' => $detail,
+			'sort' => $sort,
 		]);
 	}
 
