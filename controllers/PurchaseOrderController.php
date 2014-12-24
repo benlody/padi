@@ -95,10 +95,11 @@ class PurchaseOrderController extends \yii\web\Controller
 			get_balance($padi_balance_model, $warehouse, 'padi');
 			get_balance($self_balance_model, $warehouse, 'self');
 
-			$padi_transaction_model->serial = 'PO_'.$post_param['PurchaseOrder']['id'];
-			$self_transaction_model->serial = 'PO_'.$post_param['PurchaseOrder']['id'];
-			$padi_balance_model->serial = 'PO_'.$post_param['PurchaseOrder']['id'];
-			$self_balance_model->serial = 'PO_'.$post_param['PurchaseOrder']['id'];
+			$now = strtotime('now');
+			$padi_transaction_model->serial = 'PO_'.$post_param['PurchaseOrder']['id'].'_'.$now;;
+			$self_transaction_model->serial = 'PO_'.$post_param['PurchaseOrder']['id'].'_'.$now;;
+			$padi_balance_model->serial = 'PO_'.$post_param['PurchaseOrder']['id'].'_'.$now;;
+			$self_balance_model->serial = 'PO_'.$post_param['PurchaseOrder']['id'].'_'.$now;;
 			$padi_transaction_model->date = $done_date;
 			$self_transaction_model->date = $done_date;
 			$padi_balance_model->date = $done_date;

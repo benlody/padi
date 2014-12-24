@@ -193,9 +193,10 @@ class OrderController extends \yii\web\Controller
 				}
 			}
 
-			$padi_transaction_model->serial = 'order_'.$post_param['Order']['id'];
+			$now = strtotime('now');
+			$padi_transaction_model->serial = 'order_'.$post_param['Order']['id'].'_'.$now;;
 			$padi_transaction_model->date = $post_param['Order']['done_date'];
-			$padi_balance_model->serial = 'order_'.$post_param['Order']['id'];
+			$padi_balance_model->serial = 'order_'.$post_param['Order']['id'].'_'.$now;;
 			$padi_balance_model->date = $post_param['Order']['done_date'];
 
 			$model->update();
