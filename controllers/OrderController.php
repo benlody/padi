@@ -85,55 +85,18 @@ class OrderController extends \yii\web\Controller
 		echo "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=Windows-1252\">";
 		echo "<body>";
 
-		echo '<p style="text-align: center;"><span style="color: #808080; line-height:3pt;">'.chineseToUnicode('廈門卡樂兒商貿公司').'<br>';
-		echo 'XIAMEN COLOR TRADE LIMITED<br>';
-		echo chineseToUnicode('包裝打捆紀錄單').'<br><span style="font-size: small;">'.chineseToUnicode('日期').':'.$model->date.'</span></span></p>';
-		echo '<p style="text-align: left;">'.chineseToUnicode('取货地点：厦门市火炬东路28号').'<br>';
-		echo chineseToUnicode('送货单位：■顺丰标快 □顺丰特惠 □顺丰物流普运').'</p>';
+		if(0 == strcmp('xm', $model->warehouse)){
+			$this->download_xm($model);
+		} else {
+			$this->download_tw($model);
+		}
 
-		echo '<style type="text/css">';
-		echo '.tg  {border-collapse:collapse;border-spacing:0;}';
-		echo '.tg td{font-family:Arial, sans-serif;font-size:14px;padding:3px 3px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;}';
-		echo '.tg th{font-family:Arial, sans-serif;font-size:14px;font-weight:normal;padding:0px 0px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;}';
-		echo '.tg .tg-s6z2{text-align:center; padding:0px 0px;}';
-		echo '</style>';
 
-		echo '<table class="tg" style="undefined;table-layout: fixed; width: 560px">';
-		echo '<colgroup>';
-		echo '<col style="width: 100px">';
-		echo '<col style="width: 140px">';
-		echo '<col style="width: 100px">';
-		echo '</colgroup>';
-		echo '<tr>';
-		echo '<th class="tg-s6z2">'.chineseToUnicode('会员编号').'<br>DC#</th>';
-		echo '<th class="tg-031e">'.$model->customer_id.'</th>';
-		echo '<th class="tg-031e">'.chineseToUnicode('订单号码').'<br>PO#</th>';
-		echo '<th class="tg-031e">'.$model->id.'</th>';
-		echo '</tr>';
-		echo '<tr>';
-		echo '<td class="tg-s6z2">'.chineseToUnicode('会员地址').'<br>ADDRESS</td>';
-		echo '<td class="tg-031e" colspan="3"><span style="background-color: #d0d0d0;">'.chineseToUnicode('地址(英)').':</span><br>'.chineseToUnicode($model->english_addr).
-						'<br><span style="background-color: #d0d0d0;">'.chineseToUnicode('地址(中)').':</span><br>'.chineseToUnicode($model->chinese_addr).
-						'<br><span style="background-color: #d0d0d0;">'.chineseToUnicode('收件人').':</span><br>'.chineseToUnicode($model->contact).
-						'<br><span style="background-color: #d0d0d0;">'.chineseToUnicode('连络电话').':</span><br>'.chineseToUnicode($model->tel).
-						'</td>';
-		echo '</tr>';
-		echo '</table>';
-
-		order_content_to_download_table($model->content);
-
-		echo '</table>';
-
-		echo '<p>'.chineseToUnicode('执行者签名：').'</p>';
-		echo '<p>'.chineseToUnicode('复核： □已确认产品数量皆正确').'</p>';
-		echo '<p>'.chineseToUnicode('总箱数：').'</p>';
-		echo '<p>'.chineseToUnicode('总重：').'</p>';
-		echo '<p>'.chineseToUnicode('运单号码：').'</p>';
-		echo '<p>'.chineseToUnicode('备注：').'</p>';
 		echo "</body>";
 		echo "</html>";
 
 	}
+
 	public function actionEdit($id)
 	{
 
@@ -333,5 +296,123 @@ class OrderController extends \yii\web\Controller
 		$content['crewpak'] = $crewpak_content;
 
 		return $content;
+	}
+	protected function download_xm($model){
+
+		echo '<p style="text-align: center;"><span style="color: #808080; line-height:3pt;">'.chineseToUnicode('廈門卡樂兒商貿公司').'<br>';
+		echo 'XIAMEN COLOR TRADE LIMITED<br>';
+		echo chineseToUnicode('包裝打捆紀錄單').'<br><span style="font-size: small;">'.chineseToUnicode('日期').':'.$model->date.'</span></span></p>';
+		echo '<p style="text-align: left;">'.chineseToUnicode('取货地点：厦门市火炬东路28号').'<br>';
+		echo chineseToUnicode('送货单位：■顺丰标快 □顺丰特惠 □顺丰物流普运').'</p>';
+
+		echo '<style type="text/css">';
+		echo '.tg  {border-collapse:collapse;border-spacing:0;}';
+		echo '.tg td{font-family:Arial, sans-serif;font-size:14px;padding:3px 3px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;}';
+		echo '.tg th{font-family:Arial, sans-serif;font-size:14px;font-weight:normal;padding:0px 0px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;}';
+		echo '.tg .tg-s6z2{text-align:center; padding:0px 0px;}';
+		echo '</style>';
+
+		echo '<table class="tg" style="undefined;table-layout: fixed; width: 560px">';
+		echo '<colgroup>';
+		echo '<col style="width: 100px">';
+		echo '<col style="width: 140px">';
+		echo '<col style="width: 100px">';
+		echo '</colgroup>';
+		echo '<tr>';
+		echo '<th class="tg-s6z2">'.chineseToUnicode('会员编号').'<br>DC#</th>';
+		echo '<th class="tg-031e">'.$model->customer_id.'</th>';
+		echo '<th class="tg-031e">'.chineseToUnicode('订单号码').'<br>PO#</th>';
+		echo '<th class="tg-031e">'.$model->id.'</th>';
+		echo '</tr>';
+		echo '<tr>';
+		echo '<td class="tg-s6z2">'.chineseToUnicode('会员地址').'<br>ADDRESS</td>';
+		echo '<td class="tg-031e" colspan="3"><span style="background-color: #d0d0d0;">'.chineseToUnicode('地址(英)').':</span><br>'.chineseToUnicode($model->english_addr).
+						'<br><span style="background-color: #d0d0d0;">'.chineseToUnicode('地址(中)').':</span><br>'.chineseToUnicode($model->chinese_addr).
+						'<br><span style="background-color: #d0d0d0;">'.chineseToUnicode('收件人').':</span><br>'.chineseToUnicode($model->contact).
+						'<br><span style="background-color: #d0d0d0;">'.chineseToUnicode('连络电话').':</span><br>'.chineseToUnicode($model->tel).
+						'</td>';
+		echo '</tr>';
+		echo '</table>';
+
+		echo '<table class="tg" style="undefined;table-layout: fixed; width: 560px">';
+		echo '<colgroup>';
+		echo '<col style="width: 100px">';
+		echo '<col style="width: 400px">';
+		echo '<col style="width: 60px">';
+		echo '</colgroup>';
+		echo '<tr>';
+		echo '<th class="tg-s6z2">'.chineseToUnicode('产品编号').'</th>';
+		echo '<th class="tg-031e">'.chineseToUnicode('产品名称'
+			).'</th>';
+		echo '<th class="tg-031e">'.chineseToUnicode('数量').'</th>';
+		echo '</tr>';
+		
+		order_content_to_download_table($model->content);
+
+		echo '</table>';
+
+		echo '<p>'.chineseToUnicode('执行者签名：').'</p>';
+		echo '<p>'.chineseToUnicode('复核： □已确认产品数量皆正确').'</p>';
+		echo '<p>'.chineseToUnicode('总箱数：').'</p>';
+		echo '<p>'.chineseToUnicode('总重：').'</p>';
+		echo '<p>'.chineseToUnicode('运单号码：').'</p>';
+		echo '<p>'.chineseToUnicode('备注：').'</p>';
+	}
+
+	protected function download_tw($model){
+
+		echo '<p style="text-align: center;"><span style="color: #808080; line-height:3pt;">'.chineseToUnicode('光隆印刷廠股份有限公司').'<br>';
+		echo 'Kuang Lung Printing Factory Co., Ltd.<br>';
+		echo chineseToUnicode('包裝打捆紀錄單').'<br><span style="font-size: small;">'.chineseToUnicode('日期').':'.$model->date.'</span></span></p>';
+		echo '<p style="text-align: left;">'.chineseToUnicode('公司地址：台北市漢口街一段61號2F TEL:02-23314526 FAX:02-23832251').'<br>';
+		echo chineseToUnicode('送貨單位：■中華郵政 □順丰快遞 □新航快遞').'</p>';
+
+		echo '<style type="text/css">';
+		echo '.tg  {border-collapse:collapse;border-spacing:0;}';
+		echo '.tg td{font-family:Arial, sans-serif;font-size:14px;padding:3px 3px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;}';
+		echo '.tg th{font-family:Arial, sans-serif;font-size:14px;font-weight:normal;padding:0px 0px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;}';
+		echo '.tg .tg-s6z2{text-align:center; padding:0px 0px;}';
+		echo '</style>';
+
+		echo '<table class="tg" style="undefined;table-layout: fixed; width: 560px">';
+		echo '<colgroup>';
+		echo '<col style="width: 100px">';
+		echo '<col style="width: 140px">';
+		echo '<col style="width: 100px">';
+		echo '</colgroup>';
+		echo '<tr>';
+		echo '<th class="tg-s6z2">'.chineseToUnicode('會員編號').'<br>DC#</th>';
+		echo '<th class="tg-031e">'.$model->customer_id.'</th>';
+		echo '<th class="tg-031e">'.chineseToUnicode('訂單號碼').'<br>PO#</th>';
+		echo '<th class="tg-031e">'.$model->id.'</th>';
+		echo '</tr>';
+		echo '<tr>';
+		echo '<td class="tg-s6z2">'.chineseToUnicode('會員地址').'<br>ADDRESS</td>';
+		echo '<td class="tg-031e" colspan="3"><span style="background-color: #d0d0d0;">'.chineseToUnicode('地址(英)').':</span><br>'.chineseToUnicode($model->english_addr).
+						'<br><span style="background-color: #d0d0d0;">'.chineseToUnicode('地址(中)').':</span><br>'.chineseToUnicode($model->chinese_addr).
+						'<br><span style="background-color: #d0d0d0;">'.chineseToUnicode('收件人').':</span><br>'.chineseToUnicode($model->contact).
+						'<br><span style="background-color: #d0d0d0;">'.chineseToUnicode('聯絡电话').':</span><br>'.chineseToUnicode($model->tel).
+						'</td>';
+		echo '</tr>';
+		echo '</table>';
+
+		echo '<table class="tg" style="undefined;table-layout: fixed; width: 560px">';
+		echo '<colgroup>';
+		echo '<col style="width: 100px">';
+		echo '<col style="width: 400px">';
+		echo '<col style="width: 60px">';
+		echo '</colgroup>';
+		echo '<tr>';
+		echo '<th class="tg-s6z2">'.chineseToUnicode('產品編號').'</th>';
+		echo '<th class="tg-031e">'.chineseToUnicode('產品名稱').'</th>';
+		echo '<th class="tg-031e">'.chineseToUnicode('數量').'</th>';
+		echo '</tr>';
+
+		order_content_to_download_table($model->content);
+
+		echo '</table>';
+
+		echo '<p>'.chineseToUnicode('執行者簽名：').'</p>';
+		echo '<p>'.chineseToUnicode('覆核： □已確認語文版本皆正確 □已確認產品數量皆正確    簽名:').'</p>';
 	}
 }

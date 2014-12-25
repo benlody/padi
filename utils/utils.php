@@ -168,18 +168,6 @@ function order_content_to_download_table($content){
 
 	$content_array = json_decode($content);
 
-	echo '<table class="tg" style="undefined;table-layout: fixed; width: 560px">';
-	echo '<colgroup>';
-	echo '<col style="width: 100px">';
-	echo '<col style="width: 400px">';
-	echo '<col style="width: 60px">';
-	echo '</colgroup>';
-	echo '<tr>';
-	echo '<th class="tg-s6z2">'.chineseToUnicode('产品编号').'</th>';
-	echo '<th class="tg-031e">'.chineseToUnicode('产品名称').'</th>';
-	echo '<th class="tg-031e">'.chineseToUnicode('数量').'</th>';
-	echo '</tr>';
-
 	$crewpak_array = $content_array->crewpak;
 	foreach ($crewpak_array as $crewpak_name => $crewpak_detail) {
 		crewpak_to_download_table($crewpak_name, $crewpak_detail);
