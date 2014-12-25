@@ -91,6 +91,7 @@ function fill_customer_info() {
 			document.getElementById("order-english_addr").value = cus_info.english_addr;
 			document.getElementById("order-contact").value = cus_info.contact;
 			document.getElementById("order-tel").value = cus_info.tel;
+			document.getElementById("order-region").value = cus_info.region;
 		}
 	});
 

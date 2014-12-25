@@ -18,8 +18,8 @@ class OrderSearch extends Order
     public function rules()
     {
         return [
-            [['id', 'customer_id', 'chinese_addr', 'english_addr', 'contact', 'tel', 'content', 'date', 'done_date', 'warehouse', 'issue_by', 'shipping_no', 'extra_info'], 'safe'],
-            [['ship_type', 'box_num', 'weight', 'status'], 'integer'],
+            [['id', 'customer_id', 'chinese_addr', 'english_addr', 'region', 'contact', 'tel', 'content', 'date', 'done_date', 'warehouse', 'shipping_info', 'extra_info'], 'safe'],
+            [['ship_type', 'status'], 'integer'],
         ];
     }
 
@@ -55,8 +55,6 @@ class OrderSearch extends Order
             'ship_type' => $this->ship_type,
             'date' => $this->date,
             'done_date' => $this->done_date,
-            'box_num' => $this->box_num,
-            'weight' => $this->weight,
             'status' => $this->status,
         ]);
 
@@ -64,12 +62,12 @@ class OrderSearch extends Order
             ->andFilterWhere(['like', 'customer_id', $this->customer_id])
             ->andFilterWhere(['like', 'chinese_addr', $this->chinese_addr])
             ->andFilterWhere(['like', 'english_addr', $this->english_addr])
+            ->andFilterWhere(['like', 'region', $this->region])
             ->andFilterWhere(['like', 'contact', $this->contact])
             ->andFilterWhere(['like', 'tel', $this->tel])
             ->andFilterWhere(['like', 'content', $this->content])
             ->andFilterWhere(['like', 'warehouse', $this->warehouse])
-            ->andFilterWhere(['like', 'issue_by', $this->issue_by])
-            ->andFilterWhere(['like', 'shipping_no', $this->shipping_no])
+            ->andFilterWhere(['like', 'shipping_info', $this->shipping_info])
             ->andFilterWhere(['like', 'extra_info', $this->extra_info]);
 
         return $dataProvider;

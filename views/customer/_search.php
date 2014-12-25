@@ -33,6 +33,8 @@ use yii\widgets\ActiveForm;
 
     <?php // echo $form->field($model, 'english_addr') ?>
 
+    <?php // echo $form->field($model, 'region') ?>
+
     <?php // echo $form->field($model, 'extra_info') ?>
 
     <div class="form-group">

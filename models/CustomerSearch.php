@@ -18,7 +18,7 @@ class CustomerSearch extends Customer
     public function rules()
     {
         return [
-            [['id', 'chinese_name', 'english_name', 'level', 'contact', 'tel', 'email', 'chinese_addr', 'english_addr', 'extra_info'], 'safe'],
+            [['id', 'chinese_name', 'english_name', 'level', 'contact', 'tel', 'email', 'chinese_addr', 'english_addr', 'region', 'extra_info'], 'safe'],
         ];
     }
 
@@ -59,6 +59,7 @@ class CustomerSearch extends Customer
             ->andFilterWhere(['like', 'email', $this->email])
             ->andFilterWhere(['like', 'chinese_addr', $this->chinese_addr])
             ->andFilterWhere(['like', 'english_addr', $this->english_addr])
+            ->andFilterWhere(['like', 'region', $this->region])
             ->andFilterWhere(['like', 'extra_info', $this->extra_info]);
 
         return $dataProvider;

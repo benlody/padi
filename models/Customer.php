@@ -16,6 +16,7 @@ use Yii;
  * @property string $email
  * @property string $chinese_addr
  * @property string $english_addr
+ * @property string $region
  * @property string $extra_info
  */
 class Customer extends \yii\db\ActiveRecord
@@ -34,8 +35,9 @@ class Customer extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id', 'chinese_name', 'english_name', 'level', 'contact', 'tel', 'email', 'chinese_addr', 'english_addr'], 'required'],
-            [['id', 'chinese_name', 'english_name', 'level', 'contact', 'tel', 'email', 'chinese_addr', 'english_addr', 'extra_info'], 'string', 'max' => 255]
+            [['id'], 'required'],
+            [['chinese_name', 'english_name', 'contact', 'tel', 'email', 'chinese_addr', 'english_addr', 'extra_info'], 'string'],
+            [['id', 'level', 'region'], 'string', 'max' => 255]
         ];
     }
 
@@ -54,6 +56,7 @@ class Customer extends \yii\db\ActiveRecord
             'email' => Yii::t('app', 'Email'),
             'chinese_addr' => Yii::t('app', 'Chinese Addr'),
             'english_addr' => Yii::t('app', 'English Addr'),
+            'region' => Yii::t('app', 'Region'),
             'extra_info' => Yii::t('app', 'Extra Info'),
         ];
     }

@@ -5,6 +5,7 @@ use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Customer */
+require_once __DIR__  . '/../../utils/enum.php';
 
 $this->title = $model->id;
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Customers'), 'url' => ['index']];
@@ -29,15 +30,19 @@ $this->params['breadcrumbs'][] = $this->title;
         'model' => $model,
         'attributes' => [
             'id',
-            'chinese_name',
-            'english_name',
+            'chinese_name:ntext',
+            'english_name:ntext',
             'level',
-            'contact',
-            'tel',
-            'email:email',
-            'chinese_addr',
-            'english_addr',
-            'extra_info',
+            'contact:ntext',
+            'tel:ntext',
+            'email:ntext',
+            'chinese_addr:ntext',
+            'english_addr:ntext',
+            [
+                'label' => '地區',
+                'value' => ShippingRegion::getRegion($model->region)
+            ],
+            'extra_info:ntext',
         ],
     ]) ?>
 
