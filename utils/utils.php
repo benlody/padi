@@ -469,14 +469,14 @@ function orders_to_shipment_table($orders, $warehouse){
 }
 
 function chineseToUnicode($str){
-    //split word
-    preg_match_all('/./u',$str,$matches);
+	//split word
+	preg_match_all('/./u',$str,$matches);
 
-    $c = "";
-    foreach($matches[0] as $m){
-            $c .= "&#".base_convert(bin2hex(iconv('UTF-8',"UCS-4",$m)),16,10);
-    }
-    return $c;
+	$c = "";
+	foreach($matches[0] as $m){
+			$c .= "&#".base_convert(bin2hex(iconv('UTF-8',"UCS-4",$m)),16,10);
+	}
+	return $c;
 }
 
 ?>

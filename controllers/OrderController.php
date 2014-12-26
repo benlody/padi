@@ -16,6 +16,7 @@ use yii\db\Query;
 use Yii;
 
 require_once __DIR__  . '/../utils/utils.php';
+require_once __DIR__  . '/../utils/ship_download.php';
 
 class OrderController extends \yii\web\Controller
 {
@@ -212,9 +213,7 @@ class OrderController extends \yii\web\Controller
 
 	public function actionShip_overview($warehouse='xm', $from='', $to='')
 	{
-		$product = Product::find()->column();
 		$query = new Query;
-		$query2 = new Query;
 		if(!$from){
 			$from = date("Y-m-d", strtotime("first day of this month"));
 		}
@@ -235,6 +234,26 @@ class OrderController extends \yii\web\Controller
 			'orders' => $orders,
 		]);
 	}
+
+	public function actionShip_download($warehouse='xm', $from='', $to='')
+	{
+		$query = new Query;
+		if(!$from){
+			$from = date("Y-m-d", strtotime("first day of this month"));
+		}
+		if(!$to){
+			$to = date("Y-m-d", strtotime("last day of this month"));
+		}
+
+		$orders = $query->select('*')
+						->from('order')
+						->where('warehouse = "'.$warehouse.'" AND done_date BETWEEN  "'.$from.'" AND "'.$to.'"')
+						->orderBy('id ASC')
+						->all();
+
+		ship_download($orders, $warehouse, $from, $to);
+	}
+
 
 	public function actionDelete()
 	{

@@ -32,18 +32,22 @@ $this->registerCssFile(Yii::$app->request->getBaseUrl().'/css/transaction_table_
 					'from' => date("Y-m-d", strtotime("first day of this month -".$i." month")),
 					'to' => date("Y-m-d", strtotime("last day of this month -".$i." month")),
 					'warehouse' => $warehouse,
-					'type' => $type,
 				]).'">'.date("Y-m", strtotime("now -".$i." month")).'</a>&nbsp;&nbsp;&nbsp;&nbsp;';
 		}
 
 		echo '<br>';
+
+		echo Html::a('下載XSL', ['ship_download',
+				'from' => $from,
+				'to' => $to,
+				'warehouse' => $warehouse,
+			], ['class' => 'btn btn-success']).'&nbsp;&nbsp;';
 
 		foreach (['xm', 'tw'] as $w) {
 			echo Html::a(get_warehouse_name($w), ['ship_overview',
 					'from' => $from,
 					'to' => $to,
 					'warehouse' => $w,
-					'type' => $t,
 				], ['class' => 'btn btn-primary']).'&nbsp;&nbsp;';
 		}
 	?>

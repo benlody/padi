@@ -4,7 +4,7 @@
 class Fee
 {
 
-	public function getCrewpackServiceFee($qty, $warehouse){
+	static public function getCrewpackServiceFee($qty, $warehouse){
 
 		if(0 == strcmp('xm', $warehouse)){
 			$fee = 30 * $qty;
@@ -14,7 +14,7 @@ class Fee
 		return $fee;
 	}
 
-	public function getProductServiceFee($qty, $warehouse){
+	static public function getProductServiceFee($qty, $warehouse){
 
 		if(0 == strcmp('xm', $warehouse)){
 			$fee = 5 * $qty;
@@ -24,7 +24,7 @@ class Fee
 		return $fee;
 	}
 
-	public function getShipFee($org_fee, $region, $warehouse){
+	static public function getShipFee($org_fee, $region, $warehouse){
 
 		if(0 == strcmp('xm', $warehouse)){
 			$fee = 1.1 * $org_fee;
