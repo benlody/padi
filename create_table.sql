@@ -127,11 +127,10 @@ CREATE TABLE `shipping` (
   `order_id` CHAR(255) NOT NULL,
   `content` TEXT NOT NULL,
   `send_date` DATE  NOT NULL,
-  `status` INT(8) NOT NULL,
   `ship_type` INT(8) NOT NULL,
   `warehouse` CHAR(255) NOT NULL,
   `packing_fee` INT(8) NOT NULL,
   `shipping_fee` INT(8) NOT NULL,
-  `request_fee` INT(8) NOT NULL,
+  `request_fee` DOUBLE(8,2) NOT NULL,
   `extra_info` TEXT DEFAULT ''
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

@@ -9,7 +9,7 @@ require_once __DIR__  . '/../../utils/enum.php';
 /* @var $this yii\web\View */
 /* @var $model app\models\Order */
 /* @var $form ActiveForm */
-$this->title = 'Order';
+$this->title = '新增訂單';
 $this->params['breadcrumbs'][] = $this->title;
 $this->registerJsFile('/yii/basic/web/js/order_add.js',['depends' => [yii\web\JqueryAsset::className()]]);
 ?>
@@ -18,7 +18,7 @@ $this->registerJsFile('/yii/basic/web/js/order_add.js',['depends' => [yii\web\Jq
 
 	<?php $form = ActiveForm::begin(); ?>
 
-		<?= $form->field($model, 'id', ['labelOptions' => ['label' => '編號']]) ?>
+		<?= $form->field($model, 'id', ['labelOptions' => ['label' => '訂單編號']]) ?>
 
 		<div class="form-group field-order-date">
 		<label class="control-label" for="order-date">日期</label>
@@ -65,7 +65,7 @@ $this->registerJsFile('/yii/basic/web/js/order_add.js',['depends' => [yii\web\Jq
 		<?= $form->field($model, 'contact', ['labelOptions' => ['label' => '聯絡人']]) ?>
 		<?= $form->field($model, 'tel', ['labelOptions' => ['label' => '電話']]) ?>
 
-		<label class="control-label" for="order-content">Content</label>
+		<label class="control-label" for="order-content">訂單內容</label>
 		<div style="margin-left: 50px">
 
 		<div class="input_fields_wrap_crewpak">

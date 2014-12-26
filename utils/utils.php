@@ -5,7 +5,12 @@ use app\models\PurchaseOrder;
 use app\models\Transfer;
 use app\models\Product;
 use app\models\CrewPak;
+use app\models\Customer;
 use yii\db\Query;
+
+
+require_once __DIR__  . '/enum.php';
+require_once __DIR__  . '/fee.php';
 
 function get_puchase_order_status($status){
 		switch($status){
@@ -234,6 +239,14 @@ function get_crewpk_name($id){
 	return $crewpak->chinese_name;
 }
 
+function get_customer_name($id){
+	$costomer = Customer::find()
+		->where(['id' => $id])
+		->one();
+
+	return $costomer->english_name;
+}
+
 function get_check_icon($checked){
 	if($checked){
 		return '<span class="glyphicon glyphicon glyphicon-ok"></span>';
@@ -334,18 +347,126 @@ function transaction_to_table($start_balance, $end_balance, $transaction, $produ
 		}
 	}
 
-
-/*
-	$content_array = json_decode($content);
-	foreach ($content_array as $key => $value) {
-		$table_out = $table_out.'<tr><td>'.$key.'</td><td>'.$value->order_cnt.'</td><td>'.$value->print_cnt.'</td></tr>';
-	}
-*/
 	$table_out = $table_out.'</tbody></table></div>';
 
 	return $table_out;
 }
 
+function orders_to_shipment_table($orders, $warehouse){
+
+	$total_service_fee = 0;
+	$total_ship_fee = 0;
+	$table_out = '<div><table class="overflow-y"><thead><tr>'.
+					'<th>PO#</th>'.
+					'<th>DC#</th>'.
+//					'<th>NAME</th>'.
+					'<th>ITEM#</th>'.
+					'<th>QTY</th>'.
+					'<th>Req Date</th>'.
+//					'<th>SHIP TO</th>'.
+					'<th>SHIPPING TYPE</th>'.
+					'<th>Service Fee</th>'.
+					'<th>FREIGTH</th>'.
+					'<th>Tracking#</th>'.
+					'<th>Date</th></tr></thead><tbody>';
+
+
+	foreach ($orders as $order) {
+		$content = json_decode($order['content'], true);
+		$ship_info = json_decode($order['shipping_info'], true);
+
+		$subtotal_service_fee = 0;
+		$subtotal_ship_fee = 0;
+		foreach ($content['crewpak'] as $crewpak => $info) {
+			$service_fee = Fee::getCrewpackServiceFee($info['cnt'], $warehouse);
+			$subtotal_service_fee += $service_fee;
+			$row = '<tr><td>'.$order['id'].'</td>'.
+						'<td>'.$order['customer_id'].'</td>'.
+//						'<td>'.get_customer_name($order['customer_id']).'</td>'.
+						'<td>'.$crewpak.'</td>'.
+						'<td>'.$info['cnt'].'</td>'.
+						'<td>'.$order['date'].'</td>'.
+//						'<td>'.$order['english_addr'].'</td>'.
+						'<td>'.ShippingType::getShippingType($order['ship_type']).'</td>'.
+						'<td>'.$service_fee.'</td>'.
+						'<td></td>'.
+						'<td></td>'.
+						'<td>'.$order['done_date'].'</td></tr>';
+			$table_out = $table_out.$row;
+		}
+
+		foreach ($content['product'] as $product => $info) {
+			$service_fee = Fee::getProductServiceFee($info['cnt'], $warehouse);
+			$subtotal_service_fee += $service_fee;
+			$row = '<tr><td>'.$order['id'].'</td>'.
+						'<td>'.$order['customer_id'].'</td>'.
+//						'<td>'.get_customer_name($order['customer_id']).'</td>'.
+						'<td>'.$product.'</td>'.
+						'<td>'.$info['cnt'].'</td>'.
+						'<td>'.$order['date'].'</td>'.
+//						'<td>'.$order['english_addr'].'</td>'.
+						'<td>'.ShippingType::getShippingType($order['ship_type']).'</td>'.
+						'<td>'.$service_fee.'</td>'.
+						'<td></td>'.
+						'<td></td>'.
+						'<td>'.$order['done_date'].'</td></tr>';
+			$table_out = $table_out.$row;
+		}
+
+		foreach ($ship_info as $info) {
+			$ship_fee = $info['request_fee'];
+			$subtotal_ship_fee += $ship_fee;
+			$row = '<tr><td>'.$order['id'].'</td>'.
+						'<td>'.$order['customer_id'].'</td>'.
+//						'<td>'.get_customer_name($order['customer_id']).'</td>'.
+						'<td></td>'.
+						'<td></td>'.
+						'<td></td>'.
+//						'<td>'.$order['english_addr'].'</td>'.
+						'<td>'.ShippingType::getShippingType($order['ship_type']).'</td>'.
+						'<td></td>'.
+						'<td>'.$ship_fee.'</td>'.
+						'<td>'.substr($info['id'], 0, strpos($info['id'], '_')).'</td>'.
+						'<td>'.$order['done_date'].'</td></tr>';
+			$table_out = $table_out.$row;
+		}
+
+		$row = '<tr><td colspan="2"><b>'.$order['id'].' Subtotal</b></td>'.
+//					'<td>'.get_customer_name($order['customer_id']).'</td>'.
+					'<td></td>'.
+					'<td></td>'.
+					'<td></td>'.
+//					'<td></td>'.
+					'<td></td>'.
+					'<td bgcolor="#F0E68C">'.$subtotal_service_fee.'</td>'.
+					'<td bgcolor="#F0E68C">'.$subtotal_ship_fee.'</td>'.
+					'<td></td>'.
+					'<td></td></tr>';
+
+		$table_out = $table_out.$row;
+		$total_service_fee += $subtotal_service_fee;
+		$total_ship_fee += $subtotal_ship_fee;
+
+	}
+
+	$row = '<tr><td colspan="2"><b>Total</b></td>'.
+//					'<td>'.get_customer_name($order['customer_id']).'</td>'.
+				'<td></td>'.
+				'<td></td>'.
+				'<td></td>'.
+//					'<td></td>'.
+				'<td></td>'.
+				'<td bgcolor="#FFA500">'.$total_service_fee.'</td>'.
+				'<td bgcolor="#FFA500">'.$total_ship_fee.'</td>'.
+				'<td></td>'.
+				'<td></td></tr>';
+
+	$table_out = $table_out.$row;
+
+	$table_out = $table_out.'</tbody></table></div>';
+
+	return $table_out;
+}
 
 function chineseToUnicode($str){
     //split word

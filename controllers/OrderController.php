@@ -11,6 +11,7 @@ use app\models\Balance1;
 use app\models\Balance2;
 use app\models\Transaction1;
 use app\models\Transaction2;
+use app\models\Shipping;
 use yii\db\Query;
 use Yii;
 
@@ -60,6 +61,9 @@ class OrderController extends \yii\web\Controller
 		$searchModel = new OrderSearch();
 		if(0 == strcmp($status, 'done')){
 			$search_param['OrderSearch'] = array('status' => Order::STATUS_DONE);
+			if(0 == strcmp($sort, '-date')){
+				$sort = '-done_date';
+			}
 		} else {
 			$search_param['OrderSearch'] = array('status' => Order::STATUS_NEW);
 		}
@@ -104,8 +108,13 @@ class OrderController extends \yii\web\Controller
 		$post_param = Yii::$app->request->post();
 		$old_content = json_decode($model->content);
 		$content = $old_content;
+		$now = strtotime('now');
 
 		if(isset($post_param['done'])){
+
+			$old_ship_array = json_decode($model->shipping_info);
+			$new_ship_array = $this->get_ship($post_param, $now);
+
 			$warehouse = $post_param['Order']['warehouse'];
 			$padi_balance_model = new Balance1($warehouse, 'padi');
 			$padi_transaction_model = new Transaction1($warehouse, 'padi');
@@ -140,6 +149,11 @@ class OrderController extends \yii\web\Controller
 			foreach ($post_param['Order'] as $key => $value) {
 				$model->$key = $value;
 			}
+			if($old_ship_array){
+				$model->shipping_info = json_encode(array_merge($old_ship_array, $new_ship_array));
+			} else {
+				$model->shipping_info = json_encode($new_ship_array);
+			}
 			$model->status = Order::STATUS_DONE;
 
 			foreach ($content->product as $product => $value) {
@@ -156,15 +170,29 @@ class OrderController extends \yii\web\Controller
 				}
 			}
 
-			$now = strtotime('now');
-			$padi_transaction_model->serial = 'order_'.$post_param['Order']['id'].'_'.$now;;
+			$padi_transaction_model->serial = 'order_'.$post_param['Order']['id'].'_'.$now;
 			$padi_transaction_model->date = $post_param['Order']['done_date'];
-			$padi_balance_model->serial = 'order_'.$post_param['Order']['id'].'_'.$now;;
+			$padi_balance_model->serial = 'order_'.$post_param['Order']['id'].'_'.$now;
 			$padi_balance_model->date = $post_param['Order']['done_date'];
 
 			$model->update();
 			$padi_transaction_model->insert();
 			$padi_balance_model->insert();
+
+			foreach ($new_ship_array as $ship_info) {
+				$ship = new Shipping;
+				$ship->id = $ship_info['id'];
+				$ship->order_id = $model->id;
+				$ship->content = json_encode($ship_info);
+				$ship->send_date = $post_param['Order']['done_date'];
+				$ship->ship_type = $model->ship_type;
+				$ship->warehouse = $model->warehouse;
+				$ship->packing_fee = 0;
+				$ship->shipping_fee = $ship_info['fee'];
+				$ship->request_fee = $ship_info['fee'] * 1.1;
+				$ship->extra_info = $model->extra_info;
+				$ship->insert();
+			}
 
 			if($model->status == Order::STATUS_DONE){
 				return $this->redirect(['list', 'status' => 'done']);
@@ -182,6 +210,31 @@ class OrderController extends \yii\web\Controller
 		}
 	}
 
+	public function actionShip_overview($warehouse='xm', $from='', $to='')
+	{
+		$product = Product::find()->column();
+		$query = new Query;
+		$query2 = new Query;
+		if(!$from){
+			$from = date("Y-m-d", strtotime("first day of this month"));
+		}
+		if(!$to){
+			$to = date("Y-m-d", strtotime("last day of this month"));
+		}
+
+		$orders = $query->select('*')
+						->from('order')
+						->where('warehouse = "'.$warehouse.'" AND done_date BETWEEN  "'.$from.'" AND "'.$to.'"')
+						->orderBy('id ASC')
+						->all();
+
+		return $this->render('ship_overview' ,[
+			'warehouse' => $warehouse,
+			'from' => $from,
+			'to' => $to,
+			'orders' => $orders,
+		]);
+	}
 
 	public function actionDelete()
 	{
@@ -297,6 +350,58 @@ class OrderController extends \yii\web\Controller
 
 		return $content;
 	}
+
+	protected function get_ship($post_param, $now){
+
+		$ship_array = array();
+
+		$x = 0;
+		while(1){
+
+			$ship_idx = "shipping_".$x;
+			$packing_cnt_idx = "packing_cnt_".$x;
+			$packing_type_idx = "packing_type_".$x;
+			$weight_idx = "weight_".$x;
+			$fee_idx = "shipping_fee_".$x;
+
+			if(!isset($post_param[$ship_idx])){
+				break;
+			}
+
+			if(0 == strcmp($post_param[$ship_idx], "")){
+				$x++;
+				continue;
+			}
+
+			$ship = $post_param[$ship_idx];
+			$packing_cnt = $post_param[$packing_cnt_idx];
+			$packing_type = $post_param[$packing_type_idx];
+			$weight = $post_param[$weight_idx];
+			$fee = $post_param[$fee_idx];
+
+			$ship_content = array();
+			$ship_content['id'] = $ship.'_'.$now;
+			$ship_content[$packing_type] = $packing_cnt;
+			$ship_content['weight'] = $weight;
+			$ship_content['fee'] = $fee;
+			$ship_content['request_fee'] = $fee * 1.1;
+
+			if(0 == $x){
+				$ship_content['content']['crewpak'] = $post_param['crewpak'];
+				$ship_content['content']['product'] = $post_param['product'];
+			} else {
+				$ship_content['content']['crewpak'] = array();
+				$ship_content['content']['product'] = array();
+			}
+
+			array_push($ship_array, $ship_content);
+
+			$x++;
+		}
+
+		return $ship_array;
+	}
+
 	protected function download_xm($model){
 
 		echo '<p style="text-align: center;"><span style="color: #808080; line-height:3pt;">'.chineseToUnicode('廈門卡樂兒商貿公司').'<br>';

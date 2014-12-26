@@ -3,8 +3,7 @@
 
 class ShippingType
 {
-	public function getType(){
-		return  array(
+	protected static $type = array(
 			0 => '標準快遞',
 			1 => '順丰特惠',
 			2 => '物流普運',
@@ -13,6 +12,9 @@ class ShippingType
 			12 => '新航快遞',
 			20 => '客戶自取'
 		);
+
+	public function getType(){
+		return self::$type;
 	}
 
 	public function getXMType(){
@@ -32,6 +34,10 @@ class ShippingType
 			12 => '新航快遞',
 			20 => '客戶自取'
 		);
+	}
+
+	static public function getShippingType($t){
+		return self::$type[$t];
 	}
 
 }
@@ -65,9 +71,6 @@ class ShippingRegion
 	}
 
 	static public function getRegion($reg){
-		print_r(self::$region[$reg]);
-		print_r(self::$region);
-		print_r($reg);
 		return self::$region[$reg];
 	}
 

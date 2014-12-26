@@ -51,7 +51,8 @@ AppAsset::register($this);
 						'items' => [
 							 ['label' => '訂單列表', 'url' => ['/order/list']],
 							 ['label' => '新增訂單', 'url' => ['/order/add']],
-							 ['label' => '訂單查詢', 'url' => ['/order/add']],
+							 ['label' => '訂單查詢', 'url' => ['/order/search']],
+							 ['label' => '出貨明細', 'url' => ['/order/ship_overview']],
 						],
 					],
 					[
@@ -59,7 +60,7 @@ AppAsset::register($this);
 						'items' => [
 							 ['label' => '工單列表', 'url' => ['/purchase-order/list']],
 							 ['label' => '新增工單', 'url' => ['/purchase-order/add']],
-							 ['label' => '工單查詢', 'url' => ['/purchase-order/add']],
+							 ['label' => '工單查詢', 'url' => ['/purchase-order/search']],
 						],
 					],
 					[

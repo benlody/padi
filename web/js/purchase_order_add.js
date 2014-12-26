@@ -1,12 +1,8 @@
 
 $(document).ready(function() {
 	var max_fields = 100; //maximum input boxes allowed
-	var wrapper_crewpak = $(".input_fields_wrap_crewpak"); //Fields wrapper
-	var add_button_crewpak = $(".add_field_button_crewpak"); //Add button ID
 	var wrapper_product = $(".input_fields_wrap_product"); //Fields wrapper
 	var add_button_product = $(".add_field_button_product"); //Add button ID
-	
-	var crew_cnt = 1; //initlal text box count
 	var product_cnt = 1; //initlal text box count
 
 	$(add_button_product).click(function(e){ //on add input button click
