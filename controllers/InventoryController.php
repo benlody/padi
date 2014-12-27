@@ -40,8 +40,8 @@ class InventoryController extends \yii\web\Controller
 				$product_id =  $post_param[$product_idx];
 				$product_cnt = $post_param[$product_cnt_idx];
 
+				$transaction_model->$product_id = $product_cnt - $balance_model->$product_id;
 				$balance_model->$product_id = $product_cnt;
-				$transaction_model->$product_id = $product_cnt - $balance[$product_id];
 
 				$x++;
 			}
@@ -49,11 +49,11 @@ class InventoryController extends \yii\web\Controller
 			$now = strtotime('now');
 			$today = date("Y-m-d", strtotime('today'));
 
-			$transaction_model->serial = 'adjust_'.$now;
+			$transaction_model->serial = 'adjust_'.date("Y-m-d H:i:s", $now).'_'.$now;
 			$transaction_model->date = $today;
 			$transaction_model->extra_info = $post_param['extra_info'];
 
-			$balance_model->serial = 'adjust_'.$now;
+			$balance_model->serial = 'adjust_'.date("Y-m-d H:i:s", $now).'_'.$now;
 			$balance_model->date = $today;
 			$balance_model->extra_info = $post_param['extra_info'];
 

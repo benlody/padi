@@ -18,6 +18,7 @@ CREATE TABLE `product` (
   `id` CHAR(64) NOT NULL PRIMARY KEY,
   `chinese_name` TEXT DEFAULT '',
   `english_name` TEXT DEFAULT '',
+  `warning_cnt` INT(32) DEFAULT 0,
   `extra_info` TEXT DEFAULT ''
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
