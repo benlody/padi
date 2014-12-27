@@ -3,7 +3,16 @@
 
 class ShippingType
 {
+	const T_STD_EXPR = 0;
+	const T_SF_SP = 1;
+	const T_SF_NORMAL = 2;
+	const T_CHI_MAIL = 10;
+	const T_SF = 11;
+	const T_NEW = 12;
+	const T_SELFPICK = 20;
+
 	protected static $type = array(
+			'' => '',
 			0 => '標準快遞',
 			1 => '順丰特惠',
 			2 => '物流普運',
@@ -19,6 +28,7 @@ class ShippingType
 
 	public function getXMType(){
 		return  array(
+			'' => '',
 			0 => '標準快遞',
 			1 => '順丰特惠',
 			2 => '物流普運',
@@ -29,6 +39,7 @@ class ShippingType
 
 	public function getTWType(){
 		return  array(
+			'' => '',
 			10 => '中華郵政',
 			11 => '順丰快遞',
 			12 => '新航快遞',

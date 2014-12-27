@@ -356,17 +356,20 @@ function orders_to_shipment_table($orders, $warehouse){
 
 	$total_service_fee = 0;
 	$total_ship_fee = 0;
+	$total_orig_fee = 0;
+	$total_c_qty = 0;
+	$total_p_qty = 0;
 	$table_out = '<div><table class="overflow-y"><thead><tr>'.
 					'<th>PO#</th>'.
 					'<th>DC#</th>'.
-//					'<th>NAME</th>'.
-					'<th>ITEM#</th>'.
-					'<th>QTY</th>'.
+					'<th>Item#</th>'.
+					'<th>C Qty</th>'.
+					'<th>P Qty</th>'.
 					'<th>Req Date</th>'.
-//					'<th>SHIP TO</th>'.
-					'<th>SHIPPING TYPE</th>'.
+					'<th>Shipping Type</th>'.
 					'<th>Service Fee</th>'.
-					'<th>FREIGTH</th>'.
+					'<th>Orig Fre. Fee</th>'.
+					'<th>Fre. Fee</th>'.
 					'<th>Tracking#</th>'.
 					'<th>Date</th></tr></thead><tbody>';
 
@@ -377,18 +380,22 @@ function orders_to_shipment_table($orders, $warehouse){
 
 		$subtotal_service_fee = 0;
 		$subtotal_ship_fee = 0;
+		$subtotal_orig_fee = 0;
+		$subtotal_c_qty = 0;
+		$subtotal_p_qty = 0;
 		foreach ($content['crewpak'] as $crewpak => $info) {
 			$service_fee = Fee::getCrewpackServiceFee($info['cnt'], $warehouse);
 			$subtotal_service_fee += $service_fee;
+			$subtotal_c_qty += $info['cnt'];
 			$row = '<tr><td>'.$order['id'].'</td>'.
 						'<td>'.$order['customer_id'].'</td>'.
-//						'<td>'.get_customer_name($order['customer_id']).'</td>'.
 						'<td>'.$crewpak.'</td>'.
 						'<td>'.$info['cnt'].'</td>'.
+						'<td></td>'.
 						'<td>'.$order['date'].'</td>'.
-//						'<td>'.$order['english_addr'].'</td>'.
-						'<td>'.ShippingType::getShippingType($order['ship_type']).'</td>'.
+						'<td></td>'.
 						'<td>'.$service_fee.'</td>'.
+						'<td></td>'.
 						'<td></td>'.
 						'<td></td>'.
 						'<td>'.$order['done_date'].'</td></tr>';
@@ -398,15 +405,16 @@ function orders_to_shipment_table($orders, $warehouse){
 		foreach ($content['product'] as $product => $info) {
 			$service_fee = Fee::getProductServiceFee($info['cnt'], $warehouse);
 			$subtotal_service_fee += $service_fee;
+			$subtotal_p_qty += $info['cnt'];
 			$row = '<tr><td>'.$order['id'].'</td>'.
 						'<td>'.$order['customer_id'].'</td>'.
-//						'<td>'.get_customer_name($order['customer_id']).'</td>'.
 						'<td>'.$product.'</td>'.
+						'<td></td>'.
 						'<td>'.$info['cnt'].'</td>'.
 						'<td>'.$order['date'].'</td>'.
-//						'<td>'.$order['english_addr'].'</td>'.
-						'<td>'.ShippingType::getShippingType($order['ship_type']).'</td>'.
+						'<td></td>'.
 						'<td>'.$service_fee.'</td>'.
+						'<td></td>'.
 						'<td></td>'.
 						'<td></td>'.
 						'<td>'.$order['done_date'].'</td></tr>';
@@ -416,52 +424,71 @@ function orders_to_shipment_table($orders, $warehouse){
 		foreach ($ship_info as $info) {
 			$ship_fee = $info['request_fee'];
 			$subtotal_ship_fee += $ship_fee;
+			$subtotal_orig_fee += $info['fee'];
 			$row = '<tr><td>'.$order['id'].'</td>'.
 						'<td>'.$order['customer_id'].'</td>'.
-//						'<td>'.get_customer_name($order['customer_id']).'</td>'.
 						'<td></td>'.
 						'<td></td>'.
 						'<td></td>'.
-//						'<td>'.$order['english_addr'].'</td>'.
-						'<td>'.ShippingType::getShippingType($order['ship_type']).'</td>'.
 						'<td></td>'.
+						'<td>'.ShippingType::getShippingType($info['type']).'</td>'.
+						'<td></td>'.
+						'<td>'.$info['fee'].'</td>'.
 						'<td>'.$ship_fee.'</td>'.
 						'<td>'.substr($info['id'], 0, strpos($info['id'], '_')).'</td>'.
 						'<td>'.$order['done_date'].'</td></tr>';
 			$table_out = $table_out.$row;
 		}
 
-		$row = '<tr><td colspan="2"><b>'.$order['id'].' Subtotal</b></td>'.
-//					'<td>'.get_customer_name($order['customer_id']).'</td>'.
-					'<td></td>'.
-					'<td></td>'.
-					'<td></td>'.
-//					'<td></td>'.
-					'<td></td>'.
+		$row = '<tr><td bgcolor="#F0E68C" colspan="2"><b>'.$order['id'].' Subtotal</b></td>'.
+					'<td bgcolor="#F0E68C"></td>'.
+					'<td bgcolor="#F0E68C">'.$subtotal_c_qty.'</td>'.
+					'<td bgcolor="#F0E68C">'.$subtotal_p_qty.'</td>'.
+					'<td bgcolor="#F0E68C"></td>'.
+					'<td bgcolor="#F0E68C"></td>'.
 					'<td bgcolor="#F0E68C">'.$subtotal_service_fee.'</td>'.
+					'<td bgcolor="#F0E68C">'.$subtotal_orig_fee.'</td>'.
 					'<td bgcolor="#F0E68C">'.$subtotal_ship_fee.'</td>'.
-					'<td></td>'.
-					'<td></td></tr>';
+					'<td bgcolor="#F0E68C"></td>'.
+					'<td bgcolor="#F0E68C"></td></tr>';
 
 		$table_out = $table_out.$row;
 		$total_service_fee += $subtotal_service_fee;
 		$total_ship_fee += $subtotal_ship_fee;
+		$total_orig_fee += $subtotal_orig_fee;
+		$total_p_qty += $subtotal_p_qty;
+		$total_c_qty += $subtotal_c_qty;
 
 	}
 
-	$row = '<tr><td colspan="2"><b>Total</b></td>'.
-//					'<td>'.get_customer_name($order['customer_id']).'</td>'.
-				'<td></td>'.
-				'<td></td>'.
-				'<td></td>'.
-//					'<td></td>'.
-				'<td></td>'.
+	$row = '<tr><td bgcolor="#FFA500" colspan="2"><b>Total</b></td>'.
+				'<td bgcolor="#FFA500"></td>'.
+				'<td bgcolor="#FFA500">'.$total_c_qty.'</td>'.
+				'<td bgcolor="#FFA500">'.$total_p_qty.'</td>'.
+				'<td bgcolor="#FFA500"></td>'.
+				'<td bgcolor="#FFA500"></td>'.
 				'<td bgcolor="#FFA500">'.$total_service_fee.'</td>'.
+				'<td bgcolor="#FFA500">'.$total_orig_fee.'</td>'.
 				'<td bgcolor="#FFA500">'.$total_ship_fee.'</td>'.
-				'<td></td>'.
-				'<td></td></tr>';
-
+				'<td bgcolor="#FFA500"></td>'.
+				'<td bgcolor="#FFA500"></td></tr>';
 	$table_out = $table_out.$row;
+
+	if('tw' == $warehouse){
+		$row = '<tr><td bgcolor="#FFA500" colspan="2"><b>Total in AUD</b></td>'.
+					'<td bgcolor="#FFA500"></td>'.
+					'<td bgcolor="#FFA500"></td>'.
+					'<td bgcolor="#FFA500"></td>'.
+					'<td bgcolor="#FFA500"></td>'.
+					'<td bgcolor="#FFA500"></td>'.
+					'<td bgcolor="#FFA500">'.sprintf("%01.2f", ($total_service_fee / 24)).'</td>'.
+					'<td bgcolor="#FFA500">'.sprintf("%01.2f", ($total_orig_fee / 25.3)).'</td>'.
+					'<td bgcolor="#FFA500">'.sprintf("%01.2f", ($total_ship_fee / 25.3)).'</td>'.
+					'<td bgcolor="#FFA500"></td>'.
+					'<td bgcolor="#FFA500"></td></tr>';
+		$table_out = $table_out.$row;
+	}
+
 
 	$table_out = $table_out.'</tbody></table></div>';
 

@@ -223,7 +223,7 @@ class OrderController extends \yii\web\Controller
 
 		$orders = $query->select('*')
 						->from('order')
-						->where('warehouse = "'.$warehouse.'" AND done_date BETWEEN  "'.$from.'" AND "'.$to.'"')
+						->where('warehouse = "'.$warehouse.'" AND status = 1 AND done_date BETWEEN  "'.$from.'" AND "'.$to.'"')
 						->orderBy('id ASC')
 						->all();
 
@@ -403,7 +403,8 @@ class OrderController extends \yii\web\Controller
 			$ship_content[$packing_type] = $packing_cnt;
 			$ship_content['weight'] = $weight;
 			$ship_content['fee'] = $fee;
-			$ship_content['request_fee'] = $fee * 1.1;
+			$ship_content['request_fee'] = \Fee::getShipFreightFee($fee, $post_param['Order']['region'], $post_param['Order']['warehouse'], $post_param['Order']['ship_type'], $weight);
+			$ship_content['type'] = $post_param['Order']['ship_type'];
 
 			if(0 == $x){
 				$ship_content['content']['crewpak'] = $post_param['crewpak'];
