@@ -10,7 +10,7 @@ use Yii;
  * @property string $id
  * @property string $chinese_name
  * @property string $english_name
- * @property integer $favor
+ * @property integer $warning_cnt
  * @property string $extra_info
  */
 class Product extends \yii\db\ActiveRecord
@@ -30,9 +30,9 @@ class Product extends \yii\db\ActiveRecord
     {
         return [
             [['id'], 'required'],
-            [['favor'], 'integer'],
-            [['id'], 'string', 'max' => 64],
-            [['chinese_name', 'english_name', 'extra_info'], 'string', 'max' => 255]
+            [['chinese_name', 'english_name', 'extra_info'], 'string'],
+            [['warning_cnt'], 'integer'],
+            [['id'], 'string', 'max' => 64]
         ];
     }
 
@@ -45,7 +45,7 @@ class Product extends \yii\db\ActiveRecord
             'id' => Yii::t('app', 'ID'),
             'chinese_name' => Yii::t('app', 'Chinese Name'),
             'english_name' => Yii::t('app', 'English Name'),
-            'favor' => Yii::t('app', 'Favor'),
+            'warning_cnt' => Yii::t('app', 'Warning Cnt'),
             'extra_info' => Yii::t('app', 'Extra Info'),
         ];
     }

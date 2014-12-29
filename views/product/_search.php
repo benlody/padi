@@ -21,7 +21,7 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'english_name') ?>
 
-    <?= $form->field($model, 'favor') ?>
+    <?= $form->field($model, 'warning_cnt') ?>
 
     <?= $form->field($model, 'extra_info') ?>
 

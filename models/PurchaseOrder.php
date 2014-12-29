@@ -20,6 +20,7 @@ class PurchaseOrder extends \yii\db\ActiveRecord
 
 	const STATUS_NEW = 0;
 	const STATUS_DONE = 1;
+
 	/**
 	 * @inheritdoc
 	 */
@@ -35,9 +36,10 @@ class PurchaseOrder extends \yii\db\ActiveRecord
 	{
 		return [
 			[['id', 'content', 'date', 'status', 'warehouse'], 'required'],
+			[['content', 'extra_info'], 'string'],
 			[['date', 'done_date'], 'safe'],
 			[['status'], 'integer'],
-			[['id', 'content', 'warehouse', 'extra_info'], 'string', 'max' => 255]
+			[['id', 'warehouse'], 'string', 'max' => 255]
 		];
 	}
 

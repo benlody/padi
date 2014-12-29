@@ -14,13 +14,13 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'id')->textInput(['maxlength' => 64]) ?>
 
-    <?= $form->field($model, 'chinese_name')->textInput(['maxlength' => 255]) ?>
+    <?= $form->field($model, 'chinese_name')->textInput() ?>
 
-    <?= $form->field($model, 'english_name')->textInput(['maxlength' => 255]) ?>
+    <?= $form->field($model, 'english_name')->textInput() ?>
 
-    <?= $form->field($model, 'favor')->textInput() ?>
+    <?= $form->field($model, 'warning_cnt')->textInput() ?>
 
-    <?= $form->field($model, 'extra_info')->textInput(['maxlength' => 255]) ?>
+    <?= $form->field($model, 'extra_info')->textInput() ?>
 
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create') : Yii::t('app', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>

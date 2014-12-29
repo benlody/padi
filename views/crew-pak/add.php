@@ -8,12 +8,6 @@ $this->title = 'CrewPak';
 $this->params['breadcrumbs'][] = $this->title;
 
 ?>
-<h1>crew-pak/add</h1>
-
-<p>
-	You may change the content of this page by modifying
-	the file <code><?= __FILE__; ?></code>.
-</p>
 
 <div class="row">
 	<div class="col-lg-5">

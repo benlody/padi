@@ -26,9 +26,8 @@ use Yii;
 class Order extends \yii\db\ActiveRecord
 {
 
-
 	const STATUS_NEW = 0;
-   const STATUS_DONE = 1;
+	const STATUS_DONE = 1;
 
 	/**
 	 * @inheritdoc

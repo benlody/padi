@@ -24,61 +24,64 @@ CREATE TABLE `product` (
 
 
 CREATE TABLE `crew_pak` (
-  `id` CHAR(64) NOT NULL PRIMARY KEY
+  `id` CHAR(64) NOT NULL PRIMARY KEY,
+  `chinese_name` TEXT DEFAULT '',
+  `english_name` TEXT DEFAULT '',
+  `extra_info` TEXT DEFAULT ''
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `tw_self_balance` (
   `date` DATE,
-  `serial` CHAR(64),
+  `serial` CHAR(255) NOT NULL PRIMARY KEY,
   `ts` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   `extra_info` TEXT DEFAULT ''
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `tw_padi_balance` (
   `date` DATE,
-  `serial` CHAR(64),
+  `serial` CHAR(255) NOT NULL PRIMARY KEY,
   `ts` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   `extra_info` TEXT DEFAULT ''
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `xm_self_balance` (
   `date` DATE,
-  `serial` CHAR(64),
+  `serial` CHAR(255) NOT NULL PRIMARY KEY,
   `ts` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   `extra_info` TEXT DEFAULT ''
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `xm_padi_balance` (
   `date` DATE,
-  `serial` CHAR(64),
+  `serial` CHAR(255) NOT NULL PRIMARY KEY,
   `ts` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   `extra_info` TEXT DEFAULT ''
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `tw_self_transaction` (
   `date` DATE,
-  `serial` CHAR(64),
+  `serial` CHAR(255) NOT NULL PRIMARY KEY,
   `ts` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   `extra_info` TEXT DEFAULT ''
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `tw_padi_transaction` (
   `date` DATE,
-  `serial` CHAR(64),
+  `serial` CHAR(255) NOT NULL PRIMARY KEY,
   `ts` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   `extra_info` TEXT DEFAULT ''
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `xm_self_transaction` (
   `date` DATE,
-  `serial` CHAR(64),
+  `serial` CHAR(255) NOT NULL PRIMARY KEY,
   `ts` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   `extra_info` TEXT DEFAULT ''
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `xm_padi_transaction` (
   `date` DATE,
-  `serial` CHAR(64),
+  `serial` CHAR(255) NOT NULL PRIMARY KEY,
   `ts` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   `extra_info` TEXT DEFAULT ''
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
