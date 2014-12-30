@@ -222,6 +222,18 @@ function product_detail_to_download_table($product_name, $product_detail, $displ
 	return;
 }
 
+function crewpak_index_to_table($id, $content){
+	$out = '<b>'.get_crewpk_name($id).'</b><br>';
+	$table_out = $out.'<div id="w0" class="grid-view"><table class="table table-striped table-bordered"><tbody>';
+
+	$product_array = $content_array->product;
+	foreach ($content as $product_name => $product_cnt) {
+		$table_out = $table_out.'<tr><td>'.$product_name.'</td><td>'.get_product_name($product_name).'</td><td>'.$product_cnt.'</td></tr>';
+	}
+	$table_out = $table_out.'</tbody></table></div>';
+
+	return $table_out;
+}
 
 function get_product_name($id){
 	$product = Product::find()

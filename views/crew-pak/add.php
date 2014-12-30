@@ -65,8 +65,32 @@ $this->params['breadcrumbs'][] = $this->title;
 				<?= Html::input('number', 'cnt_8', '0') ?>
 			</div>
 			<div class="col-lg-offset-0 col-lg-20">
-				<?= Html::dropDownList('product_9', '', $option) ?>
-				<?= Html::input('number', 'cnt_9', '0') ?>
+				<?= Html::dropDownList('product_10', '', $option) ?>
+				<?= Html::input('number', 'cnt_10', '0') ?>
+			</div>
+			<div class="col-lg-offset-0 col-lg-20">
+				<?= Html::dropDownList('product_11', '', $option) ?>
+				<?= Html::input('number', 'cnt_11', '0') ?>
+			</div>
+			<div class="col-lg-offset-0 col-lg-20">
+				<?= Html::dropDownList('product_12', '', $option) ?>
+				<?= Html::input('number', 'cnt_12', '0') ?>
+			</div>
+			<div class="col-lg-offset-0 col-lg-20">
+				<?= Html::dropDownList('product_13', '', $option) ?>
+				<?= Html::input('number', 'cnt_13', '0') ?>
+			</div>
+			<div class="col-lg-offset-0 col-lg-20">
+				<?= Html::dropDownList('product_14', '', $option) ?>
+				<?= Html::input('number', 'cnt_14', '0') ?>
+			</div>
+			<div class="col-lg-offset-0 col-lg-20">
+				<?= Html::dropDownList('product_15', '', $option) ?>
+				<?= Html::input('number', 'cnt_15', '0') ?>
+			</div>
+			<div class="col-lg-offset-0 col-lg-20">
+				<?= Html::dropDownList('product_16', '', $option) ?>
+				<?= Html::input('number', 'cnt_16', '0') ?>
 			</div>
 
 			<div class="form-group">

@@ -31,7 +31,8 @@ $this->params['breadcrumbs'][] = $this->title;
             'id',
             'chinese_name:ntext',
             'english_name:ntext',
-            'warning_cnt',
+            'warning_cnt_tw',
+            'warning_cnt_xm',
             'extra_info:ntext',
         ],
     ]) ?>

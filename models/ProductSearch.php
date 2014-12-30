@@ -19,7 +19,7 @@ class ProductSearch extends Product
     {
         return [
             [['id', 'chinese_name', 'english_name', 'extra_info'], 'safe'],
-            [['warning_cnt'], 'integer'],
+            [['warning_cnt_tw', 'warning_cnt_xm'], 'integer'],
         ];
     }
 
@@ -52,7 +52,8 @@ class ProductSearch extends Product
         }
 
         $query->andFilterWhere([
-            'warning_cnt' => $this->warning_cnt,
+            'warning_cnt_tw' => $this->warning_cnt_tw,
+            'warning_cnt_xm' => $this->warning_cnt_xm,
         ]);
 
         $query->andFilterWhere(['like', 'id', $this->id])

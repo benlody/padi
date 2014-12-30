@@ -21,9 +21,11 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'english_name') ?>
 
-    <?= $form->field($model, 'warning_cnt') ?>
+    <?= $form->field($model, 'warning_cnt_tw') ?>
 
-    <?= $form->field($model, 'extra_info') ?>
+    <?= $form->field($model, 'warning_cnt_xm') ?>
+
+    <?php // echo $form->field($model, 'extra_info') ?>
 
     <div class="form-group">
         <?= Html::submitButton(Yii::t('app', 'Search'), ['class' => 'btn btn-primary']) ?>

@@ -18,7 +18,9 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'english_name')->textInput() ?>
 
-    <?= $form->field($model, 'warning_cnt')->textInput() ?>
+    <?= $form->field($model, 'warning_cnt_xm')->textInput(['value' => 0]) ?>
+
+    <?= $form->field($model, 'warning_cnt_tw')->textInput(['value' => 0]) ?>
 
     <?= $form->field($model, 'extra_info')->textInput() ?>
 

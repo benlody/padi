@@ -4,6 +4,8 @@ namespace app\controllers;
 
 use app\models\CrewPak;
 use app\models\Product;
+use yii\data\ArrayDataProvider;
+use yii\db\Query;
 use Yii;
 
 class CrewPakController extends \yii\web\Controller
@@ -22,7 +24,7 @@ class CrewPakController extends \yii\web\Controller
 		// FIXME: use dynamic
 
 		if($post_param["CrewPak"]){
-			for ($x = 0; $x < 10; $x++)  {
+			for ($x = 0; $x < 16; $x++)  {
 				$cnt_idx = "cnt_".$x;
 				$product_idx = "product_".$x;
 
@@ -61,7 +63,44 @@ class CrewPakController extends \yii\web\Controller
 
 	public function actionIndex()
 	{
-		return $this->render('index');
+
+		$query = new Query;
+		$product = Product::find()->column();
+
+		$crewpak = $query->select('*')
+						->from('crew_pak')
+						->all();
+		$crew_list = array();
+
+		foreach ($crewpak as $c) {
+			$content = array();
+			foreach ($product as $p) {
+				if(0 != $c[$p]){
+					$content[$p] = $c[$p];
+				}
+			}
+
+			$crew['id'] = $c['id'];
+			$crew['extra_info'] = $c['extra_info'];
+			$crew['content'] = $content;
+			array_push($crew_list, $crew);
+
+		}
+
+		$provider = new ArrayDataProvider([
+		    'allModels' => $crew_list,
+		    'sort' => [
+		        'attributes' => ['id'],
+		    ],
+		    'pagination' => [
+		        'pageSize' => 50,
+		    ],
+		]);
+
+		return $this->render('index', [
+			'dataProvider' => $provider,
+		]);
+
 	}
 
 	public function actionAjaxList()
