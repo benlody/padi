@@ -214,11 +214,18 @@ function crewpak_detail_to_download_table($crewpak_name, $crewpak_detail){
 
 function product_detail_to_download_table($product_name, $product_detail, $display_cnt = true){
 
+	if($product_detail->done){
+		echo '<font color="gray">';
+	} else {
+		echo '<font color="black">';
+	}
+
 	if($display_cnt){
 		echo '<tr><td>'.$product_name.'</td><td>'.chineseToUnicode(get_product_name($product_name)).'</td><td>'.$product_detail->cnt.'</td></tr>';
 	} else {
 		echo '<tr><td>'.$product_name.'</td><td>'.chineseToUnicode(get_product_name($product_name)).'</td></tr>';		
 	}
+	echo '</font>';
 	return;
 }
 
@@ -278,12 +285,16 @@ function get_checkbox($checked, $name, $id, $class){
 }
 
 function get_order_status($status){
+
 		switch($status){
 		case Order::STATUS_NEW:
-			$ret = '未完成出貨';
+			$ret = '新增 待覆核';
 			break;
 		case Order::STATUS_DONE:
 			$ret = '已完成出貨';
+			break;
+		case Order::STATUS_PROCESSING:
+			$ret = '已覆核 出貨處理中';
 			break;
 		default:
 			$ret = $status;

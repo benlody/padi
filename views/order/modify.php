@@ -9,18 +9,17 @@ require_once __DIR__  . '/../../utils/enum.php';
 /* @var $this yii\web\View */
 /* @var $model app\models\Order */
 /* @var $form ActiveForm */
-$this->title = '新增訂單';
+$this->title = '修改訂單';
 $this->params['breadcrumbs'][] = $this->title;
 $this->registerJsFile('/yii/basic/web/js/order_add.js',['depends' => [yii\web\JqueryAsset::className()]]);
 ?>
 
-
-	<?= $this->render('_form', [
-		'model' => $model,
+    <?= $this->render('_form', [
+        'model' => $model,
 		'customer' => $customer,
 		'crewpak' =>  $crewpak,
 		'product' =>  $product
-	]) ?>
+    ]) ?>
 
 
 <!-- order-add -->

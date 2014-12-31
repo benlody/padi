@@ -12,6 +12,7 @@ use app\models\Balance2;
 use app\models\Transaction1;
 use app\models\Transaction2;
 use app\models\Shipping;
+use yii\data\ActiveDataProvider;
 use yii\db\Query;
 use Yii;
 
@@ -33,8 +34,6 @@ class OrderController extends \yii\web\Controller
 		if(isset($post_param['add'])){
 
 			$post_param['Order']['content'] = json_encode($this->get_content($post_param), JSON_FORCE_OBJECT);
-			$post_param['Order']['date'] = date("Y-m-d", strtotime($post_param['date']));
-			$post_param['Order']['customer_id'] = $post_param['customer_id'];
 
 			foreach ($post_param['Order'] as $key => $value) {
 				$model->$key = $value;
@@ -56,6 +55,47 @@ class OrderController extends \yii\web\Controller
 		}
 	}
 
+	public function actionModify($id)
+	{
+
+		$model = $this->findModel($id);
+		$customer = new Customer();
+		$crewpak = new CrewPak();
+		$product = new Product();
+
+		$post_param = Yii::$app->request->post();
+
+		if(isset($post_param['add'])){
+
+			$post_param['Order']['content'] = json_encode($this->get_content($post_param), JSON_FORCE_OBJECT);
+
+			foreach ($post_param['Order'] as $key => $value) {
+				$model->$key = $value;
+			}
+			$model->status = Order::STATUS_NEW;
+
+			//FIXME error handle
+			$model->update();
+
+			return $this->redirect(['list']);
+
+		} else {
+			return $this->render('modify', [
+				'model' => $model,
+				'customer' => $customer->find()->column(),
+				'crewpak' =>  $crewpak->find()->column(),
+				'product' =>  $product->find()->column()
+			]);
+		}
+	}
+
+	public function actionDelete($id)
+	{
+		$this->findModel($id)->delete();
+
+		return $this->redirect(['list']);
+	}
+
 	public function actionList($status='', $detail = true, $sort='-date')
 	{
 
@@ -65,19 +105,61 @@ class OrderController extends \yii\web\Controller
 			if(0 == strcmp($sort, '-date')){
 				$sort = '-done_date';
 			}
+			$dataProvider = $searchModel->search($search_param);
 		} else {
-			$search_param['OrderSearch'] = array('status' => Order::STATUS_NEW);
+
+			if(0 == strcmp($sort, '-done_date')){
+				$sort = '-date';
+			}
+
+			$query = Order::find();
+			$query->Where('status != '.Order::STATUS_DONE);
+
+			$dataProvider = new ActiveDataProvider([
+				'query' => $query,
+			]);
+
+
 		}
-		$dataProvider = $searchModel->search($search_param);
 
 		return $this->render('list', [
-			'searchModel' => $searchModel,
 			'dataProvider' => $dataProvider,
 			'status' => $status,
 			'detail' => $detail,
 			'sort' => $sort,
 		]);
 
+	}
+
+	public function actionReview($id)
+	{
+
+		$post_param = Yii::$app->request->post();
+		$model = $this->findModel($id);
+
+		if(isset($post_param['review'])){
+
+			$model->status = Order::STATUS_PROCESSING;
+			$model->update();
+			return $this->redirect(['list']);
+
+		} else {
+
+			return $this->render('review', [
+				'model' => $model,
+			]);
+		}
+
+	}
+
+	public function actionView($id)
+	{
+
+		$model = $this->findModel($id);
+
+		return $this->render('view', [
+			'model' => $model,
+		]);
 	}
 
 	public function actionDownload($id)
@@ -159,14 +241,14 @@ class OrderController extends \yii\web\Controller
 
 			foreach ($content->product as $product => $value) {
 				if($value->done == false){
-					$model->status = Order::STATUS_NEW;
+					$model->status = Order::STATUS_PROCESSING;
 					break;
 				}
 			}
 
 			foreach ($content->crewpak as $crewpak => $value) {
 				if($value->done == false){
-					$model->status = Order::STATUS_NEW;
+					$model->status = Order::STATUS_PROCESSING;
 					break;
 				}
 			}
@@ -252,12 +334,6 @@ class OrderController extends \yii\web\Controller
 						->all();
 
 		ship_download($orders, $warehouse, $from, $to);
-	}
-
-
-	public function actionDelete()
-	{
-		return $this->render('delete');
 	}
 
 	public function actionGet()
