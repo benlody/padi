@@ -20,13 +20,20 @@ AppAsset::register($this);
 	<title><?= Html::encode($this->title) ?></title>
 	<?php $this->head() ?>
 </head>
+
+<style>
+body {
+    background-color: #D0D0D0;
+}
+</style>
+
 <body>
 
 <?php $this->beginBody() ?>
 	<div class="wrap">
 		<?php
 			NavBar::begin([
-				'brandLabel' => '光隆庫存管理',
+				'brandLabel' => '光隆庫存管理 - 測試版',
 				'brandUrl' => Yii::$app->homeUrl,
 				'options' => [
 					'class' => 'navbar-inverse navbar-fixed-top',
@@ -102,7 +109,7 @@ AppAsset::register($this);
 
 	<footer class="footer">
 		<div class="container">
-			<p class="pull-left">&copy; 光隆庫存管理 <?= date('Y') ?></p>
+			<p class="pull-left">&copy; 光隆庫存管理 - 測試版 <?= date('Y') ?></p>
 			<p class="pull-right"></p>
 		</div>
 	</footer>
