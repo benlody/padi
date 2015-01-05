@@ -9,7 +9,7 @@ use yii\jui\DatePicker;
 /* @var $form ActiveForm */
 $this->title = 'Inventory';
 $this->params['breadcrumbs'][] = $this->title;
-$this->registerJsFile($baseUrl.'/padi_dev/web/js/inventory_adjust.js',['depends' => [yii\web\JqueryAsset::className()]]);
+$this->registerJsFile(Yii::$app->request->getBaseUrl().'/js/inventory_adjust.js',['depends' => [yii\web\JqueryAsset::className()]]);
 ?>
 
 <div class="inventory-adjust">

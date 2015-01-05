@@ -47,7 +47,7 @@ AppAsset::register($this);
 						],
 					],
 					[
-						'label' => '訂單',
+						'label' => '會員訂單',
 						'items' => [
 							 ['label' => '訂單列表', 'url' => ['/order/list']],
 							 ['label' => '新增訂單', 'url' => ['/order/add']],
@@ -56,11 +56,11 @@ AppAsset::register($this);
 						],
 					],
 					[
-						'label' => '工單',
+						'label' => '生產',
 						'items' => [
-							 ['label' => '工單列表', 'url' => ['/purchase-order/list']],
-							 ['label' => '新增工單', 'url' => ['/purchase-order/add']],
-							 ['label' => '工單查詢', 'url' => ['/purchase-order/search']],
+							 ['label' => '生產列表', 'url' => ['/purchase-order/list']],
+							 ['label' => '新增生產', 'url' => ['/purchase-order/add']],
+							 ['label' => '生產查詢', 'url' => ['/purchase-order/search']],
 						],
 					],
 					[
