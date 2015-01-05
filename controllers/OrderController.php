@@ -34,6 +34,7 @@ class OrderController extends \yii\web\Controller
 		if(isset($post_param['add'])){
 
 			$post_param['Order']['content'] = json_encode($this->get_content($post_param), JSON_FORCE_OBJECT);
+			$post_param['Order']['date'] = date("Y-m-d", strtotime($post_param['Order']['date']));
 
 			foreach ($post_param['Order'] as $key => $value) {
 				$model->$key = $value;
@@ -68,6 +69,7 @@ class OrderController extends \yii\web\Controller
 		if(isset($post_param['add'])){
 
 			$post_param['Order']['content'] = json_encode($this->get_content($post_param), JSON_FORCE_OBJECT);
+			$post_param['Order']['date'] = date("Y-m-d", strtotime($post_param['Order']['date']));
 
 			foreach ($post_param['Order'] as $key => $value) {
 				$model->$key = $value;
