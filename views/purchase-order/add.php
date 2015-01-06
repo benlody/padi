@@ -18,21 +18,24 @@ $this->registerJsFile(Yii::$app->request->getBaseUrl().'/js/purchase_order_add.j
 	<?php $form = ActiveForm::begin(); ?>
 
 		<?= $form->field($model, 'id') ?>
-		<?= $form->field($model, 'date')->widget(DatePicker::className()) ?>
+		<?php
+			echo DatePicker::widget([
+				'name' => 'PurchaseOrder[date]',
+				'value' => date("Y-m-d", strtotime('today')),
+			]);
+		?>
 		<?= $form->field($model, 'warehouse')->dropDownList([
 			'xm' => '廈門卡樂兒',
 			'tw' => '台灣光隆',
 			])
 		?>
 
-
 		<div>
 
 		<div class="input_fields_wrap_product">
-			<label class="control-label">Product / 訂單數量 / 實印數量</label>
-			<button class="add_field_button_product">+</button>
+			<label class="control-label">Product / 原始訂單數量 / 預計生產數量</label>
 			<div>
-				<select class="form-group" name="product_0">
+				<select class="form-group" name="product">
 					<option value='empty'></option>
 					<script>
 					var product = <?php echo json_encode($product); ?>;
@@ -47,9 +50,9 @@ $this->registerJsFile(Yii::$app->request->getBaseUrl().'/js/purchase_order_add.j
 					</script>
 				</select>
 				<label>/</label>
-				<?= Html::input('number', 'order_cnt_0', '0') ?>
+				<?= Html::input('number', 'order_cnt', '0') ?>
 				<label>/</label>
-				<?= Html::input('number', 'print_cnt_0', '0') ?>
+				<?= Html::input('number', 'print_cnt', '0') ?>
 			</div>
 		</div>
 

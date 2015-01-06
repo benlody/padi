@@ -26,6 +26,7 @@ class PurchaseOrderController extends \yii\web\Controller
 
 			$post_param['PurchaseOrder']['content'] = json_encode($this->get_content($post_param), JSON_FORCE_OBJECT);
 			$post_param['PurchaseOrder']['date'] = date("Y-m-d", strtotime($post_param['PurchaseOrder']['date']));
+			$post_param['PurchaseOrder']['id'] = $post_param['PurchaseOrder']['id'].'-'.$post_param['product'];
 
 			foreach ($post_param['PurchaseOrder'] as $key => $value) {
 				$model->$key = $value;
@@ -57,24 +58,9 @@ class PurchaseOrderController extends \yii\web\Controller
 		$post_param = Yii::$app->request->post();
 		$content = $this->get_content($post_param);
 
-		if(isset($post_param['save'])){
+		if(isset($post_param['done'])){
 
-			$post_param['PurchaseOrder']['content'] = json_encode($content, JSON_FORCE_OBJECT);
-
-			foreach ($post_param['PurchaseOrder'] as $key => $value) {
-				$model->$key = $value;
-			}
-			$model->status = PurchaseOrder::STATUS_NEW;
-
-			//FIXME error handle
-			$model->update();
-
-			return $this->redirect(['list']);
-
-
-		} else if(isset($post_param['done'])){
-
-			$done_date = date("Y-m-d", strtotime($post_param['done_date']));
+			$done_date = date("Y-m-d", strtotime($post_param['PurchaseOrder']['done_date']));
 			$warehouse = $post_param['PurchaseOrder']['warehouse'];
 
 			$post_param['PurchaseOrder']['content'] = json_encode($content, JSON_FORCE_OBJECT);
@@ -106,8 +92,8 @@ class PurchaseOrderController extends \yii\web\Controller
 			$self_balance_model->date = $done_date;
 
 			foreach ($content as $key => $value) {
-				$padi_transaction_model->$key = $value['order_cnt'];
-				$self_transaction_model->$key = $value['print_cnt'] - $value['order_cnt'];
+				$padi_transaction_model->$key = $value['padi_cnt'];
+				$self_transaction_model->$key = $value['self_cnt'];
 				$padi_balance_model->$key = $padi_balance_model->$key + $padi_transaction_model->$key;
 				$self_balance_model->$key = $self_balance_model->$key + $self_transaction_model->$key;
 			}
@@ -173,35 +159,26 @@ class PurchaseOrderController extends \yii\web\Controller
 
 	protected function get_content($post_param){
 
-		$x = 0;
-		$content = array();
-
-		while(1){
-
-			$product_idx = "product_".$x;
-			$order_cnt_idx = "order_cnt_".$x;
-			$print_cnt_idx = "print_cnt_".$x;
-
-			if(!$post_param[$product_idx]){
-				break;
-			}
-
-			if(0 == strcmp($post_param[$product_idx], "empty")){
-				$x++;
-				continue;
-			}
-
-			$order_cnt = $post_param[$order_cnt_idx];
-			$print_cnt = $post_param[$print_cnt_idx];
-			$product_id =  $post_param[$product_idx];
-
-			$cnt = array();
-			$cnt["order_cnt"] = intval($order_cnt);
-			$cnt["print_cnt"] = intval($print_cnt);
-			$content[$product_id] = $cnt;
-
-			$x++;
+		if(!$post_param["product"]){
+			return;
 		}
+
+		if(0 == strcmp($post_param["product"], "empty")){
+			return;
+		}
+
+		$order_cnt = $post_param["order_cnt"];
+		$print_cnt = $post_param["print_cnt"];
+		$padi_cnt = $post_param["padi_cnt"];
+		$self_cnt = $post_param["self_cnt"];
+		$product_id =  $post_param["product"];
+
+		$cnt = array();
+		$cnt["order_cnt"] = intval($order_cnt);
+		$cnt["print_cnt"] = intval($print_cnt);
+		$cnt["padi_cnt"] = intval($padi_cnt);
+		$cnt["self_cnt"] = intval($self_cnt);
+		$content[$product_id] = $cnt;
 
 		return $content;
 	}

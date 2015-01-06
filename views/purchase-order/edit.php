@@ -10,6 +10,7 @@ use yii\jui\DatePicker;
 /* @var $form ActiveForm */
 $this->title = 'Purchase Order';
 $this->params['breadcrumbs'][] = $this->title;
+$this->registerJsFile(Yii::$app->request->getBaseUrl().'/js/purchase_order_edit.js',['depends' => [yii\web\JqueryAsset::className()]]);
 
 ?>
 <div class="purchase-order-edit">
@@ -28,7 +29,7 @@ $this->params['breadcrumbs'][] = $this->title;
 		<label class="control-label" for="purchaseorder-done_date">完工日期</label>
 		<?php
 			echo DatePicker::widget([
-				'name' => 'done_date',
+				'name' => 'PurchaseOrder[done_date]',
 				'value' => date("Y-m-d", strtotime('today')),
 			]);
 		?>
@@ -36,24 +37,29 @@ $this->params['breadcrumbs'][] = $this->title;
 		</div>		
 
 		<div class="input_fields_wrap_product">
-			<label class="control-label">Product / 訂單數量 / 實印數量</label>
+			<label class="control-label">Product / 原始訂單數量 / 實際生產數量</label>
 
 			<?php
 				$content = json_decode($model->toArray()['content']);
-				$idx = 0;
 				$out = '';
 				foreach ($content as $key => $value) {
 					$out = $out.'<div>';
-					$out = $out.'<input type="text" name="product_'.$idx.'" value="'.$key.'" readonly>';
+					$out = $out.'<input type="text" name="product" value="'.$key.'" readonly>';
 					$out = $out.'<label>/</label>';
-					$out = $out.'<input type="number" name="order_cnt_'.$idx.'" value="'.$value->order_cnt.'" readonly>';
+					$out = $out.'<input type="number" name="order_cnt" value="'.$value->order_cnt.'" readonly>';
 					$out = $out.'<label>/</label>';
-					$out = $out.'<input type="number" name="print_cnt_'.$idx.'" value="'.$value->print_cnt.'" >';
+					$out = $out.'<input type="number" name="print_cnt" value="'.$value->print_cnt.'" >';
 					$out = $out.'</div>';
 					$idx++;
 				}
 				echo $out;
 			?>
+			<label class="control-label">入庫說明: padi庫存 / 自有庫存 </label>
+			<div>
+				<input type="number" name="padi_cnt" value="" >
+				<label>/</label>
+				<input type="number" name="self_cnt" value="" >
+			</div>
 		</div>
 		<div class="help-block"></div>
 		
@@ -61,8 +67,7 @@ $this->params['breadcrumbs'][] = $this->title;
 		<?= $form->field($model, 'extra_info')->textArea(['rows' => 6]) ?>
 	
 		<div class="form-group">
-			<?= Html::submitButton('Save', ['class' => 'btn btn-primary', 'name' => 'save']) ?>
-			<?= Html::submitButton('完工', ['class' => 'btn btn-primary', 'name' => 'done']) ?>
+			<?= Html::submitButton('完工入庫', ['class' => 'btn btn-primary', 'name' => 'done', 'onclick' => 'return check_cnt()']) ?>
 		</div>
 	<?php ActiveForm::end(); ?>
 

@@ -29,7 +29,7 @@ $this->params['breadcrumbs'][] = $this->title;
 						'attribute' => 'content',
 						'format' => 'raw',
 						'value' => function ($model) {
-							return product_content_to_table($model->content);
+							return product_content_to_table($model->content, true);
 						}
 					],
 					'done_date:text:完工日期',
