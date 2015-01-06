@@ -180,7 +180,6 @@ class OrderController extends \yii\web\Controller
 			$this->download_tw($model);
 		}
 
-
 		echo "</body>";
 		echo "</html>";
 
@@ -194,6 +193,7 @@ class OrderController extends \yii\web\Controller
 		$old_content = json_decode($model->content);
 		$content = $old_content;
 		$now = strtotime('now');
+		$query = new Query;
 
 		if(isset($post_param['done'])){
 
@@ -210,6 +210,16 @@ class OrderController extends \yii\web\Controller
 					$content->product->$product->done = true;
 					$padi_transaction_model->$product -= $content->product->$product->cnt;
 					$padi_balance_model->$product -= $content->product->$product->cnt;
+
+					$warning_cnt = $query->select('*')
+										->from('product')
+										->where('id = "'.$product.'"')
+										->one();
+					$warning_cnt_wh = 'warning_cnt_'.$warehouse;
+					if($warning_cnt[$warning_cnt_wh] > 0 && $warning_cnt[$warning_cnt_wh] > $padi_balance_model->$product){
+						$warning[$product]['warning_cnt'] = $warning_cnt[$warning_cnt_wh];
+						$warning[$product]['balance'] = $padi_balance_model->$product;
+					}
 				}
 			}
 
@@ -225,6 +235,16 @@ class OrderController extends \yii\web\Controller
 						$content->crewpak->$crewpak->detail->$product->done = true;
 						$padi_transaction_model->$product -= $content->crewpak->$crewpak->detail->$product->cnt;
 						$padi_balance_model->$product -= $content->crewpak->$crewpak->detail->$product->cnt;
+
+						$warning_cnt = $query->select('*')
+											->from('product')
+											->where('id = "'.$product.'"')
+											->one();
+						$warning_cnt_wh = 'warning_cnt_'.$warehouse;
+						if($warning_cnt[$warning_cnt_wh] > 0 && $warning_cnt[$warning_cnt_wh] > $padi_balance_model->$product){
+							$warning[$product]['warning_cnt'] = $warning_cnt[$warning_cnt_wh];
+							$warning[$product]['balance'] = $padi_balance_model->$product;
+						}
 					}
 				}
 			}
@@ -277,6 +297,24 @@ class OrderController extends \yii\web\Controller
 				$ship->request_fee = $ship_info['fee'] * 1.1;
 				$ship->extra_info = $model->extra_info;
 				$ship->insert();
+			}
+
+			if(isset($warning)){
+				\Yii::$app->mailer->compose('warning', [
+						'warning' => $warning,
+						'warehouse' => $warehouse,
+						'order_id' => $post_param['Order']['id'],
+					])
+					->setFrom('jack@lang-win.com.tw')
+					->setTo([
+						'branchihchieh@gmail.com',
+						'yiyin.chen@lang-win.com.tw',
+						'susan@lang-win.com.tw',
+						'pc-mippi@lang-win.com.tw',
+						'langchen@lang-win.com.tw',
+					])
+					->setSubject(YII_ENV_DEV ? '庫存警示 (測試) - '.$post_param['Order']['done_date'] : '庫存警示 - '.$post_param['Order']['done_date'])
+					->send();
 			}
 
 			if($model->status == Order::STATUS_DONE){

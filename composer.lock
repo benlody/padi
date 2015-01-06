@@ -674,16 +674,16 @@
         },
         {
             "name": "yiisoft/yii2-swiftmailer",
-            "version": "2.0.0",
+            "version": "2.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/yiisoft/yii2-swiftmailer.git",
-                "reference": "40fc07ab41e553c8ffaf0847f10ddc68cb553cf8"
+                "reference": "662f9a7daa2eba8c7a21ae2580425d82e0eb60c8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/yiisoft/yii2-swiftmailer/zipball/40fc07ab41e553c8ffaf0847f10ddc68cb553cf8",
-                "reference": "40fc07ab41e553c8ffaf0847f10ddc68cb553cf8",
+                "url": "https://api.github.com/repos/yiisoft/yii2-swiftmailer/zipball/662f9a7daa2eba8c7a21ae2580425d82e0eb60c8",
+                "reference": "662f9a7daa2eba8c7a21ae2580425d82e0eb60c8",
                 "shasum": ""
             },
             "require": {
@@ -720,7 +720,7 @@
                 "swiftmailer",
                 "yii2"
             ],
-            "time": "2014-10-12 17:09:06"
+            "time": "2014-12-07 16:42:41"
         }
     ],
     "packages-dev": [
