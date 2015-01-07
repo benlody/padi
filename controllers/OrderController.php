@@ -556,6 +556,7 @@ class OrderController extends \yii\web\Controller
 
 		$query = new Query;
 		$balance_query = new Query;
+		$summary = array();
 
 		$orders = $query->select('content')
 							->from('order')
