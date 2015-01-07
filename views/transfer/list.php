@@ -109,12 +109,14 @@ $this->params['breadcrumbs'][] = $this->title;
 						'attribute' => '',
 						'format' => 'raw',
 						'value' => function ($model) {
-							return '<a href="'.Yii::$app->request->getBaseUrl().'?r=transfer%2Fedit&amp;id='.$model->id.'" title="Edit" data-pjax="0"><span class="glyphicon glyphicon glyphicon-pencil"></span></a>';
+							return '<a href="'.Yii::$app->request->getBaseUrl().'?r=transfer%2Fedit&amp;id='.urlencode($model->id).'" title="Edit" data-pjax="0"><span class="glyphicon glyphicon glyphicon-pencil"></span></a>';
 						}
 					],
 				],
 			];
 		}
+
+
 		if($detail){
 			$detail_btn_lable = '隱藏詳細';
 			$detail_btn_cfg = ['list', 'status' => $status, 'detail' => false, 'sort' => $sort];

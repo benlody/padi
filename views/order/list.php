@@ -59,7 +59,7 @@ $this->params['breadcrumbs'][] = $this->title;
 						'attribute' => '',
 						'format' => 'raw',
 						'value' => function ($model) {
-								$opt = '<a href="'.Yii::$app->request->getBaseUrl().'?r=order%2Fview&amp;id='.$model->id.'" title="檢視" data-pjax="0"><span class="glyphicon glyphicon glyphicon-eye-open"></span></a>';
+								$opt = '<a href="'.Yii::$app->request->getBaseUrl().'?r=order%2Fview&amp;id='.urlencode($model->id).'" title="檢視" data-pjax="0"><span class="glyphicon glyphicon glyphicon-eye-open"></span></a>';
 							return $opt;
 						}
 					],
@@ -105,14 +105,14 @@ $this->params['breadcrumbs'][] = $this->title;
 						'format' => 'raw',
 						'value' => function ($model) {
 							if(Order::STATUS_NEW == $model->status){
-								$opt = '<a href="'.Yii::$app->request->getBaseUrl().'?r=order%2Fmodify&amp;id='.$model->id.'" title="修改" data-pjax="0"><span class="glyphicon glyphicon glyphicon-pencil"></span></a>'.
-									'<a href="'.Yii::$app->request->getBaseUrl().'?r=order%2Fdelete&amp;id='.$model->id.'" title="刪除" data-confirm="確定要刪除'.$model->id.'嗎?"><span class="glyphicon glyphicon glyphicon-trash"></span></a>'.
-									'<a href="'.Yii::$app->request->getBaseUrl().'?r=order%2Fdownload&amp;id='.$model->id.'" title="下載出貨單" data-pjax="0"><span class="glyphicon glyphicon glyphicon-download"></span></a>'.
-									'<a href="'.Yii::$app->request->getBaseUrl().'?r=order%2Freview&amp;id='.$model->id.'" title="覆核" data-pjax="0"><span class="glyphicon glyphicon glyphicon-eye-open"></span></a>';
+								$opt = '<a href="'.Yii::$app->request->getBaseUrl().'?r=order%2Fmodify&amp;id='.urlencode($model->id).'" title="修改" data-pjax="0"><span class="glyphicon glyphicon glyphicon-pencil"></span></a>'.
+									'<a href="'.Yii::$app->request->getBaseUrl().'?r=order%2Fdelete&amp;id='.urlencode($model->id).'" title="刪除" data-confirm="確定要刪除'.$model->id.'嗎?"><span class="glyphicon glyphicon glyphicon-trash"></span></a>'.
+									'<a href="'.Yii::$app->request->getBaseUrl().'?r=order%2Fdownload&amp;id='.urlencode($model->id).'" title="下載出貨單" data-pjax="0"><span class="glyphicon glyphicon glyphicon-download"></span></a>'.
+									'<a href="'.Yii::$app->request->getBaseUrl().'?r=order%2Freview&amp;id='.urlencode($model->id).'" title="覆核" data-pjax="0"><span class="glyphicon glyphicon glyphicon-eye-open"></span></a>';
 							} else if (Order::STATUS_PROCESSING == $model->status){
-								$opt = '<a href="'.Yii::$app->request->getBaseUrl().'?r=order%2Fedit&amp;id='.$model->id.'" title="出貨" data-pjax="0"><span class="glyphicon glyphicon glyphicon-ok"></span></a>'.
-									'<a href="'.Yii::$app->request->getBaseUrl().'?r=order%2Fdownload&amp;id='.$model->id.'" title="下載出貨單" data-pjax="0"><span class="glyphicon glyphicon glyphicon-download"></span></a>'.
-									'<a href="'.Yii::$app->request->getBaseUrl().'?r=order%2Fview&amp;id='.$model->id.'" title="檢視" data-pjax="0"><span class="glyphicon glyphicon glyphicon-eye-open"></span></a>';
+								$opt = '<a href="'.Yii::$app->request->getBaseUrl().'?r=order%2Fedit&amp;id='.urlencode($model->id).'" title="出貨" data-pjax="0"><span class="glyphicon glyphicon glyphicon-ok"></span></a>'.
+									'<a href="'.Yii::$app->request->getBaseUrl().'?r=order%2Fdownload&amp;id='.urlencode($model->id).'" title="下載出貨單" data-pjax="0"><span class="glyphicon glyphicon glyphicon-download"></span></a>'.
+									'<a href="'.Yii::$app->request->getBaseUrl().'?r=order%2Fview&amp;id='.urlencode($model->id).'" title="檢視" data-pjax="0"><span class="glyphicon glyphicon glyphicon-eye-open"></span></a>';
 							}
 							return $opt;
 						}
