@@ -52,6 +52,7 @@ AppAsset::register($this);
 							 ['label' => '訂單列表', 'url' => ['/order/list']],
 							 ['label' => '新增訂單', 'url' => ['/order/add']],
 							 ['label' => '訂單查詢', 'url' => ['/order/search']],
+							 ['label' => '工作訂單統計', 'url' => ['/order/summary']],
 							 ['label' => '出貨明細', 'url' => ['/order/ship_overview']],
 						],
 					],

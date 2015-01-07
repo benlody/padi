@@ -13,6 +13,7 @@ use app\models\Transaction1;
 use app\models\Transaction2;
 use app\models\Shipping;
 use yii\data\ActiveDataProvider;
+use yii\data\ArrayDataProvider;
 use yii\db\Query;
 use Yii;
 
@@ -333,6 +334,19 @@ class OrderController extends \yii\web\Controller
 		}
 	}
 
+	public function actionSummary()
+	{
+
+		$xm_provider = $this->get_summary_provider('xm');
+		$tw_provider = $this->get_summary_provider('tw');
+
+		return $this->render('summary', [
+			'tw_provider' => $tw_provider,
+			'xm_provider' => $xm_provider,
+		]);
+	}
+
+
 	public function actionShip_overview($warehouse='xm', $from='', $to='')
 	{
 		$query = new Query;
@@ -536,6 +550,62 @@ class OrderController extends \yii\web\Controller
 		}
 
 		return $ship_array;
+	}
+
+	protected function get_summary_provider($wh){
+
+		$query = new Query;
+		$balance_query = new Query;
+
+		$orders = $query->select('content')
+							->from('order')
+							->where('warehouse = "'.$wh.'" AND status != '.Order::STATUS_DONE)
+							->all();
+
+		foreach ($orders as $order) {
+
+			$content = json_decode($order['content'], true);
+
+			foreach ($content['product'] as $p => $detail) {
+				if($detail['done']){
+					continue;
+				}
+				$summary[$p]['work_cnt'] += $detail['cnt'];
+			}
+
+			foreach ($content['crewpak'] as $c => $detail) {
+				if($detail['done']){
+					continue;
+				}
+				foreach ($detail['detail'] as $p => $p_detail) {
+					if($p_detail['done']){
+						continue;
+					}
+					$summary[$p]['work_cnt'] += $p_detail['cnt'];
+				}
+			}
+		}
+
+		foreach ($summary as $p => $cnt) {
+			$balance = $balance_query->select($p)
+								->from($wh.'_padi_balance')
+								->orderBy('ts DESC')
+								->one();
+			$summary[$p]['balance'] = $balance[$p];
+			$summary[$p]['id'] = $p;
+		}
+
+		$provider = new ArrayDataProvider([
+				'allModels' => $summary,
+				'sort' => [
+					'attributes' => ['id'],
+				],
+				'pagination' => [
+					'pageSize' => 50,
+				],
+		]);
+		return $provider;
+
 	}
 
 	protected function download_xm($model){
