@@ -19,7 +19,7 @@ class Fee
 	static public function getProductServiceFee($qty, $warehouse){
 
 		if(0 == strcmp('xm', $warehouse)){
-			$fee = 1 * $qty;
+			$fee = 2 * $qty;
 		} else {
 			$fee = 5 * $qty;
 		}
