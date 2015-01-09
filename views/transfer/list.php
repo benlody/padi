@@ -2,24 +2,22 @@
 
 use yii\helpers\Html;
 use yii\grid\GridView;
-
+use app\models\Transfer;
 require_once __DIR__  . '/../../utils/utils.php';
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\PurchaseOrderSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = Yii::t('app', 'Transfer');
+$this->title = Yii::t('app', '庫存轉移列表');
 $this->params['breadcrumbs'][] = $this->title;
 
 ?>
 <div class="transfer-list">
 
-	<h1><?= Html::encode($this->title) ?></h1>
-
 	<?php
-		//FIXME 選擇是否顯示內容
 		if(0 == strcmp($status, 'done')){
+			$subtitle = ' - 已完成';
 			$btn_lable = '列出未完成列表';
 			$btn_cfg = ['list', 'status' => '', 'detail' => $detail, 'sort' => $sort];
 			$config = [
@@ -53,6 +51,27 @@ $this->params['breadcrumbs'][] = $this->title;
 						}
 					],
 					[
+						'attribute' => 'ship_type',
+						'format' => 'raw',
+						'label' => '運送方式',
+						'value' => function ($model) {
+							switch($model->ship_type){
+							case 'sea':
+								$ret = '海運';
+								break;
+							case 'air':
+								$ret = '空運';
+								break;
+							case 'internal':
+								$ret = '內部轉移';
+								break;
+							default:
+								$ret = $model->ship_type;
+							}
+							return $ret;
+						}
+					],
+					[
 						'attribute' => 'content',
 						'format' => 'raw',
 						'label' => '轉移內容',
@@ -64,6 +83,7 @@ $this->params['breadcrumbs'][] = $this->title;
 				],
 			];
 		} else {
+			$subtitle = ' - 未完成';
 			$btn_lable = '列出已完成列表';
 			$btn_cfg = ['list', 'status' => 'done', 'detail' => $detail, 'sort' => $sort];
 			$config = [
@@ -97,6 +117,27 @@ $this->params['breadcrumbs'][] = $this->title;
 						}
 					],
 					[
+						'attribute' => 'ship_type',
+						'format' => 'raw',
+						'label' => '運送方式',
+						'value' => function ($model) {
+							switch($model->ship_type){
+							case 'sea':
+								$ret = '海運';
+								break;
+							case 'air':
+								$ret = '空運';
+								break;
+							case 'internal':
+								$ret = '內部轉移';
+								break;
+							default:
+								$ret = $model->ship_type;
+							}
+							return $ret;
+						}
+					],
+					[
 						'attribute' => 'content',
 						'format' => 'raw',
 						'label' => '轉移內容',
@@ -109,7 +150,15 @@ $this->params['breadcrumbs'][] = $this->title;
 						'attribute' => '',
 						'format' => 'raw',
 						'value' => function ($model) {
-							return '<a href="'.Yii::$app->request->getBaseUrl().'?r=transfer%2Fedit&amp;id='.urlencode($model->id).'" title="Edit" data-pjax="0"><span class="glyphicon glyphicon glyphicon-pencil"></span></a>';
+							if(Transfer::STATUS_NEW == $model->status){
+								$opt = '<a href="'.Yii::$app->request->getBaseUrl().'?r=transfer%2Fedit&amp;id='.urlencode($model->id).'" title="出貨" data-pjax="0"><span class="glyphicon glyphicon glyphicon-pencil"></span></a>'.
+									'<a href="'.Yii::$app->request->getBaseUrl().'?r=transfer%2Fdelete&amp;id='.urlencode($model->id).'" title="刪除" data-confirm="確定要刪除'.$model->id.'嗎?"><span class="glyphicon glyphicon glyphicon-trash"></span></a>'.
+									'<a href="'.Yii::$app->request->getBaseUrl().'?r=transfer%2Fdownload&amp;id='.urlencode($model->id).'" title="下載出貨單" data-pjax="0"><span class="glyphicon glyphicon glyphicon-download"></span></a>';
+							} else if (Transfer::STATUS_ONTHEWAY == $model->status) {
+								$opt = '<a href="'.Yii::$app->request->getBaseUrl().'?r=transfer%2Fedit&amp;id='.urlencode($model->id).'" title="貨到入庫" data-pjax="0"><span class="glyphicon glyphicon glyphicon-pencil"></span></a>';
+							}
+							return $opt;
+
 						}
 					],
 				],
@@ -126,6 +175,7 @@ $this->params['breadcrumbs'][] = $this->title;
 			unset($config['columns'][6]);
 		}
 	?>
+	<h1><?= Html::encode($this->title.$subtitle) ?></h1>
 	<?= Html::a($btn_lable, $btn_cfg, ['class' => 'btn btn-primary']) ?>
 	<?= Html::a($detail_btn_lable, $detail_btn_cfg, ['class' => 'btn btn-primary']) ?>
 	<?= GridView::widget($config); ?>

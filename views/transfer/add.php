@@ -8,7 +8,7 @@ use yii\jui\DatePicker;
 /* @var $model app\models\Transfer */
 /* @var $form ActiveForm */
 
-$this->title = 'Transfer';
+$this->title = '庫存轉移';
 $this->params['breadcrumbs'][] = $this->title;
 $this->registerJsFile(Yii::$app->request->getBaseUrl().'/js/transfer_add.js',['depends' => [yii\web\JqueryAsset::className()]]);
 
@@ -27,7 +27,7 @@ $this->registerJsFile(Yii::$app->request->getBaseUrl().'/js/transfer_add.js',['d
 			'tw_padi' => '台灣光隆PADI庫存',
 			'tw_self' => '台灣光隆自有庫存',
 			'sydney' => '雪梨PADI',
-			], ['class' => 'form-control'])
+			], ['class' => 'form-control', 'id' => 'src_warehouse', 'onchange' => 'onchange_src()'])
 		?>
 		<div class="help-block"></div>
 
@@ -39,10 +39,20 @@ $this->registerJsFile(Yii::$app->request->getBaseUrl().'/js/transfer_add.js',['d
 			'tw_padi' => '台灣光隆PADI庫存',
 			'tw_self' => '台灣光隆自有庫存',
 			'sydney' => '雪梨PADI',
-			], ['class' => 'form-control'])
+			], ['class' => 'form-control', 'id' => 'dst_warehouse', 'onchange' => 'onchange_dst()'])
 		?>
 		<div class="help-block"></div>
 
+		<label class="control-label">運送方式</label>
+		<div>
+		<?= Html::dropDownList('Transfer[ship_type]', '', [
+			'' => '',
+			'sea' => '海運',
+			'air' => '空運',
+			'internal' => '內部轉移',
+			], ['class' => 'form-control', 'id' => 'ship_type'])
+		?>
+		<div class="help-block"></div>
 
 		<div class="form-group">
 		<label class="control-label" for="order-date">日期</label>
@@ -55,6 +65,10 @@ $this->registerJsFile(Yii::$app->request->getBaseUrl().'/js/transfer_add.js',['d
 		<div class="help-block"></div>
 		</div>
 
+		<?= $form->field($model, 'chinese_addr', ['labelOptions' => ['label' => '中文地址']]) ?>
+		<?= $form->field($model, 'english_addr', ['labelOptions' => ['label' => '英文地址']]) ?>
+		<?= $form->field($model, 'contact', ['labelOptions' => ['label' => '聯絡人']]) ?>
+		<?= $form->field($model, 'tel', ['labelOptions' => ['label' => '電話']]) ?>
 
 		<label class="control-label">內容</label>
 		<div style="margin-left: 50px">

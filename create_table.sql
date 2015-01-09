@@ -118,12 +118,18 @@ CREATE TABLE `purchase_order` (
 
 CREATE TABLE `transfer` (
   `id` CHAR(255) NOT NULL PRIMARY KEY,
+  `chinese_addr` TEXT DEFAULT '',
+  `english_addr` TEXT DEFAULT '',
+  `contact` TEXT DEFAULT '',
+  `tel` TEXT DEFAULT '',
   `content` TEXT NOT NULL,
   `send_date` DATE,
   `recv_date` DATE,
   `status` INT(8) NOT NULL,
   `src_warehouse` CHAR(255) NOT NULL,
   `dst_warehouse` CHAR(255) NOT NULL,
+  `ship_type` CHAR(255) DEFAULT '',
+  `shipping_info` TEXT DEFAULT '',
   `extra_info` TEXT DEFAULT ''
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 

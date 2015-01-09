@@ -12,6 +12,7 @@ use app\models\Balance2;
 use app\models\Transaction1;
 use app\models\Transaction2;
 use app\models\Shipping;
+use app\models\Transfer;
 use yii\data\ActiveDataProvider;
 use yii\data\ArrayDataProvider;
 use yii\db\Query;
@@ -533,7 +534,6 @@ class OrderController extends \yii\web\Controller
 			$ship_content[$packing_type] = $packing_cnt;
 			$ship_content['weight'] = $weight;
 			$ship_content['fee'] = $fee;
-			$ship_content['request_fee'] = \Fee::getShipFreightFee($fee, $post_param['Order']['region'], $post_param['Order']['warehouse'], $post_param['Order']['ship_type'], $weight);
 			$ship_content['type'] = $post_param['Order']['ship_type'];
 
 			if(0 == $x){
@@ -554,11 +554,12 @@ class OrderController extends \yii\web\Controller
 
 	protected function get_summary_provider($wh){
 
-		$query = new Query;
+		$order_query = new Query;
+		$transfer_query = new Query;
 		$balance_query = new Query;
 		$summary = array();
 
-		$orders = $query->select('content')
+		$orders = $order_query->select('content')
 							->from('order')
 							->where('warehouse = "'.$wh.'" AND status != '.Order::STATUS_DONE)
 							->all();
@@ -586,6 +587,20 @@ class OrderController extends \yii\web\Controller
 				}
 			}
 		}
+
+		$transfers = $transfer_query->select('content')
+							->from('transfer')
+							->where('src_warehouse LIKE "'.$wh.'%" AND status != '.Transfer::STATUS_DONE)
+							->all();
+
+		foreach ($transfers as $transfer) {
+
+			$content = json_decode($transfer['content'], true);
+			foreach ($content as $p => $cnt) {
+				$summary[$p]['work_cnt'] += $cnt;
+			}
+		}
+
 
 		foreach ($summary as $p => $cnt) {
 			$balance = $balance_query->select($p)

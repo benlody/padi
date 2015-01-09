@@ -177,18 +177,34 @@ function product_detail_to_edit_table($product_name, $product_detail, $name, $id
 	return $table_out;
 }
 
-function order_content_to_download_table($content){
+function transfer_content_to_download_table($content){
 
-	$content_array = json_decode($content);
+	$product_array = json_decode($content, true);
 
-	$crewpak_array = $content_array->crewpak;
-	foreach ($crewpak_array as $crewpak_name => $crewpak_detail) {
-		crewpak_to_download_table($crewpak_name, $crewpak_detail);
+	foreach ($product_array as $product_name => $product_cnt) {
+		echo '<tr><td>'.$product_name.'</td><td>'.chineseToUnicode(get_product_name($product_name)).'</td><td>'.$product_cnt.'</td></tr>';
 	}
 
-	$product_array = $content_array->product;
-	foreach ($product_array as $product_name => $product_detail) {
-		product_detail_to_download_table($product_name, $product_detail);
+	return;
+}
+
+
+function order_content_to_download_table($content){
+
+	$content_array = json_decode($content, true);
+
+	if(isset($content_array['crewpak'])){
+		$crewpak_array = $content_array['crewpak'];
+		foreach ($crewpak_array as $crewpak_name => $crewpak_detail) {
+			crewpak_to_download_table($crewpak_name, $crewpak_detail);
+		}
+	}
+
+	if(isset($content_array['product'])){
+		$product_array = $content_array['product'];
+		foreach ($product_array as $product_name => $product_detail) {
+			product_detail_to_download_table($product_name, $product_detail);
+		}
 	}
 
 	return;
@@ -198,8 +214,8 @@ function order_content_to_download_table($content){
 function crewpak_to_download_table($crewpak_name, $crewpak_detail){
 
 	echo '<tr><td>'.$crewpak_name.'</td><td>';
-	crewpak_detail_to_download_table($crewpak_name, $crewpak_detail->detail);
-	echo '</td><td>'.$crewpak_detail->cnt.'</td></tr>';
+	crewpak_detail_to_download_table($crewpak_name, $crewpak_detail['detail']);
+	echo '</td><td>'.$crewpak_detail['cnt'].'</td></tr>';
 	return;
 }
 
@@ -222,14 +238,14 @@ function crewpak_detail_to_download_table($crewpak_name, $crewpak_detail){
 
 function product_detail_to_download_table($product_name, $product_detail, $display_cnt = true){
 
-	if($product_detail->done){
+	if($product_detail['done']){
 		echo '<font color="gray">';
 	} else {
 		echo '<font color="black">';
 	}
 
 	if($display_cnt){
-		echo '<tr><td>'.$product_name.'</td><td>'.chineseToUnicode(get_product_name($product_name)).'</td><td>'.$product_detail->cnt.'</td></tr>';
+		echo '<tr><td>'.$product_name.'</td><td>'.chineseToUnicode(get_product_name($product_name)).'</td><td>'.$product_detail['cnt'].'</td></tr>';
 	} else {
 		echo '<tr><td>'.$product_name.'</td><td>'.chineseToUnicode(get_product_name($product_name)).'</td></tr>';		
 	}
@@ -313,7 +329,10 @@ function get_order_status($status){
 function get_transfer_status($status){
 		switch($status){
 		case Transfer::STATUS_NEW:
-			$ret = '尚未寄達';
+			$ret = '尚未出貨';
+			break;
+		case Transfer::STATUS_ONTHEWAY:
+			$ret = '已出貨 運送中';
 			break;
 		case Transfer::STATUS_DONE:
 			$ret = '已完成寄送';

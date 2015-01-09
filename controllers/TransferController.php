@@ -8,6 +8,7 @@ use app\models\Balance1;
 use app\models\Balance2;
 use app\models\Transaction1;
 use app\models\Transaction2;
+use yii\data\ActiveDataProvider;
 use yii\db\Query;
 use Yii;
 
@@ -45,36 +46,15 @@ class TransferController extends \yii\web\Controller
 				$warehouse_type = substr($src, $pos + 1);
 
 				$post_param['Transfer']['send_date'] = date("Y-m-d", strtotime($post_param['date']));
-				$post_param['Transfer']['recv_date'] = date("Y-m-d", strtotime($post_param['date']));
 
 				foreach ($post_param['Transfer'] as $key => $value) {
 					$model->$key = $value;
 				}
-				$model->status = Transfer::STATUS_DONE;
-
-				$transaction_model =  new Transaction1($warehouse, $warehouse_type);
-				$balance_model =  new Balance1($warehouse, $warehouse_type);
-				get_balance($balance_model, $warehouse, $warehouse_type);
-
-				foreach ($content as $p_name => $cnt) {
-					$transaction_model->$p_name -= $cnt;
-					$balance_model->$p_name -= $cnt;
-				}
-
-				$now = strtotime('now');
-				$transaction_model->serial = 'transfer_'.$post_param['Transfer']['id'].'_'.$now;
-				$transaction_model->date = date("Y-m-d", strtotime($post_param['date']));
-				$transaction_model->extra_info = $post_param['Transfer']['extra_info'];
-
-				$balance_model->serial = 'transfer_'.$post_param['Transfer']['id'].'_'.$now;
-				$balance_model->date = date("Y-m-d", strtotime($post_param['date']));
-				$balance_model->extra_info = $post_param['Transfer']['extra_info'];
+				$model->status = Transfer::STATUS_NEW;
 
 				$model->insert();
-				$transaction_model->insert();
-				$balance_model->insert();
 
-				return $this->redirect(['list', 'status' => 'done']);
+				return $this->redirect(['list']);
 
 			} else if(0 == strcmp($src, 'sydney')){
 
@@ -170,32 +150,12 @@ class TransferController extends \yii\web\Controller
 				$warehouse_type = substr($src, $pos + 1);
 
 				$post_param['Transfer']['send_date'] = date("Y-m-d", strtotime($post_param['date']));
-				$post_param['Transfer']['recv_date'] = date("Y-m-d", strtotime($post_param['date']));
 				foreach ($post_param['Transfer'] as $key => $value) {
 					$model->$key = $value;
 				}
 				$model->status = Transfer::STATUS_NEW;
 
-				$transaction_model =  new Transaction2($warehouse, $warehouse_type);
-				$balance_model =  new Balance2($warehouse, $warehouse_type);
-				get_balance($balance_model, $warehouse, $warehouse_type);
-				foreach ($content as $p_name => $cnt) {
-					$transaction_model->$p_name -= $cnt;
-					$balance_model->$p_name -= $cnt;
-				}
-
-				$now = strtotime('now');
-				$transaction_model->serial = 'transfer_'.$post_param['Transfer']['id'].'_'.$now;
-				$transaction_model->date = date("Y-m-d", strtotime($post_param['date']));
-				$transaction_model->extra_info = $post_param['Transfer']['extra_info'];
-
-				$balance_model->serial = 'transfer_'.$post_param['Transfer']['id'].'_'.$now;
-				$balance_model->date = date("Y-m-d", strtotime($post_param['date']));
-				$balance_model->extra_info = $post_param['Transfer']['extra_info'];
-
 				$model->insert();
-				$transaction_model->insert();
-				$balance_model->insert();
 
 				return $this->redirect(['list']);
 			}
@@ -218,10 +178,57 @@ class TransferController extends \yii\web\Controller
 		$model = $this->findModel($id);
 		$post_param = Yii::$app->request->post();
 
-		if(isset($post_param['done'])){
+		if(isset($post_param['send_done'])){
+			$content = $this->get_content($post_param);
+			$ship_array = $this->get_ship($post_param, $now);
+
+			$post_param['Transfer']['shipping_info'] = json_encode($ship_array);
+			$post_param['Transfer']['content'] = json_encode($content, JSON_FORCE_OBJECT);
+			$post_param['Transfer']['send_date'] = date("Y-m-d", strtotime($post_param['date']));
+
+			$src = $post_param['Transfer']['src_warehouse'];
+			$dst = $post_param['Transfer']['dst_warehouse'];
+
+			$pos = strpos($src, '_');
+			$warehouse = substr($src, 0, $pos);
+			$warehouse_type = substr($src, $pos + 1);
+
+			foreach ($post_param['Transfer'] as $key => $value) {
+				$model->$key = $value;
+			}
+			if(0 == strcmp('sydney', $dst)){
+				$model->status = Transfer::STATUS_DONE;
+			} else {
+				$model->status = Transfer::STATUS_ONTHEWAY;
+			}
+
+			$transaction_model =  new Transaction1($warehouse, $warehouse_type);
+			$balance_model =  new Balance1($warehouse, $warehouse_type);
+			get_balance($balance_model, $warehouse, $warehouse_type);
+			foreach ($content as $p_name => $cnt) {
+				$transaction_model->$p_name -= $cnt;
+				$balance_model->$p_name -= $cnt;
+			}
+
+			$now = strtotime('now');
+			$transaction_model->serial = 'transfer_'.$post_param['Transfer']['id'].'_'.$now;
+			$transaction_model->date = $post_param['Transfer']['send_date'];
+			$transaction_model->extra_info = $post_param['Transfer']['extra_info'];
+
+			$balance_model->serial = 'transfer_'.$post_param['Transfer']['id'].'_'.$now;
+			$balance_model->date = $post_param['Transfer']['send_date'];
+			$balance_model->extra_info = $post_param['Transfer']['extra_info'];
+
+			$model->update();
+			$transaction_model->insert();
+			$balance_model->insert();
+
+			return $this->redirect(['list']);
+
+		} else if(isset($post_param['recv_done'])){
 			$content = $this->get_content($post_param);
 			$post_param['Transfer']['content'] = json_encode($content, JSON_FORCE_OBJECT);
-			$post_param['Transfer']['recv_date'] = date("Y-m-d", strtotime($post_param['Transfer']['recv_date']));
+			$post_param['Transfer']['recv_date'] = date("Y-m-d", strtotime($post_param['date']));
 
 			$src = $post_param['Transfer']['src_warehouse'];
 			$dst = $post_param['Transfer']['dst_warehouse'];
@@ -276,10 +283,15 @@ class TransferController extends \yii\web\Controller
 		$searchModel = new TransferSearch();
 		if(0 == strcmp($status, 'done')){
 			$search_param['TransferSearch'] = array('status' => Transfer::STATUS_DONE);
+			$dataProvider = $searchModel->search($search_param);
 		} else {
-			$search_param['TransferSearch'] = array('status' => Transfer::STATUS_NEW);
+			$query = Transfer::find();
+			$query->Where('status != '.Transfer::STATUS_DONE);
+
+			$dataProvider = new ActiveDataProvider([
+				'query' => $query,
+			]);
 		}
-		$dataProvider = $searchModel->search($search_param);
 
 		return $this->render('list', [
 			'searchModel' => $searchModel,
@@ -288,6 +300,34 @@ class TransferController extends \yii\web\Controller
 			'detail' => $detail,
 			'sort' => $sort,
 		]);
+	}
+
+	public function actionDelete($id)
+	{
+		$this->findModel($id)->delete();
+
+		return $this->redirect(['list']);
+	}
+
+	public function actionDownload($id)
+	{
+		$model = $this->findModel($id);
+		header("Content-type: text/html; charset=utf-8");
+		header("Content-Disposition: attachment;Filename=XDC".date_format(date_create($model->send_date), 'md')."-".$model->id.'.doc');
+
+		echo "<html>";
+		echo "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=Windows-1252\">";
+		echo "<body>";
+
+		if(0 == strncmp('xm', $model->src_warehouse, 2)){
+			$this->download_xm($model);
+		} else {
+			$this->download_tw($model);
+		}
+
+		echo "</body>";
+		echo "</html>";
+
 	}
 
 	protected function findModel($id)
@@ -327,5 +367,174 @@ class TransferController extends \yii\web\Controller
 		}
 
 		return $content;
+	}
+	protected function get_ship($post_param, $now){
+
+		$ship_array = array();
+
+		$x = 0;
+		while(1){
+
+			$ship_idx = "shipping_".$x;
+			$packing_cnt_idx = "packing_cnt_".$x;
+			$packing_type_idx = "packing_type_".$x;
+			$weight_idx = "weight_".$x;
+			$fee_idx = "shipping_fee_".$x;
+
+			if(!isset($post_param[$ship_idx])){
+				break;
+			}
+
+			if(0 == strcmp($post_param[$ship_idx], "")){
+				$x++;
+				continue;
+			}
+
+			$ship = $post_param[$ship_idx];
+			$packing_cnt = $post_param[$packing_cnt_idx];
+			$packing_type = $post_param[$packing_type_idx];
+			$weight = $post_param[$weight_idx];
+			$fee = $post_param[$fee_idx];
+
+			$ship_content = array();
+			$ship_content['id'] = $ship.'_'.$now;
+			$ship_content[$packing_type] = $packing_cnt;
+			$ship_content['weight'] = $weight;
+			$ship_content['fee'] = $fee;
+			$ship_content['type'] = $post_param['Order']['ship_type'];
+
+			array_push($ship_array, $ship_content);
+
+			$x++;
+		}
+
+		return $ship_array;
+	}
+
+	protected function download_xm($model){
+
+		echo '<p style="text-align: center;"><span style="color: #808080; line-height:3pt;">'.chineseToUnicode('廈門卡樂兒商貿公司').'<br>';
+		echo 'XIAMEN COLOR TRADE LIMITED<br>';
+		echo chineseToUnicode('包裝打捆紀錄單').'<br><span style="font-size: small;">'.chineseToUnicode('日期').':'.$model->send_date.'</span></span></p>';
+		echo '<p style="text-align: left;">'.chineseToUnicode('取货地点：厦门市火炬东路28号').'<br>';
+		if(0 == strcmp($model->ship_type, 'sea')){
+			echo chineseToUnicode('送货方式：■海運 □空運').'</p>';
+		} else if(0 == strcmp($model->ship_type, 'air')){
+			echo chineseToUnicode('送货方式：□海運 ■空運').'</p>';
+		}
+
+		echo '<style type="text/css">';
+		echo '.tg  {border-collapse:collapse;border-spacing:0;}';
+		echo '.tg td{font-family:Arial, sans-serif;font-size:14px;padding:3px 3px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;}';
+		echo '.tg th{font-family:Arial, sans-serif;font-size:14px;font-weight:normal;padding:0px 0px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;}';
+		echo '.tg .tg-s6z2{text-align:center; padding:0px 0px;}';
+		echo '</style>';
+
+		echo '<table class="tg" style="undefined;table-layout: fixed; width: 560px">';
+		echo '<colgroup>';
+		echo '<col style="width: 100px">';
+		echo '<col style="width: 140px">';
+		echo '<col style="width: 100px">';
+		echo '</colgroup>';
+		echo '<tr>';
+		echo '<th class="tg-s6z2"><br>DC#</th>';
+		echo '<th class="tg-031e"></th>';
+		echo '<th class="tg-031e">'.chineseToUnicode('订单号码').'<br>PO#</th>';
+		echo '<th class="tg-031e">'.$model->id.'</th>';
+		echo '</tr>';
+		echo '<tr>';
+		echo '<td class="tg-s6z2">'.chineseToUnicode('地址').'<br>ADDRESS</td>';
+		echo '<td class="tg-031e" colspan="3"><span style="background-color: #d0d0d0;">'.chineseToUnicode('地址(英)').':</span><br>'.chineseToUnicode($model->english_addr).
+						'<br><span style="background-color: #d0d0d0;">'.chineseToUnicode('地址(中)').':</span><br>'.chineseToUnicode($model->chinese_addr).
+						'<br><span style="background-color: #d0d0d0;">'.chineseToUnicode('收件人').':</span><br>'.chineseToUnicode($model->contact).
+						'<br><span style="background-color: #d0d0d0;">'.chineseToUnicode('连络电话').':</span><br>'.chineseToUnicode($model->tel).
+						'</td>';
+		echo '</tr>';
+		echo '</table>';
+
+		echo '<table class="tg" style="undefined;table-layout: fixed; width: 560px">';
+		echo '<colgroup>';
+		echo '<col style="width: 100px">';
+		echo '<col style="width: 400px">';
+		echo '<col style="width: 60px">';
+		echo '</colgroup>';
+		echo '<tr>';
+		echo '<th class="tg-s6z2">'.chineseToUnicode('产品编号').'</th>';
+		echo '<th class="tg-031e">'.chineseToUnicode('产品名称'
+			).'</th>';
+		echo '<th class="tg-031e">'.chineseToUnicode('数量').'</th>';
+		echo '</tr>';
+		
+		transfer_content_to_download_table($model->content);
+
+		echo '</table>';
+
+		echo '<p>'.chineseToUnicode('执行者签名：').'</p>';
+		echo '<p>'.chineseToUnicode('复核： □已确认产品数量皆正确').'</p>';
+		echo '<p>'.chineseToUnicode('总箱数：').'</p>';
+		echo '<p>'.chineseToUnicode('总重：').'</p>';
+		echo '<p>'.chineseToUnicode('运单号码：').'</p>';
+		echo '<p>'.chineseToUnicode('备注：').'</p>';
+	}
+
+	protected function download_tw($model){
+
+		echo '<p style="text-align: center;"><span style="color: #808080; line-height:3pt;">'.chineseToUnicode('光隆印刷廠股份有限公司').'<br>';
+		echo 'Kuang Lung Printing Factory Co., Ltd.<br>';
+		echo chineseToUnicode('包裝打捆紀錄單').'<br><span style="font-size: small;">'.chineseToUnicode('日期').':'.$model->send_date.'</span></span></p>';
+		echo '<p style="text-align: left;">'.chineseToUnicode('公司地址：台北市漢口街一段61號2F TEL:02-23314526 FAX:02-23832251').'<br>';
+		if(0 == strcmp($model->ship_type, 'sea')){
+			echo chineseToUnicode('送貨方式：■海運 □空運').'</p>';
+		} else if(0 == strcmp($model->ship_type, 'air')){
+			echo chineseToUnicode('送貨方式：□海運 ■空運').'</p>';
+		}
+
+		echo '<style type="text/css">';
+		echo '.tg  {border-collapse:collapse;border-spacing:0;}';
+		echo '.tg td{font-family:Arial, sans-serif;font-size:14px;padding:3px 3px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;}';
+		echo '.tg th{font-family:Arial, sans-serif;font-size:14px;font-weight:normal;padding:0px 0px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;}';
+		echo '.tg .tg-s6z2{text-align:center; padding:0px 0px;}';
+		echo '</style>';
+
+		echo '<table class="tg" style="undefined;table-layout: fixed; width: 560px">';
+		echo '<colgroup>';
+		echo '<col style="width: 100px">';
+		echo '<col style="width: 140px">';
+		echo '<col style="width: 100px">';
+		echo '</colgroup>';
+		echo '<tr>';
+		echo '<th class="tg-s6z2"><br>DC#</th>';
+		echo '<th class="tg-031e"></th>';
+		echo '<th class="tg-031e">'.chineseToUnicode('訂單號碼').'<br>PO#</th>';
+		echo '<th class="tg-031e">'.$model->id.'</th>';
+		echo '</tr>';
+		echo '<tr>';
+		echo '<td class="tg-s6z2">'.chineseToUnicode('地址').'<br>ADDRESS</td>';
+		echo '<td class="tg-031e" colspan="3"><span style="background-color: #d0d0d0;">'.chineseToUnicode('地址(英)').':</span><br>'.chineseToUnicode($model->english_addr).
+						'<br><span style="background-color: #d0d0d0;">'.chineseToUnicode('地址(中)').':</span><br>'.chineseToUnicode($model->chinese_addr).
+						'<br><span style="background-color: #d0d0d0;">'.chineseToUnicode('收件人').':</span><br>'.chineseToUnicode($model->contact).
+						'<br><span style="background-color: #d0d0d0;">'.chineseToUnicode('聯絡电话').':</span><br>'.chineseToUnicode($model->tel).
+						'</td>';
+		echo '</tr>';
+		echo '</table>';
+
+		echo '<table class="tg" style="undefined;table-layout: fixed; width: 560px">';
+		echo '<colgroup>';
+		echo '<col style="width: 100px">';
+		echo '<col style="width: 400px">';
+		echo '<col style="width: 60px">';
+		echo '</colgroup>';
+		echo '<tr>';
+		echo '<th class="tg-s6z2">'.chineseToUnicode('產品編號').'</th>';
+		echo '<th class="tg-031e">'.chineseToUnicode('產品名稱').'</th>';
+		echo '<th class="tg-031e">'.chineseToUnicode('數量').'</th>';
+		echo '</tr>';
+
+		transfer_content_to_download_table($model->content);
+
+		echo '</table>';
+
+		echo '<p>'.chineseToUnicode('執行者簽名：').'</p>';
+		echo '<p>'.chineseToUnicode('覆核： □已確認語文版本皆正確 □已確認產品數量皆正確    簽名:').'</p>';
 	}
 }

@@ -51,7 +51,6 @@ $this->registerJsFile(Yii::$app->request->getBaseUrl().'/js/order_edit.js',['dep
 		<div class="help-block"></div>
 		</div>		
 
-
 		<div class="input_fields_wrap_ship">
 			<label class="control-label">貨運</label>
 			<button class="add_field_button_ship">+</button>

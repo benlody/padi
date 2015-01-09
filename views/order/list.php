@@ -18,8 +18,6 @@ $this->params['breadcrumbs'][] = $this->title;
 
 
 	<?php
-
-
 		if(0 == strcmp($status, 'done')){
 			$subtitle = ' - 已出貨';
 			$btn_lable = '列出未出貨';

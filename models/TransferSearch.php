@@ -18,7 +18,7 @@ class TransferSearch extends Transfer
     public function rules()
     {
         return [
-            [['id', 'content', 'send_date', 'recv_date', 'src_warehouse', 'dst_warehouse', 'extra_info'], 'safe'],
+            [['id', 'chinese_addr', 'english_addr', 'contact', 'tel', 'content', 'send_date', 'recv_date', 'src_warehouse', 'dst_warehouse', 'ship_type', 'shipping_info', 'extra_info'], 'safe'],
             [['status'], 'integer'],
         ];
     }
@@ -58,9 +58,15 @@ class TransferSearch extends Transfer
         ]);
 
         $query->andFilterWhere(['like', 'id', $this->id])
+            ->andFilterWhere(['like', 'chinese_addr', $this->chinese_addr])
+            ->andFilterWhere(['like', 'english_addr', $this->english_addr])
+            ->andFilterWhere(['like', 'contact', $this->contact])
+            ->andFilterWhere(['like', 'tel', $this->tel])
             ->andFilterWhere(['like', 'content', $this->content])
             ->andFilterWhere(['like', 'src_warehouse', $this->src_warehouse])
             ->andFilterWhere(['like', 'dst_warehouse', $this->dst_warehouse])
+            ->andFilterWhere(['like', 'ship_type', $this->ship_type])
+            ->andFilterWhere(['like', 'shipping_info', $this->shipping_info])
             ->andFilterWhere(['like', 'extra_info', $this->extra_info]);
 
         return $dataProvider;

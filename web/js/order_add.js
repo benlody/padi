@@ -94,5 +94,4 @@ function fill_customer_info() {
 			document.getElementById("order-region").value = cus_info.region;
 		}
 	});
-
 }
