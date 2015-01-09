@@ -266,6 +266,18 @@ function crewpak_index_to_table($id, $content){
 	return $table_out;
 }
 
+function shipping_info_to_table($shipping_info){
+	$table_out = '<div id="w0" class="grid-view"><table class="table table-striped table-bordered"><thead><tr><th>Tracking Number</th><th>包裝</th><th>重量</th><th>運費</th></tr></thead><tbody>';
+	$ship_array = json_decode($shipping_info, true);
+	foreach ($ship_array as $info) {
+		$table_out = $table_out.'<tr><td>'.substr($info['id'], 0, strpos($info['id'], '_')).'</td><td>'.(isset($info['box']) ? $info['box'].'箱' : $info['pack'].'包').'</td><td>'.$info['weight'].'</td><td>'.$info['fee'].'</td></tr>';
+	}
+	$table_out = $table_out.'</tbody></table></div>';
+
+	return $table_out;
+}
+
+
 function get_product_name($id){
 	$product = Product::find()
 		->where(['id' => $id])
