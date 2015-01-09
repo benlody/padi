@@ -608,7 +608,7 @@ class OrderController extends \yii\web\Controller
 
 		$transfers = $transfer_query->select('content')
 							->from('transfer')
-							->where('src_warehouse LIKE "'.$wh.'%" AND status != '.Transfer::STATUS_DONE)
+							->where('src_warehouse LIKE "'.$wh.'%" AND status = '.Transfer::STATUS_NEW)
 							->all();
 
 		foreach ($transfers as $transfer) {
