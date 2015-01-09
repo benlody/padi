@@ -20,6 +20,7 @@ CREATE TABLE `product` (
   `english_name` TEXT DEFAULT '',
   `warning_cnt_tw` INT(32) DEFAULT 0,
   `warning_cnt_xm` INT(32) DEFAULT 0,
+  `weight` INT(32) DEFAULT 0,
   `extra_info` TEXT DEFAULT ''
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 

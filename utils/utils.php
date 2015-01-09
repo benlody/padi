@@ -286,6 +286,14 @@ function get_product_name($id){
 	return $product->chinese_name;
 }
 
+function get_weight($id){
+	$product = Product::find()
+		->where(['id' => $id])
+		->one();
+
+	return $product->weight;
+}
+
 function get_crewpk_name($id){
 	$crewpak = CrewPak::find()
 		->where(['id' => $id])

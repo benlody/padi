@@ -422,6 +422,8 @@ class OrderController extends \yii\web\Controller
 
 		$product_content = array();
 		$crewpak_content = array();
+		$estimate = 0;
+		$save = true;
 
 		$x = 0;
 		while(1){
@@ -448,6 +450,12 @@ class OrderController extends \yii\web\Controller
 			$product_id =  $post_param[$product_idx];
 			$product_content[$product_id]['cnt'] = $product_cnt;
 			$product_content[$product_id]['done'] = false;
+			$weight = get_weight($product_id);
+			if(0 == $weight){
+				$save = false;
+			} else {
+				$estimate += $product_cnt * $weight;
+			}
 
 			$x++;
 		}
@@ -488,6 +496,13 @@ class OrderController extends \yii\web\Controller
 				}
 				$detail[$p_name]['cnt'] = $crewpak->$p_name * $crewpak_cnt;
 				$detail[$p_name]['done'] = false;
+				$weight = get_weight($p_name);
+				if(0 == $weight){
+					$save = false;
+				} else {
+					$estimate += $detail[$p_name]['cnt'] * $weight;
+				}
+
 			}
 			$crewpak_content[$crewpak_id]['detail'] = $detail;
 			$crewpak_content[$crewpak_id]['done'] = false;
@@ -497,6 +512,9 @@ class OrderController extends \yii\web\Controller
 
 		$content['product'] = $product_content;
 		$content['crewpak'] = $crewpak_content;
+		if($save){
+			$content['estimate'] = ($estimate/1000).' kg';
+		}
 
 		return $content;
 	}
@@ -669,8 +687,7 @@ class OrderController extends \yii\web\Controller
 		echo '</colgroup>';
 		echo '<tr>';
 		echo '<th class="tg-s6z2">'.chineseToUnicode('产品编号').'</th>';
-		echo '<th class="tg-031e">'.chineseToUnicode('产品名称'
-			).'</th>';
+		echo '<th class="tg-031e">'.chineseToUnicode('产品名称').'</th>';
 		echo '<th class="tg-031e">'.chineseToUnicode('数量').'</th>';
 		echo '</tr>';
 		
@@ -681,6 +698,10 @@ class OrderController extends \yii\web\Controller
 		echo '<p>'.chineseToUnicode('执行者签名：').'</p>';
 		echo '<p>'.chineseToUnicode('复核： □已确认产品数量皆正确').'</p>';
 		echo '<p>'.chineseToUnicode('总箱数：').'</p>';
+		$content = json_decode($model->content, true);
+		if(isset($content['estimate'])){
+			echo '<p>'.chineseToUnicode('預估重量： '.$content['estimate']).'</p>';
+		}
 		echo '<p>'.chineseToUnicode('总重：').'</p>';
 		echo '<p>'.chineseToUnicode('运单号码：').'</p>';
 		echo '<p>'.chineseToUnicode('备注：').'</p>';
@@ -741,5 +762,9 @@ class OrderController extends \yii\web\Controller
 
 		echo '<p>'.chineseToUnicode('執行者簽名：').'</p>';
 		echo '<p>'.chineseToUnicode('覆核： □已確認語文版本皆正確 □已確認產品數量皆正確    簽名:').'</p>';
+		$content = json_decode($model->content, true);
+		if(isset($content['estimate'])){
+			echo '<p>'.chineseToUnicode('預估重量： '.$content['estimate']).'</p>';
+		}
 	}
 }

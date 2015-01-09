@@ -33,6 +33,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'english_name:ntext',
             'warning_cnt_tw',
             'warning_cnt_xm',
+            'weight',
             'extra_info:ntext',
         ],
     ]) ?>

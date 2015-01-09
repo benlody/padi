@@ -25,6 +25,8 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'warning_cnt_xm') ?>
 
+    <?php // echo $form->field($model, 'weight') ?>
+
     <?php // echo $form->field($model, 'extra_info') ?>
 
     <div class="form-group">

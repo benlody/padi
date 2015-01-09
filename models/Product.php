@@ -12,6 +12,7 @@ use Yii;
  * @property string $english_name
  * @property integer $warning_cnt_tw
  * @property integer $warning_cnt_xm
+ * @property integer $weight
  * @property string $extra_info
  */
 class Product extends \yii\db\ActiveRecord
@@ -32,7 +33,7 @@ class Product extends \yii\db\ActiveRecord
         return [
             [['id'], 'required'],
             [['chinese_name', 'english_name', 'extra_info'], 'string'],
-            [['warning_cnt_tw', 'warning_cnt_xm'], 'integer'],
+            [['warning_cnt_tw', 'warning_cnt_xm', 'weight'], 'integer'],
             [['id'], 'string', 'max' => 64]
         ];
     }
@@ -48,6 +49,7 @@ class Product extends \yii\db\ActiveRecord
             'english_name' => Yii::t('app', 'English Name'),
             'warning_cnt_tw' => Yii::t('app', 'Warning Cnt Tw'),
             'warning_cnt_xm' => Yii::t('app', 'Warning Cnt Xm'),
+            'weight' => Yii::t('app', 'Weight'),
             'extra_info' => Yii::t('app', 'Extra Info'),
         ];
     }

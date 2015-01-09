@@ -12,20 +12,22 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'id')->textInput(['maxlength' => 64]) ?>
+    <?= $form->field($model, 'id', ['labelOptions' => ['label' => '產品編號']])->textInput(['maxlength' => 64]) ?>
 
-    <?= $form->field($model, 'chinese_name')->textInput() ?>
+    <?= $form->field($model, 'chinese_name', ['labelOptions' => ['label' => '中文名稱']])->textInput() ?>
 
-    <?= $form->field($model, 'english_name')->textInput() ?>
+    <?= $form->field($model, 'english_name', ['labelOptions' => ['label' => '英文名稱']])->textInput() ?>
 
-    <?= $form->field($model, 'warning_cnt_xm')->textInput(['value' => 0]) ?>
+    <?= $form->field($model, 'warning_cnt_xm', ['labelOptions' => ['label' => '廈門安全庫存量']])->textInput(['value' => 0]) ?>
 
-    <?= $form->field($model, 'warning_cnt_tw')->textInput(['value' => 0]) ?>
+    <?= $form->field($model, 'warning_cnt_tw', ['labelOptions' => ['label' => '台灣安全庫存量']])->textInput(['value' => 0]) ?>
 
-    <?= $form->field($model, 'extra_info')->textInput() ?>
+    <?= $form->field($model, 'weight', ['labelOptions' => ['label' => '重量(克)']])->textInput(['value' => 0]) ?>
+   
+    <?= $form->field($model, 'extra_info', ['labelOptions' => ['label' => '備註']])->textInput() ?>
 
     <div class="form-group">
-        <?= Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create') : Yii::t('app', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+        <?= Html::submitButton($model->isNewRecord ? Yii::t('app', '新增') : Yii::t('app', '儲存'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>
