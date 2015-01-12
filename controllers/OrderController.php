@@ -744,8 +744,8 @@ class OrderController extends \yii\web\Controller
 
 		echo '<style type="text/css">';
 		echo '.tg  {border-collapse:collapse;border-spacing:0;}';
-		echo '.tg td{font-family:Arial, sans-serif;font-size:14px;padding:3px 3px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;}';
-		echo '.tg th{font-family:Arial, sans-serif;font-size:14px;font-weight:normal;padding:0px 0px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;}';
+		echo '.tg td{font-family:Arial, sans-serif;font-size:17px;padding:3px 3px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;}';
+		echo '.tg th{font-family:Arial, sans-serif;font-size:17px;font-weight:normal;padding:0px 0px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;}';
 		echo '.tg .tg-s6z2{text-align:center; padding:0px 0px;}';
 		echo '</style>';
 
@@ -763,10 +763,10 @@ class OrderController extends \yii\web\Controller
 		echo '</tr>';
 		echo '<tr>';
 		echo '<td class="tg-s6z2">'.chineseToUnicode('會員地址').'<br>ADDRESS</td>';
-		echo '<td class="tg-031e" colspan="3"><span style="background-color: #d0d0d0;">'.chineseToUnicode('地址(英)').':</span><br>'.chineseToUnicode($model->english_addr).
-						'<br><span style="background-color: #d0d0d0;">'.chineseToUnicode('地址(中)').':</span><br>'.chineseToUnicode($model->chinese_addr).
-						'<br><span style="background-color: #d0d0d0;">'.chineseToUnicode('收件人').':</span><br>'.chineseToUnicode($model->contact).
-						'<br><span style="background-color: #d0d0d0;">'.chineseToUnicode('聯絡电话').':</span><br>'.chineseToUnicode($model->tel).
+		echo '<td class="tg-031e" colspan="3"><span">'.chineseToUnicode('地址(英)').':</span><br>'.chineseToUnicode($model->english_addr).
+						'<br><span">'.chineseToUnicode('地址(中)').':</span><br>'.chineseToUnicode($model->chinese_addr).
+						'<br><span">'.chineseToUnicode('收件人').':</span><br>'.chineseToUnicode($model->contact).
+						'<br><span">'.chineseToUnicode('聯絡电话').':</span><br>'.chineseToUnicode($model->tel).
 						'</td>';
 		echo '</tr>';
 		echo '</table>';
