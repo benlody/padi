@@ -20,6 +20,7 @@ use Yii;
 
 require_once __DIR__  . '/../utils/utils.php';
 require_once __DIR__  . '/../utils/ship_download.php';
+require '../../mail/PHPMailer/PHPMailerAutoload.php';
 
 class OrderController extends \yii\web\Controller
 {
@@ -294,30 +295,30 @@ class OrderController extends \yii\web\Controller
 				$ship->send_date = $post_param['Order']['done_date'];
 				$ship->ship_type = $model->ship_type;
 				$ship->warehouse = $model->warehouse;
-				$ship->packing_fee = 0;
 				$ship->shipping_fee = $ship_info['fee'];
-				$ship->request_fee = $ship_info['fee'] * 1.1;
 				$ship->extra_info = $model->extra_info;
 				$ship->insert();
 			}
 
 			if(isset($warning)){
-				\Yii::$app->mailer->compose('warning', [
-						'warning' => $warning,
-						'warehouse' => $warehouse,
-						'order_id' => $post_param['Order']['id'],
-					])
-					->setFrom('jack@lang-win.com.tw')
-					->setTo([
-						'branchihchieh@gmail.com',
-						'yiyin.chen@lang-win.com.tw',
-						'susan@lang-win.com.tw',
-						'pc-mippi@lang-win.com.tw',
-						'langchen@lang-win.com.tw',
-					])
-					->setSubject(YII_ENV_DEV ? '庫存警示 (測試) - '.$post_param['Order']['done_date'] : '庫存警示 - '.$post_param['Order']['done_date'])
-					->send();
+				$body = $this->renderPartial('warning', [
+							'warning' => $warning,
+							'warehouse' => $warehouse,
+							'order_id' => $post_param['Order']['id'],
+						]);
+				$subject = YII_ENV_DEV ? '庫存警示 (測試) - '.$post_param['Order']['done_date'] : '庫存警示 - '.$post_param['Order']['done_date'];
+				$this->sendMail($body, $subject);
 			}
+
+			$body = $this->renderPartial('order_out', [
+						'ship_array' => $new_ship_array,
+						'content' => $content,
+						'order_id' => $post_param['Order']['id'],
+						'warehouse' => $warehouse,
+						'region' => $post_param['Order']['region'],
+						]);
+			$subject = YII_ENV_DEV ? 'Freight Info (Testing) - '.$post_param['Order']['id'] : 'Freight Info - '.$post_param['Order']['id'];
+			$this->sendMail($body, $subject, true);
 
 			if($model->status == Order::STATUS_DONE){
 				return $this->redirect(['list', 'status' => 'done']);
@@ -399,6 +400,32 @@ class OrderController extends \yii\web\Controller
 	public function actionIndex()
 	{
 		return $this->render('index');
+	}
+
+
+	protected function sendMail($body, $subject, $external = false){
+		$mail = new \PHPMailer;
+
+		$mail->isSMTP();
+		$mail->Host = 'smtp.gmail.com';
+		$mail->SMTPAuth = true;
+		$mail->Username = 'notify@lang-win.com.tw';
+		$mail->Password = '23314526';
+		$mail->SMTPSecure = 'tls';
+		$mail->Port = 587;
+		$mail->setFrom('notify@lang-win.com.tw', 'Notification');
+		$mail->addAddress('jack@lang-win.com.tw');
+		$mail->addAddress('pc-mippi@lang-win.com.tw');
+		$mail->addAddress('yiyin.chen@lang-win.com.tw');
+		$mail->addAddress('susan@lang-win.com.tw');
+		$mail->addAddress('langchen@lang-win.com.tw');
+		if(!YII_ENV_DEV && $external){
+
+		}
+		$mail->isHTML(true);
+		$mail->Subject = $subject;
+		$mail->Body = $body;
+		$mail->send();
 	}
 
 	/**
