@@ -267,6 +267,9 @@ function crewpak_index_to_table($id, $content){
 }
 
 function shipping_info_to_table($shipping_info){
+	if(!$shipping_info){
+		return '';
+	}
 	$table_out = '<div id="w0" class="grid-view"><table class="table table-striped table-bordered"><thead><tr><th>Tracking Number</th><th>包裝</th><th>重量</th><th>運費</th></tr></thead><tbody>';
 	$ship_array = json_decode($shipping_info, true);
 	foreach ($ship_array as $info) {
