@@ -495,7 +495,7 @@ function orders_to_shipment_table($orders, $warehouse){
 		}
 
 		foreach ($ship_info as $info) {
-			$ship_fee = $info['request_fee'];
+			$ship_fee = Fee::getShipFreightFee($info['fee'], $order['region'], $warehouse, $info['type'], $info['weight']);
 			$subtotal_ship_fee += $ship_fee;
 			$subtotal_orig_fee += $info['fee'];
 			$row = '<tr><td>'.$order['id'].'</td>'.

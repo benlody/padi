@@ -61,8 +61,8 @@ $this->registerJsFile(Yii::$app->request->getBaseUrl().'/js/order_edit.js',['dep
 				<select name="packing_type_0">
 					<option value="box">箱</option>
 					<option value="pack">包</option>
-				</select>&nbsp;&nbsp;&nbsp;重量:&nbsp;<input name="weight_0" type="number" style="width:100px;" required/>KG
-				</select>&nbsp;&nbsp;&nbsp;運費:&nbsp;<input name="shipping_fee_0" type="number" style="width:100px;" required/>
+				</select>&nbsp;&nbsp;&nbsp;重量:&nbsp;<input name="weight_0" type="number" step="0.01" style="width:100px;" required/>KG
+				</select>&nbsp;&nbsp;&nbsp;運費:&nbsp;<input name="shipping_fee_0" type="number" step="0.01" style="width:100px;" required/>
 			</b></p>
 			</div>
 		</div>
