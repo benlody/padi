@@ -337,6 +337,33 @@ class OrderController extends \yii\web\Controller
 		}
 	}
 
+	public function actionEdit_only($id)
+	{
+
+		$model = $this->findModel($id);
+		$post_param = Yii::$app->request->post();
+
+		if(isset($post_param['save'])){
+			foreach ($post_param['Order'] as $key => $value) {
+				$model->$key = $value;
+			}
+			$model->update();
+
+			if($model->status == Order::STATUS_DONE){
+				return $this->redirect(['list', 'status' => 'done']);
+			} else {
+				return $this->redirect(['list']);
+			}
+
+		} else {
+
+			return $this->render('edit_only', [
+				'model' => $model,
+			]);
+		}
+	}
+
+
 	public function actionSummary()
 	{
 
