@@ -215,7 +215,7 @@ function crewpak_to_download_table($crewpak_name, $crewpak_detail){
 
 	echo '<tr><td>'.$crewpak_name.'</td><td>';
 	crewpak_detail_to_download_table($crewpak_name, $crewpak_detail['detail']);
-	echo '</td><td>'.$crewpak_detail['cnt'].'</td></tr>';
+	echo '</td><td valign="top" align="center">'.$crewpak_detail['cnt'].'</td></tr>';
 	return;
 }
 
@@ -245,7 +245,7 @@ function product_detail_to_download_table($product_name, $product_detail, $displ
 	}
 
 	if($display_cnt){
-		echo '<tr><td>'.$product_name.'</td><td>'.chineseToUnicode(get_product_name($product_name)).'</td><td>'.$product_detail['cnt'].'</td></tr>';
+		echo '<tr><td>'.$product_name.'</td><td>'.chineseToUnicode(get_product_name($product_name)).'</td><td valign="top" align="center">'.$product_detail['cnt'].'</td></tr>';
 	} else {
 		echo '<tr><td>'.$product_name.'</td><td>'.chineseToUnicode(get_product_name($product_name)).'</td></tr>';		
 	}
@@ -305,12 +305,20 @@ function get_crewpk_name($id){
 	return $crewpak->chinese_name;
 }
 
-function get_customer_name($id){
+function get_customer_name($id, $array = false){
 	$costomer = Customer::find()
 		->where(['id' => $id])
 		->one();
 
-	return $costomer->english_name;
+
+	if($array){
+		$ret['chi'] = $costomer->chinese_name;
+		$ret['eng'] = $costomer->english_name;
+	} else {
+		$ret = $costomer->english_name;
+	}
+
+	return $ret;
 }
 
 function get_check_icon($checked){

@@ -811,8 +811,11 @@ class OrderController extends \yii\web\Controller
 		echo '<th class="tg-031e">'.$model->id.'</th>';
 		echo '</tr>';
 		echo '<tr>';
-		echo '<td class="tg-s6z2">'.chineseToUnicode('會員地址').'<br>ADDRESS</td>';
-		echo '<td class="tg-031e" colspan="3"><span">'.chineseToUnicode('地址(英)').':</span><br>'.chineseToUnicode($model->english_addr).
+		echo '<td class="tg-s6z2">'.chineseToUnicode('會員資訊').'<br></td>';
+		$customer_name = get_customer_name($model->customer_id, true);
+		echo '<td class="tg-031e" colspan="3"><span">'.chineseToUnicode('會員名稱(英)').':</span><br>'.chineseToUnicode($customer_name['eng']).
+						'<br><span">'.chineseToUnicode('會員名稱(中)').':</span><br>'.chineseToUnicode($customer_name['chi']).
+						'<br><span">'.chineseToUnicode('地址(英)').':</span><br>'.chineseToUnicode($model->english_addr).
 						'<br><span">'.chineseToUnicode('地址(中)').':</span><br>'.chineseToUnicode($model->chinese_addr).
 						'<br><span">'.chineseToUnicode('收件人').':</span><br>'.chineseToUnicode($model->contact).
 						'<br><span">'.chineseToUnicode('聯絡电话').':</span><br>'.chineseToUnicode($model->tel).
