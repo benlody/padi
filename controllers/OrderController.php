@@ -307,7 +307,7 @@ class OrderController extends \yii\web\Controller
 							'warehouse' => $warehouse,
 							'order_id' => $post_param['Order']['id'],
 						]);
-				$subject = YII_ENV_DEV ? '庫存警示 (測試) - '.$post_param['Order']['done_date'] : '庫存警示 - '.$post_param['Order']['done_date'];
+				$subject = YII_ENV_DEV ? 'Inventory Warning (Test) - '.$post_param['Order']['done_date'] : 'Inventory Warning - '.$post_param['Order']['done_date'];
 				$this->sendMail($body, $subject);
 			}
 
@@ -318,7 +318,7 @@ class OrderController extends \yii\web\Controller
 						'warehouse' => $warehouse,
 						'region' => $post_param['Order']['region'],
 						]);
-			$subject = YII_ENV_DEV ? 'Freight Info (Testing) - '.$post_param['Order']['id'] : 'Freight Info - '.$post_param['Order']['id'];
+			$subject = YII_ENV_DEV ? 'Freight Info (Test) - '.$post_param['Order']['id'] : 'Freight Info - '.$post_param['Order']['id'];
 			$this->sendMail($body, $subject, true);
 
 			if($model->status == Order::STATUS_DONE){
@@ -421,7 +421,8 @@ class OrderController extends \yii\web\Controller
 		$mail->addAddress('susan@lang-win.com.tw');
 		$mail->addAddress('langchen@lang-win.com.tw');
 		if(!YII_ENV_DEV && $external){
-
+			$mail->addAddress('Azure.Ruan@padi.com.au');
+			$mail->addAddress('Kitty.Hu@padi.com.au');
 		}
 		$mail->isHTML(true);
 		$mail->Subject = $subject;
