@@ -41,7 +41,6 @@ require_once __DIR__  . '/../../utils/enum.php';
 				<script>
 				var customer = <?php echo json_encode($customer); ?>;
 				var select = <?php echo json_encode($model->customer_id); ?>;
-				console.log(select);
 				var idx;
 				for	(idx = 0; idx < customer.length; idx++) {
 					document.write('<option value="');
@@ -68,48 +67,86 @@ require_once __DIR__  . '/../../utils/enum.php';
 		<label class="control-label" for="order-content">訂單內容</label>
 		<div style="margin-left: 50px">
 
+		<?php
+			$content = json_decode($model->content, true);
+		?>
+		<script>
+			var crewpak = <?php echo json_encode($crewpak); ?>;
+			var product = <?php echo json_encode($product); ?>;
+		</script>
+
 		<div class="input_fields_wrap_crewpak">
 			<label class="control-label">套裝</label>
 			<button class="add_field_button_crewpak">+</button>
-			<div>
-				<select class="form-group" name="crew_pak_0">
-					<option value=""></option>
-					<script>
-					var crewpak = <?php echo json_encode($crewpak); ?>;
-					var idx;
-					for	(idx = 0; idx < crewpak.length; idx++) {
-						document.write('<option value="');
-						document.write(crewpak[idx]);
-						document.write('">');
-						document.write(crewpak[idx]);
-						document.write('</option>');
+			<?php
+				if(empty($model->content)){
+					echo '<div>';
+					echo '<select class="form-group" name="crew_pak_0">';
+					echo '<option value=""></option>';
+					foreach ($crewpak as $c) {
+						echo '<option value="'.$c.'">'.$c.'</option>';
 					}
-					</script>
-				</select>
-				<?= Html::input('number', 'crew_pak_cnt_0', '0') ?>
-			</div>
+					echo '</select>';
+					echo Html::input('number', 'crew_pak_cnt_0', '0');
+					echo '</div>';
+				} else {
+					$crewpak_array = $content['crewpak'];
+					$idx = 0;
+					foreach ($crewpak_array as $cid => $detail) {
+						echo '<div>';
+						echo '<select class="form-group" name="crew_pak_'.$idx.'">';
+						echo '<option value=""></option>';
+						foreach ($crewpak as $c) {
+							if(0 == strcmp($c, $cid)){
+								echo '<option value="'.$c.'" selected>'.$c.'</option>';
+							} else {
+								echo '<option value="'.$c.'">'.$c.'</option>';
+							}
+						}
+						echo '</select>';
+						echo Html::input('number', 'crew_pak_cnt_'.$idx, $detail['cnt']);
+						echo '</div>';
+						$idx++;
+					}
+				}
+			?>
 		</div>
 
 		<div class="input_fields_wrap_product">
 			<label class="control-label">單品</label>
 			<button class="add_field_button_product">+</button>
-			<div>
-				<select class="form-group" name="product_0">
-					<option value=""></option>
-					<script>
-					var product = <?php echo json_encode($product); ?>;
-					var idx;
-					for	(idx = 0; idx < product.length; idx++) {
-						document.write('<option value="');
-						document.write(product[idx]);
-						document.write('">');
-						document.write(product[idx]);
-						document.write('</option>');
+			<?php
+				if(empty($model->content)){
+					echo '<div>';
+					echo '<select class="form-group" name="product_0">';
+					echo '<option value=""></option>';
+					foreach ($product as $p) {
+						echo '<option value="'.$p.'">'.$p.'</option>';
 					}
-					</script>
-				</select>
-				<?= Html::input('number', 'product_cnt_0', '0') ?>
-			</div>
+					echo '</select>';
+					echo Html::input('number', 'product_0', '0');
+					echo '</div>';
+				} else {
+					$product_array = $content['product'];
+					$idx = 0;
+					foreach ($product_array as $pid => $detail) {
+						echo '<div>';
+						echo '<select class="form-group" name="product_'.$idx.'">';
+						echo '<option value=""></option>';
+						foreach ($product as $p) {
+							if(0 == strcmp($p, $pid)){
+								echo '<option value="'.$p.'" selected>'.$p.'</option>';
+							} else {
+								echo '<option value="'.$p.'">'.$p.'</option>';
+							}
+						}
+						echo '</select>';
+						echo Html::input('number', 'product_cnt_'.$idx, $detail['cnt']);
+						echo '</div>';
+						$idx++;
+					}
+				}
+			?>
 		</div>
 
 		<div class="help-block"></div>
