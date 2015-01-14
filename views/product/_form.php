@@ -18,11 +18,11 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'english_name', ['labelOptions' => ['label' => '英文名稱']])->textInput() ?>
 
-    <?= $form->field($model, 'warning_cnt_xm', ['labelOptions' => ['label' => '廈門安全庫存量']])->textInput(['value' => 0]) ?>
+    <?= $form->field($model, 'warning_cnt_xm', ['labelOptions' => ['label' => '廈門安全庫存量']])->textInput() ?>
 
-    <?= $form->field($model, 'warning_cnt_tw', ['labelOptions' => ['label' => '台灣安全庫存量']])->textInput(['value' => 0]) ?>
+    <?= $form->field($model, 'warning_cnt_tw', ['labelOptions' => ['label' => '台灣安全庫存量']])->textInput() ?>
 
-    <?= $form->field($model, 'weight', ['labelOptions' => ['label' => '重量(克)']])->textInput(['value' => 0]) ?>
+    <?= $form->field($model, 'weight', ['labelOptions' => ['label' => '重量(克)']])->textInput() ?>
    
     <?= $form->field($model, 'extra_info', ['labelOptions' => ['label' => '備註']])->textInput() ?>
 
