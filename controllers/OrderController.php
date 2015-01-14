@@ -775,9 +775,9 @@ class OrderController extends \yii\web\Controller
 
 	protected function download_tw($model){
 
-		echo '<p style="text-align: center;"><span style="color: #808080; line-height:3pt;">'.chineseToUnicode('光隆印刷廠股份有限公司').'<br>';
+		echo '<p style="text-align: center;"><span style="line-height:3pt;">'.chineseToUnicode('光隆印刷廠股份有限公司').'<br>';
 		echo 'Kuang Lung Printing Factory Co., Ltd.<br>';
-		echo chineseToUnicode('包裝打捆紀錄單').'<br><span style="font-size: small;">'.chineseToUnicode('日期').':'.$model->date.'</span></span></p>';
+		echo chineseToUnicode('包裝打捆紀錄單').'<br><span style="font-size: 24px;">'.chineseToUnicode('日期').':'.$model->date.'</span></span></p>';
 		echo '<p style="text-align: left;">'.chineseToUnicode('公司地址：台北市漢口街一段61號2F TEL:02-23314526 FAX:02-23832251').'<br>';
 		if($model->ship_type == \ShippingType::T_CHI_MAIL){
 			echo chineseToUnicode('送貨單位：■中華郵政 □順丰快遞 □新航快遞').'</p>';

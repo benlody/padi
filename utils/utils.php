@@ -213,7 +213,7 @@ function order_content_to_download_table($content){
 
 function crewpak_to_download_table($crewpak_name, $crewpak_detail){
 
-	echo '<tr><td>'.$crewpak_name.'</td><td>';
+	echo '<tr><td valign="top" align="center">'.$crewpak_name.'</td><td>';
 	crewpak_detail_to_download_table($crewpak_name, $crewpak_detail['detail']);
 	echo '</td><td valign="top" align="center">'.$crewpak_detail['cnt'].'</td></tr>';
 	return;
