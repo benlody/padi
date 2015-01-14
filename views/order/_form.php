@@ -124,7 +124,7 @@ require_once __DIR__  . '/../../utils/enum.php';
 						echo '<option value="'.$p.'">'.$p.'</option>';
 					}
 					echo '</select>';
-					echo Html::input('number', 'product_0', '0');
+					echo Html::input('number', 'product_cnt_0', '0');
 					echo '</div>';
 				} else {
 					$product_array = $content['product'];

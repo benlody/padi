@@ -49,7 +49,7 @@ function onchange_dst() {
 	} else if(dst.substring(0, 2) == 'tw'){
 		document.getElementById("transfer-chinese_addr").value = '新北市三重區光復路一段83巷8號';
 		document.getElementById("transfer-english_addr").value = ' ';
-		document.getElementById("transfer-contact").value = '陳致傑';
+		document.getElementById("transfer-contact").value = '陳學輝';
 		document.getElementById("transfer-tel").value = '+886-2331-4526';
 	} else {
 		document.getElementById("transfer-chinese_addr").value = ' ';
