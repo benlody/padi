@@ -172,7 +172,7 @@ $this->params['breadcrumbs'][] = $this->title;
 		} else {
 			$detail_btn_lable = '顯示詳細';
 			$detail_btn_cfg = ['list', 'status' => $status, 'detail' => true, 'sort' => $sort];
-			unset($config['columns'][6]);
+			unset($config['columns'][7]);
 		}
 	?>
 	<h1><?= Html::encode($this->title.$subtitle) ?></h1>
