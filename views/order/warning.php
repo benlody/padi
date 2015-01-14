@@ -7,15 +7,15 @@ use yii\helpers\Url;
 /* @var $message \yii\mail\BaseMessage instance of newly created mail message */
 
 ?>
-<p>倉儲:<?= $warehouse?></p>
-<p>訂單:<?= $order_id?>出貨後 以下商品數量已低於安全庫存量</p>
+<p>Warehouse:<?= $warehouse?></p>
+<p>The following product current balance is lower than Safty count after order <?= $order_id?> delivery:</p>
 
 <?php
 
 	foreach ($warning as $product => $cnt) {
-		echo '<p>商品名稱:'.$product.'<br>';
-		echo '安全庫存量:'.$cnt['warning_cnt'].'<br>';
-		echo '現有數量:'.$cnt['balance'].'</p>';
+		echo '<p>Product:'.$product.'<br>';
+		echo 'Safty count:'.$cnt['warning_cnt'].'<br>';
+		echo 'Current balance:'.$cnt['balance'].'</p>';
 	}
 
 ?>

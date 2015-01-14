@@ -893,6 +893,9 @@ class OrderController extends \yii\web\Controller
 		if(isset($content['estimate'])){
 			echo '<p>'.chineseToUnicode('預估重量： '.$content['estimate']).'</p>';
 		}
+		echo '<p>'.chineseToUnicode('覆核：').'</p>';
+		echo '<p>'.chineseToUnicode('出貨：').'</p>';
+		echo '<p>'.chineseToUnicode('運費：').'</p>';
 		echo '<p style="text-align: center;"><span style="font-size: 24px;">'.$p.'/'.$page.'</span></p>';
 		echo '</div> ';
 
