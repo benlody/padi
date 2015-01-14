@@ -24,7 +24,7 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'weight', ['labelOptions' => ['label' => '重量(克)']])->textInput() ?>
    
-    <?= $form->field($model, 'extra_info', ['labelOptions' => ['label' => '備註']])->textInput() ?>
+    <?= $form->field($model, 'extra_info', ['labelOptions' => ['label' => '備註']])->textArea(['rows' => 6]) ?>
 
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? Yii::t('app', '新增') : Yii::t('app', '儲存'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
