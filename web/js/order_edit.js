@@ -46,3 +46,25 @@ $(document).ready(function() {
 		}
 	});
 });
+
+function check_missing(){
+	var check_array = document.getElementsByClassName('product'), idx = 0, missing = {}, ret;
+	for(idx = 0; idx < check_array.length; idx++){
+		if(!check_array[idx].checked){
+			var p_name = check_array[idx].name;
+			var p_cnt = parseInt(document.getElementById(check_array[idx].name).innerText);
+			p_name = p_name.substring(p_name.lastIndexOf('[') + 1, p_name.lastIndexOf(']'));
+			missing[p_name] = missing[p_name] ? missing[p_name] + p_cnt : p_cnt;
+		}
+	}
+
+	if(!jQuery.isEmptyObject(missing)){
+		var msg = '確認以下missing item\n';
+		for(var p in missing){
+			msg += (p + ': ' + missing[p] + '\n');
+		}
+		ret = confirm(msg);
+	}
+
+	return ret;
+}

@@ -73,7 +73,7 @@ $this->registerJsFile(Yii::$app->request->getBaseUrl().'/js/order_edit.js',['dep
 		<label>自動寄發通知信給PADI</label>
 
 		<div class="form-group">
-			<?= Html::submitButton(Yii::t('app', '出貨'), ['class' => 'btn btn-primary', 'name' => 'done']) ?>
+			<?= Html::submitButton(Yii::t('app', '出貨'), ['class' => 'btn btn-primary', 'name' => 'done', 'onclick' => 'return check_missing()']) ?>
 		</div>
 	<?php ActiveForm::end(); ?>
 

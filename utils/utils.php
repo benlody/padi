@@ -173,7 +173,7 @@ function crewpak_detail_to_edit_table($crewpak_name, $crewpak_detail){
 
 function product_detail_to_edit_table($product_name, $product_detail, $name, $id){
 
-	$table_out = '<tr><td>'.$product_name.'</td><td>'.get_product_name($product_name).'</td><td>'.$product_detail->cnt.'</td><td>'.get_checkbox($product_detail->done, $name, $id, 'product').'</td></tr>';
+	$table_out = '<tr><td>'.$product_name.'</td><td>'.get_product_name($product_name).'</td><td id="'.$name.'">'.$product_detail->cnt.'</td><td>'.get_checkbox($product_detail->done, $name, $id, 'product').'</td></tr>';
 	return $table_out;
 }
 
