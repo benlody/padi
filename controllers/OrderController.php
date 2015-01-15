@@ -321,7 +321,11 @@ class OrderController extends \yii\web\Controller
 						'region' => $post_param['Order']['region'],
 						]);
 			$subject = YII_ENV_DEV ? 'Freight Info (Test) - '.$post_param['Order']['id'] : 'Freight Info - '.$post_param['Order']['id'];
-			$this->sendMail($body, $subject, true);
+			if($post_param['send_padi']){
+				$this->sendMail($body, $subject, true);
+			} else {
+				$this->sendMail($body, $subject, false);
+			}
 
 			if($model->status == Order::STATUS_DONE){
 				return $this->redirect(['list', 'status' => 'done']);

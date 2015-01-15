@@ -68,7 +68,10 @@ $this->registerJsFile(Yii::$app->request->getBaseUrl().'/js/order_edit.js',['dep
 		</div>
 
 		<?= $form->field($model, 'extra_info', ['labelOptions' => ['label' => '備註']])->textArea(['rows' => 6]) ?>
-	
+
+		<?= Html::checkbox('send_padi', true) ?>
+		<label>自動寄發通知信給PADI</label>
+
 		<div class="form-group">
 			<?= Html::submitButton(Yii::t('app', '出貨'), ['class' => 'btn btn-primary', 'name' => 'done']) ?>
 		</div>
