@@ -316,6 +316,8 @@ class OrderController extends \yii\web\Controller
 						'content' => $content,
 						'order_id' => $post_param['Order']['id'],
 						'warehouse' => $warehouse,
+						'customer_id' => $post_param['Order']['customer_id'],
+						'customer_name' => get_customer_name($model->customer_id),
 						'region' => $post_param['Order']['region'],
 						]);
 			$subject = YII_ENV_DEV ? 'Freight Info (Test) - '.$post_param['Order']['id'] : 'Freight Info - '.$post_param['Order']['id'];
@@ -449,7 +451,7 @@ class OrderController extends \yii\web\Controller
 		$mail->addAddress('langchen@lang-win.com.tw');
 		if(!YII_ENV_DEV && $external){
 			$mail->addAddress('Azure.Ruan@padi.com.au');
-			$mail->addAddress('Kitty.Hu@padi.com.au');
+//			$mail->addAddress('Kitty.Hu@padi.com.au');
 		}
 		$mail->isHTML(true);
 		$mail->Subject = $subject;

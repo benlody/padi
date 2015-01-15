@@ -7,30 +7,29 @@ use yii\helpers\Url;
 /* @var $message \yii\mail\BaseMessage instance of newly created mail message */
 
 ?>
-<p>Freight and missing item as below:</p>
-<p>warehouse: <?= $warehouse?></p>
-<p>PO#: <?= $order_id?></p>
-<p>shipping info:</p>
 
 <?php
+	$total_fee = 0;
+	$ship_out = '';
 	foreach ($ship_array as $ship_info) {
-		echo '&nbsp;&nbsp;&nbsp;&nbsp;Tracking No.: '.substr($ship_info['id'], 0, strpos($ship_info['id'], '_')).'<br>';
+		$ship_out = $ship_out.'&nbsp;&nbsp;&nbsp;&nbsp;Tracking No.: '.substr($ship_info['id'], 0, strpos($ship_info['id'], '_')).'<br>';
 		$fee = Fee::getShipFreightFee($ship_info['fee'], $region, $warehouse, $ship_info['type'], $ship_info['weight']);
 		if(0 == strcmp('tw', $warehouse)){
 			$display_fee = ceil($fee / 25.3);
 		} else {
 			$display_fee = ceil($fee);
 		}
-		echo '&nbsp;&nbsp;&nbsp;&nbsp;Freight Fee: '.$display_fee;
-		echo (0 == strcmp('xm', $warehouse)) ? 'RMB<br>' : 'AUD<br>';
-		echo '&nbsp;&nbsp;&nbsp;&nbsp;Packing: '.(isset($ship_info['box']) ? $ship_info['box'].'box' : $ship_info['pack'].'pack').'<br>';
-		echo '&nbsp;&nbsp;&nbsp;&nbsp;Weight: '.$ship_info['weight'].'KG<br>';
-		echo '<br>';
+		$total_fee += $display_fee;
+		$ship_out = $ship_out.'&nbsp;&nbsp;&nbsp;&nbsp;Freight Fee: '.$display_fee;
+		$ship_out = $ship_out.((0 == strcmp('xm', $warehouse)) ? 'RMB<br>' : 'AUD<br>');
+//		$ship_out = $ship_out.'&nbsp;&nbsp;&nbsp;&nbsp;Packing: '.(isset($ship_info['box']) ? $ship_info['box'].'box' : $ship_info['pack'].'pack').'<br>';
+//		$ship_out = $ship_out.'&nbsp;&nbsp;&nbsp;&nbsp;Weight: '.$ship_info['weight'].'KG<br>';
+		$ship_out = $ship_out.'<br>';
 	}
 ?>
 
-
 <?php
+	$missing = '';
 	$product_array = array();
 	foreach ($content->product as $p => $detail) {
 		if($detail->done){
@@ -51,13 +50,26 @@ use yii\helpers\Url;
 	}
 
 	if (!empty($product_array)) {
-		echo '<p>Missing items & Qty:</p>';
-		echo '<p>';
+		$title = '<p>Freight info and missing item as below:</p>';
+		$missing = $missing.'<p>Missing items & Qty:</p>';
+		$missing = $missing.'<p>';
 		foreach ($product_array as $p => $cnt) {
-			echo '&nbsp;&nbsp;&nbsp;&nbsp;'.$p.':'.$cnt.'<br>';
+			$missing = $missing.'&nbsp;&nbsp;&nbsp;&nbsp;'.$p.':'.$cnt.'<br>';
 		}
-		echo '</p>';
+		$missing = $missing.'</p>';
+	} else {
+		$title = '<p>Freight info as below:</p>';
 	}
 
 ?>
+
+
+<?= $title ?>
+<p>warehouse: <b><?= $warehouse ?></b></p>
+<p>PO#: <b><?= $order_id ?></b></p>
+<p>DC#: <b><?= $customer_id ?>&nbsp;&nbsp;<?= $customer_name ?></b></p>
+<p>Total Freight Fee: <b><?= $total_fee ?><? echo (0 == strcmp('xm', $warehouse)) ? 'RMB' : 'AUD'; ?></b></p>
+<p>shipping info:</p>
+<? echo $ship_out; ?>
+<? echo $missing; ?>
 
