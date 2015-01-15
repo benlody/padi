@@ -32,6 +32,7 @@ class InventoryController extends \yii\web\Controller
 
 				$product_idx = "product_".$x;
 				$product_cnt_idx = "product_cnt_".$x;
+				$change_idx = "change_".$x;
 
 				if(!isset($post_param[$product_idx])){
 					break;
@@ -42,6 +43,13 @@ class InventoryController extends \yii\web\Controller
 
 				$transaction_model->$product_id = $product_cnt - $balance_model->$product_id;
 				$balance_model->$product_id = $product_cnt;
+
+				if($transaction_model->$product_id != $post_param[$change_idx]){
+					echo "<script type='text/javascript'>alert('庫存已被更動或輸入錯誤 請重新輸入');</script>";
+					return $this->render('adjust', [
+						'product' =>  $product->find()->column()
+					]);
+				}
 
 				$x++;
 			}
@@ -60,7 +68,10 @@ class InventoryController extends \yii\web\Controller
 			$transaction_model->insert();
 			$balance_model->insert();
 
-			return $this->redirect(['overview']);
+			return $this->redirect(['transaction',
+				'warehouse' => $warehouse,
+				'type' => $warehouse_type,
+				]);
 
 		} else {
 			return $this->render('adjust', [
@@ -140,6 +151,17 @@ class InventoryController extends \yii\web\Controller
 			'product' => $product,
 			'crew_list' => $crew_list
 		]);
+	}
+	public function actionAjaxGet_balance()
+	{
+		$post_param = Yii::$app->request->post();
+		$query = new Query;
+		$balance = $query->select($post_param["id"])
+						->from($post_param["balance"])
+						->orderBy('ts DESC')
+						->one();
+
+		return json_encode($balance,JSON_FORCE_OBJECT);
 	}
 
 }

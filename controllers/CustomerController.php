@@ -26,7 +26,6 @@ class CustomerController extends Controller
         ];
     }
 
-
 	public function actionAjaxGet()
 	{
 		$post_param = Yii::$app->request->post();
@@ -37,8 +36,6 @@ class CustomerController extends Controller
 
 		return json_encode($customer,JSON_FORCE_OBJECT);
 	}
-
-
 
     /**
      * Lists all Customer models.

@@ -14,6 +14,10 @@ $this->registerJsFile(Yii::$app->request->getBaseUrl().'/js/inventory_adjust.js'
 
 <div class="inventory-adjust">
 
+	<script>
+	var product = <?php echo json_encode($product); ?>;
+	</script>
+
 	<?php $form = ActiveForm::begin(); ?>
 
 		<label class="control-label">倉儲</label>
@@ -21,7 +25,7 @@ $this->registerJsFile(Yii::$app->request->getBaseUrl().'/js/inventory_adjust.js'
 		<?= Html::dropDownList('warehouse', 'xm', [
 			'xm' => '廈門卡樂兒',
 			'tw' => '台灣光隆',
-			])
+			], ['id' => 'warehouse',  'onchange' => "change_wh()"])
 		?>
 		<div class="help-block"></div>
 
@@ -29,7 +33,7 @@ $this->registerJsFile(Yii::$app->request->getBaseUrl().'/js/inventory_adjust.js'
 		<?= Html::dropDownList('warehouse_type', 'xm', [
 			'padi' => 'PADI庫存',
 			'self' => '自有庫存',
-			])
+			], ['id' => 'warehouse_type',  'onchange' => "change_wh()"])
 		?>
 		<div class="help-block"></div>
 		</div>
@@ -38,10 +42,9 @@ $this->registerJsFile(Yii::$app->request->getBaseUrl().'/js/inventory_adjust.js'
 		<div style="margin-left: 50px">
 
 		<div class="input_fields_wrap_product">
-			<label class="control-label">Product / 調整數量</label>
 			<button class="add_field_button_product">+</button>
 			<div>
-				<select class="form-group" name="product_0">
+				<select class="form-group" name="product_0" id="product_0" onchange="get_balance(this, 0)">
 					<option value=""></option>
 					<script>
 					var product = <?php echo json_encode($product); ?>;
@@ -55,8 +58,12 @@ $this->registerJsFile(Yii::$app->request->getBaseUrl().'/js/inventory_adjust.js'
 					}
 					</script>
 				</select>
-				<label>/</label>
-				<?= Html::input('number', 'product_cnt_0', '0') ?>
+				<label>目前庫存餘額:</label>
+				<label id="label_0"></label>
+				<label>&nbsp;&nbsp;&nbsp;&nbsp;增減:</label>
+				<?= Html::input('number', 'change_0', '0', ['id' => 'change_0', 'onchange' => 'change_hook(this.value, 0)']) ?>
+				<label>&nbsp;&nbsp;&nbsp;&nbsp;調整為:</label>
+				<?= Html::input('number', 'product_cnt_0', '0', ['id' => 'product_cnt_0', 'onchange' => 'balance_hook(this.value, 0)']) ?>
 			</div>
 		</div>
 
@@ -69,7 +76,7 @@ $this->registerJsFile(Yii::$app->request->getBaseUrl().'/js/inventory_adjust.js'
 		</div>
 	
 		<div class="form-group">
-			<?= Html::submitButton(Yii::t('app', 'Submit'), ['class' => 'btn btn-primary', 'name' => 'adjust']) ?>
+			<?= Html::submitButton(Yii::t('app', 'Submit'), ['class' => 'btn btn-primary', 'name' => 'adjust', 'onclick' => 'return validate()']) ?>
 		</div>
 	<?php ActiveForm::end(); ?>
 
