@@ -27,6 +27,13 @@ $this->params['breadcrumbs'][] = $this->title;
 				'columns' => [
 					'id:text:Order編號',
 					'customer_id:text:會員編號',
+					[
+						'format' => 'raw',
+						'label' => '會員名稱',
+						'value' => function ($model) {
+							return get_customer_name($model->customer_id);
+						}
+					],
 					'done_date:text:出貨日期',
 					[
 						'attribute' => 'status',
@@ -73,6 +80,13 @@ $this->params['breadcrumbs'][] = $this->title;
 				'columns' => [
 					'id:text:訂單編號',
 					'customer_id:text:會員編號',
+					[
+						'format' => 'raw',
+						'label' => '會員名稱',
+						'value' => function ($model) {
+							return get_customer_name($model->customer_id);
+						}
+					],
 					'date:text:日期',
 					[
 						'attribute' => 'status',
@@ -127,7 +141,7 @@ $this->params['breadcrumbs'][] = $this->title;
 		} else {
 			$detail_btn_lable = '顯示詳細';
 			$detail_btn_cfg = ['list', 'status' => $status, 'detail' => true, 'sort' => $sort];
-			unset($config['columns'][5]);
+			unset($config['columns'][6]);
 		}
 
 	?>
