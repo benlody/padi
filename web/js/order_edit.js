@@ -1,22 +1,60 @@
 
+function isInt(value) {
+  return !isNaN(value) && 
+         parseInt(Number(value)) == value && 
+         !isNaN(parseInt(value, 10));
+}
+
 $(document).ready(function() {
 	$('.crewpak').click(function () {
 		var $this = $(this),
-			$inputs = $($this.data('target'));
+			$inputs = $($this.data('target')),
+			$cnts =  $($this.data('cnt'));
+		var cnt = parseInt(document.getElementById($this[0].name).innerText);
 
 		$inputs.prop('checked', this.checked);
+		$cnts.val(this.checked ? cnt : 0);
+
 	})
 	$('.product').click(function () {
 		var $this = $(this),
 			$parent = $($this.data('target')),
 			$siblings = $($this.data('sibling'));
+
+		var cnt_input = document.getElementById('cnt_' + $this[0].name);
+		var cnt = parseInt(document.getElementById($this[0].name).innerText);
 		var i, check = true;
+
+		cnt_input.value = this.checked ? cnt : 0;
 
 		for(i = 0; i < $siblings.length; i++){
 			check &= $siblings[i].checked;
 		}
 		$parent.prop('checked', check);
-		
+	})
+
+	$('.cnt').keyup(function () {
+		var name = this.name.substring(4);
+		var cnt = parseInt(document.getElementById(name).innerText);
+		var checkbox = document.getElementsByName(name)[0];
+		var $parent = $(($(checkbox)).data('target'));
+		var $siblings = $(($(checkbox)).data('sibling'));
+
+		if((!isInt(this.value) && this.value !== '') || this.value > cnt){
+			alert('輸入錯誤');
+			this.value = 0;
+		}
+		if(this.value != cnt){
+			checkbox.checked = false;
+			$parent.prop('checked', false);
+		} else {
+			checkbox.checked = true;
+			var i, check = true;
+			for(i = 0; i < $siblings.length; i++){
+				check &= $siblings[i].checked;
+			}
+			$parent.prop('checked', check);
+		}
 	})
 });
 
@@ -52,9 +90,11 @@ function check_missing(){
 	for(idx = 0; idx < check_array.length; idx++){
 		if(!check_array[idx].checked){
 			var p_name = check_array[idx].name;
-			var p_cnt = parseInt(document.getElementById(check_array[idx].name).innerText);
+			var p_cnt = parseInt(document.getElementById(p_name).innerText);
+			var p_done = parseInt(document.getElementsByName('cnt_' + p_name)[0].value);
+
 			p_name = p_name.substring(p_name.lastIndexOf('[') + 1, p_name.lastIndexOf(']'));
-			missing[p_name] = missing[p_name] ? missing[p_name] + p_cnt : p_cnt;
+			missing[p_name] = missing[p_name] ? missing[p_name] + p_cnt - p_done : p_cnt - p_done;
 		}
 	}
 

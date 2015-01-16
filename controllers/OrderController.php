@@ -194,10 +194,13 @@ class OrderController extends \yii\web\Controller
 
 		$model = $this->findModel($id);
 		$post_param = Yii::$app->request->post();
-		$old_content = json_decode($model->content);
-		$content = $old_content;
+		$content = json_decode($model->content);
+		$old_content = json_decode($model->content, true);
 		$now = strtotime('now');
 		$query = new Query;
+
+
+
 
 		if(isset($post_param['done'])){
 
@@ -211,9 +214,10 @@ class OrderController extends \yii\web\Controller
 
 			if(isset($post_param['product'])){
 				foreach ($post_param['product'] as $product => $done) {
+					$old_cnt = $old_content['product'][$product]['done'];
 					$content->product->$product->done = true;
-					$padi_transaction_model->$product -= $content->product->$product->cnt;
-					$padi_balance_model->$product -= $content->product->$product->cnt;
+					$padi_transaction_model->$product -= ($content->product->$product->cnt - $old_cnt);
+					$padi_balance_model->$product -= ($content->product->$product->cnt - $old_cnt);
 
 					$warning_cnt = $query->select('*')
 										->from('product')
@@ -236,9 +240,66 @@ class OrderController extends \yii\web\Controller
 			if(isset($post_param['detail'])){
 				foreach ($post_param['detail'] as $crewpak => $detail) {
 					foreach ($detail as $product => $done) {
+						$old_cnt = $old_content['crewpak'][$crewpak]['detail'][$product]['done'];
 						$content->crewpak->$crewpak->detail->$product->done = true;
-						$padi_transaction_model->$product -= $content->crewpak->$crewpak->detail->$product->cnt;
-						$padi_balance_model->$product -= $content->crewpak->$crewpak->detail->$product->cnt;
+						$padi_transaction_model->$product -= ($content->crewpak->$crewpak->detail->$product->cnt - $old_cnt);
+						$padi_balance_model->$product -= ($content->crewpak->$crewpak->detail->$product->cnt - $old_cnt);
+
+						$warning_cnt = $query->select('*')
+											->from('product')
+											->where('id = "'.$product.'"')
+											->one();
+						$warning_cnt_wh = 'warning_cnt_'.$warehouse;
+						if($warning_cnt[$warning_cnt_wh] > 0 && $warning_cnt[$warning_cnt_wh] > $padi_balance_model->$product){
+							$warning[$product]['warning_cnt'] = $warning_cnt[$warning_cnt_wh];
+							$warning[$product]['balance'] = $padi_balance_model->$product;
+						}
+					}
+				}
+			}
+
+			if(isset($post_param['cnt_product'])){
+				foreach ($post_param['cnt_product'] as $product => $cnt) {
+					$old_cnt = $old_content['product'][$product]['done'];
+					if(0 == $cnt || $post_param['product'][$product]){
+						continue;
+					}
+					if($old_cnt >= $cnt){
+						continue;
+					}
+					$content->product->$product->done = $cnt;
+					$padi_transaction_model->$product -= ($cnt - $old_cnt);
+					$padi_balance_model->$product -= ($cnt - $old_cnt);
+
+					$warning_cnt = $query->select('*')
+										->from('product')
+										->where('id = "'.$product.'"')
+										->one();
+					$warning_cnt_wh = 'warning_cnt_'.$warehouse;
+					if($warning_cnt[$warning_cnt_wh] > 0 && $warning_cnt[$warning_cnt_wh] > $padi_balance_model->$product){
+						$warning[$product]['warning_cnt'] = $warning_cnt[$warning_cnt_wh];
+						$warning[$product]['balance'] = $padi_balance_model->$product;
+					}
+				}
+			}
+
+			if(isset($post_param['cnt_detail'])){
+				foreach ($post_param['cnt_detail'] as $crewpak => $detail) {
+					if($post_param['crewpak'][$crewpak]){
+						continue;
+					}
+
+					foreach ($detail as $product => $cnt) {
+						$old_cnt = $old_content['crewpak'][$crewpak]['detail'][$product]['done'];
+						if(0 == $cnt || $post_param['detail'][$crewpak][$product]){
+							continue;
+						}
+						if($old_cnt >= $cnt){
+							continue;
+						}
+						$content->crewpak->$crewpak->detail->$product->done = $cnt;
+						$padi_transaction_model->$product -= ($cnt - $old_cnt);
+						$padi_balance_model->$product -= ($cnt - $old_cnt);
 
 						$warning_cnt = $query->select('*')
 											->from('product')
@@ -266,14 +327,14 @@ class OrderController extends \yii\web\Controller
 			$model->status = Order::STATUS_DONE;
 
 			foreach ($content->product as $product => $value) {
-				if($value->done == false){
+				if($value->done !== true){
 					$model->status = Order::STATUS_PROCESSING;
 					break;
 				}
 			}
 
 			foreach ($content->crewpak as $crewpak => $value) {
-				if($value->done == false){
+				if($value->done !== true){
 					$model->status = Order::STATUS_PROCESSING;
 					break;
 				}

@@ -155,7 +155,7 @@ function order_content_to_edit_table($content){
 
 function crewpak_to_edit_table($crewpak_name, $crewpak_detail){
 
-	$table_out = '<tr><td>'.$crewpak_name.'</td><td>'.crewpak_detail_to_edit_table($crewpak_name, $crewpak_detail->detail).'</td><td>'.$crewpak_detail->cnt.'</td><td>'.get_checkbox($crewpak_detail->done, 'crewpak['.$crewpak_name.']', $crewpak_name, 'crewpak').'</td></tr>';
+	$table_out = '<tr><td>'.$crewpak_name.'</td><td>'.crewpak_detail_to_edit_table($crewpak_name, $crewpak_detail->detail).'</td><td id="crewpak['.$crewpak_name.']">'.$crewpak_detail->cnt.'</td><td>'.get_checkbox($crewpak_detail->done, 'crewpak['.$crewpak_name.']', $crewpak_name, 'crewpak').'</td></tr>';
 	return $table_out;
 }
 
@@ -321,21 +321,24 @@ function get_customer_name($id, $array = false){
 	return $ret;
 }
 
-function get_check_icon($checked){
-	if($checked){
+function get_check_icon($done){
+	if($done === true){
 		return '<span class="glyphicon glyphicon glyphicon-ok"></span>';
+	} else if($done){
+		return $done;
 	} else {
 		return '';
 	}
 }
 
-function get_checkbox($checked, $name, $id, $class){
-	if($checked){
+function get_checkbox($done, $name, $id, $class){
+	if($done === true){
 		return '<span class="glyphicon glyphicon glyphicon-ok"></span>';
 	} else if(0 == strcmp($class, 'product')){
-		return '<input type="checkbox" name="'.$name.'" class="product_'.$id.' product" data-target=".crewpak_'.$id.'" data-sibling=".product_'.$id.'">';
+		return '<input type="checkbox" name="'.$name.'" class="product_'.$id.' product" data-target=".crewpak_'.$id.'" data-sibling=".product_'.$id.'">'.
+				'<input id="cnt_'.$name.'" name="cnt_'.$name.'" class="cnt_'.$id.' cnt" style="width:50px;" value='.($done === false ? 0 : $done).'>';
 	} else {
-		return '<input type="checkbox" name="'.$name.'" class="crewpak_'.$id.' crewpak" data-target=".product_'.$id.'">';
+		return '<input type="checkbox" name="'.$name.'" class="crewpak_'.$id.' crewpak" data-target=".product_'.$id.'" data-cnt=".cnt_'.$id.'">';
 	}
 }
 
