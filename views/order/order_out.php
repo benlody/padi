@@ -22,8 +22,8 @@ use yii\helpers\Url;
 		$total_fee += $display_fee;
 		$ship_out = $ship_out.'&nbsp;&nbsp;&nbsp;&nbsp;Freight Fee: '.$display_fee;
 		$ship_out = $ship_out.((0 == strcmp('xm', $warehouse)) ? 'RMB<br>' : 'AUD<br>');
-//		$ship_out = $ship_out.'&nbsp;&nbsp;&nbsp;&nbsp;Packing: '.(isset($ship_info['box']) ? $ship_info['box'].'box' : $ship_info['pack'].'pack').'<br>';
-//		$ship_out = $ship_out.'&nbsp;&nbsp;&nbsp;&nbsp;Weight: '.$ship_info['weight'].'KG<br>';
+		$ship_out = $ship_out.'&nbsp;&nbsp;&nbsp;&nbsp;Packing: '.(isset($ship_info['box']) ? $ship_info['box'].'box' : $ship_info['pack'].'pack').'<br>';
+		$ship_out = $ship_out.'&nbsp;&nbsp;&nbsp;&nbsp;Weight: '.$ship_info['weight'].'KG<br>';
 		$ship_out = $ship_out.'<br>';
 	}
 ?>
@@ -32,20 +32,26 @@ use yii\helpers\Url;
 	$missing = '';
 	$product_array = array();
 	foreach ($content->product as $p => $detail) {
-		if($detail->done){
+		if($detail->done === true){
 			continue;
+		} else if($detail->done){
+			$product_array[$p] += $detail->done;
+		} else {
+			$product_array[$p] += $detail->cnt;
 		}
-		$product_array[$p] += $detail->cnt;
 	}
 	foreach ($content->crewpak as $c => $detail) {
 		if($detail->done){
 			continue;
 		}
 		foreach ($detail->detail as $p => $d) {
-			if($d->done){
+			if($d->done === true){
 				continue;
+			} else if($d->done){
+				$product_array[$p] += $d->done;
+			} else {
+				$product_array[$p] += $d->cnt;
 			}
-			$product_array[$p] += $d->cnt;
 		}
 	}
 
