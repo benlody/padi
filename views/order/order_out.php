@@ -35,7 +35,7 @@ use yii\helpers\Url;
 		if($detail->done === true){
 			continue;
 		} else if($detail->done){
-			$product_array[$p] += $detail->done;
+			$product_array[$p] += ($detail->cnt - $detail->done);
 		} else {
 			$product_array[$p] += $detail->cnt;
 		}
@@ -48,7 +48,7 @@ use yii\helpers\Url;
 			if($d->done === true){
 				continue;
 			} else if($d->done){
-				$product_array[$p] += $d->done;
+				$product_array[$p] += ($d->cnt - $d->done);
 			} else {
 				$product_array[$p] += $d->cnt;
 			}
