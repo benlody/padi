@@ -710,10 +710,13 @@ class OrderController extends \yii\web\Controller
 			$content = json_decode($order['content'], true);
 
 			foreach ($content['product'] as $p => $detail) {
-				if($detail['done']){
+				if($detail['done'] === true){
 					continue;
+				} else if($detail['done']){
+					$summary[$p]['work_cnt'] += ($detail['cnt'] - $detail['done']);
+				} else {
+					$summary[$p]['work_cnt'] += $detail['cnt'];
 				}
-				$summary[$p]['work_cnt'] += $detail['cnt'];
 			}
 
 			foreach ($content['crewpak'] as $c => $detail) {
@@ -721,10 +724,13 @@ class OrderController extends \yii\web\Controller
 					continue;
 				}
 				foreach ($detail['detail'] as $p => $p_detail) {
-					if($p_detail['done']){
+					if($p_detail['done'] === true){
 						continue;
+					} else if($p_detail['done']){
+						$summary[$p]['work_cnt'] += ($p_detail['cnt'] - $p_detail['done']);
+					} else {
+						$summary[$p]['work_cnt'] += $p_detail['cnt'];
 					}
-					$summary[$p]['work_cnt'] += $p_detail['cnt'];
 				}
 			}
 		}
