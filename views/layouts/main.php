@@ -38,9 +38,13 @@ AppAsset::register($this);
 					[
 						'label' => '庫存',
 						'items' => [
+							 '<li class="dropdown-header" align="center"><font color="green">庫存</font></li>',
 							 ['label' => '庫存明細', 'url' => ['/inventory/transaction']],
 							 ['label' => '庫存總覽', 'url' => ['/inventory/overview']],
 							 ['label' => '庫存調整', 'url' => ['/inventory/adjust']],
+							 '<li class="divider"></li>',
+							 '<li class="dropdown-header" align="center"><font color="green">統計</font></li>',
+							 ['label' => '工作項目統計', 'url' => ['/inventory/summary']],
 						],
 					],
 					[
@@ -49,15 +53,11 @@ AppAsset::register($this);
 							 '<li class="dropdown-header" align="center"><font color="green">會員訂單</font></li>',
 							 ['label' => '新增會員訂單', 'url' => ['/order/add']],
 							 ['label' => '會員訂單列表', 'url' => ['/order/list']],
-							 ['label' => '會員訂單查詢', 'url' => ['/order/search']],
 							 ['label' => '出貨明細', 'url' => ['/order/ship_overview']],
 							 '<li class="divider"></li>',
 							 '<li class="dropdown-header" align="center"><font color="green">內部訂單/轉移</font></li>',
 							 ['label' => '新增內部訂單', 'url' => ['/transfer/add']],
 							 ['label' => '內部訂單列表', 'url' => ['/transfer/list']],
-							 '<li class="divider"></li>',
-							 '<li class="dropdown-header" align="center"><font color="green">統計</font></li>',
-							 ['label' => '工作訂單統計', 'url' => ['/order/summary']],
 						],
 					],
 					[
@@ -65,7 +65,6 @@ AppAsset::register($this);
 						'items' => [
 							 ['label' => '新增生產', 'url' => ['/purchase-order/add']],
 							 ['label' => '生產列表', 'url' => ['/purchase-order/list']],
-							 ['label' => '生產查詢', 'url' => ['/purchase-order/search']],
 						],
 					],
 					[
@@ -99,15 +98,71 @@ AppAsset::register($this);
 						'linkOptions' => ['data-method' => 'post']
 					],
 				];
+			} else if (Yii::$app->user->identity->group === User::GROUP_XM || Yii::$app->user->identity->group === User::GROUP_PADI){
+				$items = [
+					['label' => 'Home', 'url' => ['/site/index']],
+					[
+						'label' => '庫存',
+						'items' => [
+							 '<li class="dropdown-header" align="center"><font color="green">庫存</font></li>',
+							 ['label' => '庫存明細', 'url' => ['/inventory/transaction']],
+							 ['label' => '庫存總覽', 'url' => ['/inventory/overview']],
+							 '<li class="divider"></li>',
+							 '<li class="dropdown-header" align="center"><font color="green">統計</font></li>',
+							 ['label' => '工作項目統計', 'url' => ['/inventory/summary']],
+						],
+					],
+					[
+						'label' => '訂單',
+						'items' => [
+							 '<li class="dropdown-header" align="center"><font color="green">會員訂單</font></li>',
+							 ['label' => '會員訂單列表', 'url' => ['/order/list']],
+							 ['label' => '出貨明細', 'url' => ['/order/ship_overview']],
+							 '<li class="divider"></li>',
+							 '<li class="dropdown-header" align="center"><font color="green">內部訂單/轉移</font></li>',
+							 ['label' => '內部訂單列表', 'url' => ['/transfer/list']],
+						],
+					],
+					[
+						'label' => '生產',
+						'items' => [
+							 ['label' => '生產列表', 'url' => ['/purchase-order/list']],
+						],
+					],
+					[
+						'label' => '產品與套裝',
+						'items' => [
+							 '<li class="dropdown-header" align="center"><font color="green">產品</font></li>',
+							 ['label' => '產品列表', 'url' => ['/product/index']],
+							 '<li class="divider"></li>',
+							 '<li class="dropdown-header" align="center"><font color="green">套裝</font></li>',
+							 ['label' => '套裝列表', 'url' => ['/crew-pak/index']],
+						],
+					],
+					[
+						'label' => 'PADI會員',
+						'items' => [
+							 ['label' => '會員列表', 'url' => ['/customer/index']],
+						],
+					],
+					['label' => 'Logout (' . Yii::$app->user->identity->username . ')',
+						'url' => ['/site/logout'],
+						'linkOptions' => ['data-method' => 'post']
+					],
+				];
 			} else {
 				$items = [
 					['label' => 'Home', 'url' => ['/site/index']],
 					[
 						'label' => '庫存',
 						'items' => [
+							 '<li class="dropdown-header" align="center"><font color="green">庫存</font></li>',
 							 ['label' => '庫存明細', 'url' => ['/inventory/transaction']],
 							 ['label' => '庫存總覽', 'url' => ['/inventory/overview']],
 							 ['label' => '庫存調整', 'url' => ['/inventory/adjust']],
+							 '<li class="divider"></li>',
+							 '<li class="dropdown-header" align="center"><font color="green">統計</font></li>',
+							 ['label' => '工作項目統計', 'url' => ['/inventory/summary']],
 						],
 					],
 					[
@@ -116,15 +171,11 @@ AppAsset::register($this);
 							 '<li class="dropdown-header" align="center"><font color="green">會員訂單</font></li>',
 							 ['label' => '新增會員訂單', 'url' => ['/order/add']],
 							 ['label' => '會員訂單列表', 'url' => ['/order/list']],
-							 ['label' => '會員訂單查詢', 'url' => ['/order/search']],
 							 ['label' => '出貨明細', 'url' => ['/order/ship_overview']],
 							 '<li class="divider"></li>',
 							 '<li class="dropdown-header" align="center"><font color="green">內部訂單/轉移</font></li>',
 							 ['label' => '新增內部訂單', 'url' => ['/transfer/add']],
 							 ['label' => '內部訂單列表', 'url' => ['/transfer/list']],
-							 '<li class="divider"></li>',
-							 '<li class="dropdown-header" align="center"><font color="green">統計</font></li>',
-							 ['label' => '工作訂單統計', 'url' => ['/order/summary']],
 						],
 					],
 					[
@@ -132,7 +183,6 @@ AppAsset::register($this);
 						'items' => [
 							 ['label' => '新增生產', 'url' => ['/purchase-order/add']],
 							 ['label' => '生產列表', 'url' => ['/purchase-order/list']],
-							 ['label' => '生產查詢', 'url' => ['/purchase-order/search']],
 						],
 					],
 					[

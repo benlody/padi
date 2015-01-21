@@ -9,6 +9,7 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
+use app\models\User;
 
 /**
  * CustomerController implements the CRUD actions for Customer model.
@@ -82,6 +83,9 @@ class CustomerController extends Controller
      */
     public function actionCreate()
     {
+        if(Yii::$app->user->identity->group > User::GROUP_KL){
+            throw new NotFoundHttpException('The requested page does not exist.');
+        }
         $model = new Customer();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
@@ -101,6 +105,9 @@ class CustomerController extends Controller
      */
     public function actionUpdate($id)
     {
+        if(Yii::$app->user->identity->group > User::GROUP_KL){
+            throw new NotFoundHttpException('The requested page does not exist.');
+        }
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
@@ -120,6 +127,9 @@ class CustomerController extends Controller
      */
     public function actionDelete($id)
     {
+        if(Yii::$app->user->identity->group > User::GROUP_KL){
+            throw new NotFoundHttpException('The requested page does not exist.');
+        }
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);

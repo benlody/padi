@@ -1,6 +1,7 @@
 <?php
 
 namespace app\controllers;
+use app\models\User;
 use app\models\Product;
 use app\models\PurchaseOrder;
 use app\models\PurchaseOrderSearch;
@@ -11,6 +12,7 @@ use app\models\Transaction2;
 use yii\db\Query;
 use Yii;
 use yii\filters\AccessControl;
+use yii\web\NotFoundHttpException;
 
 require_once __DIR__  . '/../utils/utils.php';
 
@@ -32,6 +34,11 @@ class PurchaseOrderController extends \yii\web\Controller
 	}
 	public function actionAdd()
 	{
+
+		if(Yii::$app->user->identity->group > User::GROUP_KL){
+			throw new NotFoundHttpException('The requested page does not exist.');
+		}
+
 		$model = new PurchaseOrder;
 		$product = new Product();
 
@@ -68,6 +75,10 @@ class PurchaseOrderController extends \yii\web\Controller
 
 	public function actionEdit($id)
 	{
+
+		if(Yii::$app->user->identity->group > User::GROUP_XM){
+			throw new NotFoundHttpException('The requested page does not exist.');
+		}
 
 		$model = $this->findModel($id);
 		$post_param = Yii::$app->request->post();

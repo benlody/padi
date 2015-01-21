@@ -8,6 +8,8 @@ use yii\data\ArrayDataProvider;
 use yii\db\Query;
 use yii\filters\AccessControl;
 use Yii;
+use app\models\User;
+use yii\web\NotFoundHttpException;
 
 class CrewPakController extends \yii\web\Controller
 {
@@ -27,6 +29,10 @@ class CrewPakController extends \yii\web\Controller
 	}
 	public function actionAdd()
 	{
+		if(Yii::$app->user->identity->group > User::GROUP_KL){
+			throw new NotFoundHttpException('The requested page does not exist.');
+		}
+
 		$model = new CrewPak;
 		$product = new Product();
 
@@ -68,6 +74,9 @@ class CrewPakController extends \yii\web\Controller
 
 	public function actionDelete()
 	{
+		if(Yii::$app->user->identity->group > User::GROUP_KL){
+			throw new NotFoundHttpException('The requested page does not exist.');
+		}
 		return $this->render('delete');
 	}
 

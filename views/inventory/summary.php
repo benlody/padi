@@ -17,7 +17,10 @@ $xm_config = [
 	'dataProvider' => $xm_provider,
 	'columns' => [
 		'id:text:產品名稱',
-		'work_cnt:text:待出貨數量',
+		'order_cnt:text:待出貨數量',
+		'trans_src_cnt:text:待轉出數量',
+		'trans_dst_cnt:text:待轉入數量',
+		'po_cnt:text:生產中數量',
 		'balance:text:目前餘額',
 	],
 ];
@@ -25,7 +28,10 @@ $tw_config = [
 	'dataProvider' => $tw_provider,
 	'columns' => [
 		'id:text:產品名稱',
-		'work_cnt:text:待出貨數量',
+		'order_cnt:text:待出貨數量',
+		'trans_src_cnt:text:待轉出數量',
+		'trans_dst_cnt:text:待轉入數量',
+		'po_cnt:text:生產中數量',
 		'balance:text:目前餘額',
 	],
 ];

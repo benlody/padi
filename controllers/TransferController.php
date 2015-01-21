@@ -12,6 +12,8 @@ use yii\data\ActiveDataProvider;
 use yii\db\Query;
 use Yii;
 use yii\filters\AccessControl;
+use app\models\User;
+use yii\web\NotFoundHttpException;
 
 require_once __DIR__  . '/../utils/utils.php';
 
@@ -33,6 +35,9 @@ class TransferController extends \yii\web\Controller
 	}
 	public function actionAdd()
 	{
+        if(Yii::$app->user->identity->group > User::GROUP_KL){
+            throw new NotFoundHttpException('The requested page does not exist.');
+        }
 
 		$model = new Transfer;
 		$product = new Product();
@@ -190,6 +195,9 @@ class TransferController extends \yii\web\Controller
 
 	public function actionEdit($id)
 	{
+        if(Yii::$app->user->identity->group > User::GROUP_XM){
+            throw new NotFoundHttpException('The requested page does not exist.');
+        }
 		$model = $this->findModel($id);
 		$post_param = Yii::$app->request->post();
 
@@ -319,6 +327,9 @@ class TransferController extends \yii\web\Controller
 
 	public function actionDelete($id)
 	{
+        if(Yii::$app->user->identity->group > User::GROUP_KL){
+            throw new NotFoundHttpException('The requested page does not exist.');
+        }
 		$this->findModel($id)->delete();
 
 		return $this->redirect(['list']);
@@ -326,6 +337,9 @@ class TransferController extends \yii\web\Controller
 
 	public function actionDownload($id)
 	{
+        if(Yii::$app->user->identity->group > User::GROUP_XM){
+            throw new NotFoundHttpException('The requested page does not exist.');
+        }
 		$model = $this->findModel($id);
 		header("Content-type: text/html; charset=utf-8");
 		header("Content-Disposition: attachment;Filename=XDC".date_format(date_create($model->send_date), 'md')."-".$model->id.'.doc');

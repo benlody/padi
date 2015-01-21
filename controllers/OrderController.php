@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\models\User;
 use app\models\Order;
 use app\models\OrderSearch;
 use app\models\CrewPak;
@@ -18,6 +19,7 @@ use yii\data\ArrayDataProvider;
 use yii\db\Query;
 use yii\filters\AccessControl;
 use Yii;
+use yii\web\NotFoundHttpException;
 
 require_once __DIR__  . '/../utils/utils.php';
 require_once __DIR__  . '/../utils/enum.php';
@@ -44,6 +46,10 @@ class OrderController extends \yii\web\Controller
 	public function actionAdd()
 	{
 		
+		if(Yii::$app->user->identity->group > User::GROUP_KL){
+			throw new NotFoundHttpException('The requested page does not exist.');
+		}
+
 		$model = new Order;
 		$customer = new Customer();
 		$crewpak = new CrewPak();
@@ -79,6 +85,10 @@ class OrderController extends \yii\web\Controller
 	public function actionModify($id)
 	{
 
+		if(Yii::$app->user->identity->group > User::GROUP_KL){
+			throw new NotFoundHttpException('The requested page does not exist.');
+		}
+
 		$model = $this->findModel($id);
 		$customer = new Customer();
 		$crewpak = new CrewPak();
@@ -113,6 +123,10 @@ class OrderController extends \yii\web\Controller
 
 	public function actionDelete($id)
 	{
+		if(Yii::$app->user->identity->group > User::GROUP_KL){
+			throw new NotFoundHttpException('The requested page does not exist.');
+		}
+
 		$this->findModel($id)->delete();
 
 		return $this->redirect(['list']);
@@ -156,6 +170,10 @@ class OrderController extends \yii\web\Controller
 	public function actionReview($id)
 	{
 
+		if(Yii::$app->user->identity->group > User::GROUP_MGR){
+			throw new NotFoundHttpException('The requested page does not exist.');
+		}
+
 		$post_param = Yii::$app->request->post();
 		$model = $this->findModel($id);
 
@@ -186,6 +204,10 @@ class OrderController extends \yii\web\Controller
 
 	public function actionDownload($id)
 	{
+		if(Yii::$app->user->identity->group > User::GROUP_XM){
+			throw new NotFoundHttpException('The requested page does not exist.');
+		}
+
 		$model = $this->findModel($id);
 		header("Content-type: text/html; charset=utf-8");
 		header("Content-Disposition: attachment;Filename=XDC".date_format(date_create($model->date), 'md')."-".$model->id.'.doc');
@@ -207,6 +229,9 @@ class OrderController extends \yii\web\Controller
 
 	public function actionEdit($id)
 	{
+		if(Yii::$app->user->identity->group > User::GROUP_XM){
+			throw new NotFoundHttpException('The requested page does not exist.');
+		}
 
 		$model = $this->findModel($id);
 		$post_param = Yii::$app->request->post();
@@ -214,9 +239,6 @@ class OrderController extends \yii\web\Controller
 		$old_content = json_decode($model->content, true);
 		$now = strtotime('now');
 		$query = new Query;
-
-
-
 
 		if(isset($post_param['done'])){
 
@@ -423,6 +445,10 @@ class OrderController extends \yii\web\Controller
 	public function actionEdit_only($id)
 	{
 
+		if(Yii::$app->user->identity->group > User::GROUP_XM){
+			throw new NotFoundHttpException('The requested page does not exist.');
+		}
+
 		$model = $this->findModel($id);
 		$post_param = Yii::$app->request->post();
 
@@ -445,20 +471,6 @@ class OrderController extends \yii\web\Controller
 			]);
 		}
 	}
-
-
-	public function actionSummary()
-	{
-
-		$xm_provider = $this->get_summary_provider('xm');
-		$tw_provider = $this->get_summary_provider('tw');
-
-		return $this->render('summary', [
-			'tw_provider' => $tw_provider,
-			'xm_provider' => $xm_provider,
-		]);
-	}
-
 
 	public function actionShip_overview($warehouse='xm', $from='', $to='')
 	{
@@ -486,6 +498,10 @@ class OrderController extends \yii\web\Controller
 
 	public function actionShip_download($warehouse='xm', $from='', $to='')
 	{
+		if(Yii::$app->user->identity->group > User::GROUP_KL){
+			throw new NotFoundHttpException('The requested page does not exist.');
+		}
+
 		$query = new Query;
 		if(!$from){
 			$from = date("Y-m-d", strtotime("first day of this month"));
@@ -707,84 +723,6 @@ class OrderController extends \yii\web\Controller
 		}
 
 		return $ship_array;
-	}
-
-	protected function get_summary_provider($wh){
-
-		$order_query = new Query;
-		$transfer_query = new Query;
-		$balance_query = new Query;
-		$summary = array();
-
-		$orders = $order_query->select('content')
-							->from('order')
-							->where('warehouse = "'.$wh.'" AND status != '.Order::STATUS_DONE)
-							->all();
-
-		foreach ($orders as $order) {
-
-			$content = json_decode($order['content'], true);
-
-			foreach ($content['product'] as $p => $detail) {
-				if($detail['done'] === true){
-					continue;
-				} else if($detail['done']){
-					$summary[$p]['work_cnt'] += ($detail['cnt'] - $detail['done']);
-				} else {
-					$summary[$p]['work_cnt'] += $detail['cnt'];
-				}
-			}
-
-			foreach ($content['crewpak'] as $c => $detail) {
-				if($detail['done']){
-					continue;
-				}
-				foreach ($detail['detail'] as $p => $p_detail) {
-					if($p_detail['done'] === true){
-						continue;
-					} else if($p_detail['done']){
-						$summary[$p]['work_cnt'] += ($p_detail['cnt'] - $p_detail['done']);
-					} else {
-						$summary[$p]['work_cnt'] += $p_detail['cnt'];
-					}
-				}
-			}
-		}
-
-		$transfers = $transfer_query->select('content')
-							->from('transfer')
-							->where('src_warehouse LIKE "'.$wh.'%" AND status = '.Transfer::STATUS_NEW)
-							->all();
-
-		foreach ($transfers as $transfer) {
-
-			$content = json_decode($transfer['content'], true);
-			foreach ($content as $p => $cnt) {
-				$summary[$p]['work_cnt'] += $cnt;
-			}
-		}
-
-
-		foreach ($summary as $p => $cnt) {
-			$balance = $balance_query->select($p)
-								->from($wh.'_padi_balance')
-								->orderBy('ts DESC')
-								->one();
-			$summary[$p]['balance'] = $balance[$p];
-			$summary[$p]['id'] = $p;
-		}
-
-		$provider = new ArrayDataProvider([
-				'allModels' => $summary,
-				'sort' => [
-					'attributes' => ['id'],
-				],
-				'pagination' => [
-					'pageSize' => 50,
-				],
-		]);
-		return $provider;
-
 	}
 
 	protected function download_xm($model){

@@ -1,7 +1,13 @@
 <?php
 
 namespace app\controllers;
+
+use app\models\User;
+use app\models\PurchaseOrder;
+use app\models\Order;
 use app\models\Product;
+use app\models\Transfer;
+use yii\data\ArrayDataProvider;
 use app\models\CrewPak;
 use app\models\Balance1;
 use app\models\Balance2;
@@ -10,6 +16,7 @@ use app\models\Transaction2;
 use yii\db\Query;
 use yii\filters\AccessControl;
 use Yii;
+use yii\web\NotFoundHttpException;
 
 require_once __DIR__  . '/../utils/utils.php';
 
@@ -33,6 +40,9 @@ class InventoryController extends \yii\web\Controller
 
 	public function actionAdjust()
 	{
+		if(Yii::$app->user->identity->group > User::GROUP_MGR){
+			throw new NotFoundHttpException('The requested page does not exist.');
+		}
 		$product = new Product();
 		$post_param = Yii::$app->request->post();
 
@@ -169,6 +179,19 @@ class InventoryController extends \yii\web\Controller
 			'crew_list' => $crew_list
 		]);
 	}
+
+	public function actionSummary()
+	{
+
+		$xm_provider = $this->get_summary_provider('xm');
+		$tw_provider = $this->get_summary_provider('tw');
+
+		return $this->render('summary', [
+			'tw_provider' => $tw_provider,
+			'xm_provider' => $xm_provider,
+		]);
+	}
+
 	public function actionAjaxGet_balance()
 	{
 		$post_param = Yii::$app->request->post();
@@ -179,6 +202,112 @@ class InventoryController extends \yii\web\Controller
 						->one();
 
 		return json_encode($balance,JSON_FORCE_OBJECT);
+	}
+
+	protected function get_summary_provider($wh){
+
+		$order_query = new Query;
+		$transfer_query = new Query;
+		$balance_query = new Query;
+		$po_query = new Query;
+		$summary = array();
+
+
+		$pos = $order_query->select('content')
+							->from('purchase_order')
+							->where('warehouse = "'.$wh.'" AND status != '.PurchaseOrder::STATUS_DONE)
+							->all();
+		foreach ($pos as $po) {
+			$content = json_decode($po['content'], true);
+			foreach ($content as $p => $cnt) {
+				$summary[$p]['po_cnt'] += $cnt['order_cnt'];
+			}
+		}
+
+		$orders = $order_query->select('content')
+							->from('order')
+							->where('warehouse = "'.$wh.'" AND status != '.Order::STATUS_DONE)
+							->all();
+
+		foreach ($orders as $order) {
+
+			$content = json_decode($order['content'], true);
+
+			foreach ($content['product'] as $p => $detail) {
+				if($detail['done'] === true){
+					continue;
+				} else if($detail['done']){
+					$summary[$p]['order_cnt'] += ($detail['cnt'] - $detail['done']);
+				} else {
+					$summary[$p]['order_cnt'] += $detail['cnt'];
+				}
+			}
+
+			foreach ($content['crewpak'] as $c => $detail) {
+				if($detail['done']){
+					continue;
+				}
+				foreach ($detail['detail'] as $p => $p_detail) {
+					if($p_detail['done'] === true){
+						continue;
+					} else if($p_detail['done']){
+						$summary[$p]['order_cnt'] += ($p_detail['cnt'] - $p_detail['done']);
+					} else {
+						$summary[$p]['order_cnt'] += $p_detail['cnt'];
+					}
+				}
+			}
+		}
+
+		$transfers_src = $transfer_query->select('content')
+							->from('transfer')
+							->where('src_warehouse LIKE "'.$wh.'%" AND status = '.Transfer::STATUS_NEW)
+							->all();
+
+		foreach ($transfers_src as $transfer) {
+			$content = json_decode($transfer['content'], true);
+			foreach ($content as $p => $cnt) {
+				$summary[$p]['trans_src_cnt'] += $cnt;
+			}
+		}
+
+		$transfers_dst = $transfer_query->select('content')
+							->from('transfer')
+							->where('dst_warehouse LIKE "'.$wh.'%" AND status != '.Transfer::STATUS_DONE)
+							->all();
+
+		foreach ($transfers_dst as $transfer) {
+			$content = json_decode($transfer['content'], true);
+			foreach ($content as $p => $cnt) {
+				$summary[$p]['trans_dst_cnt'] += $cnt;
+			}
+		}
+
+
+		foreach ($summary as $p => $cnt) {
+			$balance = $balance_query->select($p)
+								->from($wh.'_padi_balance')
+								->orderBy('ts DESC')
+								->one();
+			$summary[$p]['balance'] = $balance[$p] ? $balance[$p] : 0;
+			$summary[$p]['id'] = $p;
+			$summary[$p]['order_cnt'] = $summary[$p]['order_cnt'] ? $summary[$p]['order_cnt'] : '';
+			$summary[$p]['po_cnt'] = $summary[$p]['po_cnt'] ? $summary[$p]['po_cnt'] : '';
+			$summary[$p]['trans_src_cnt'] = $summary[$p]['trans_src_cnt'] ? $summary[$p]['trans_src_cnt'] : '';
+			$summary[$p]['trans_dst_cnt'] = $summary[$p]['trans_dst_cnt'] ? $summary[$p]['trans_dst_cnt'] : '';
+		}
+
+		$provider = new ArrayDataProvider([
+				'allModels' => $summary,
+				'sort' => [
+					'attributes' => ['id'],
+				],
+				'pagination' => [
+					'pageSize' => 50,
+				],
+		]);
+		return $provider;
+
 	}
 
 }

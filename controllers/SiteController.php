@@ -5,6 +5,7 @@ use Yii;
 use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
+use app\models\User;
 use app\models\LoginForm;
 use app\models\PasswordResetRequestForm;
 use app\models\ResetPasswordForm;
@@ -95,7 +96,7 @@ class SiteController extends Controller
 
 	public function actionSignup()
 	{
-		if(Yii::$app->user->identity->group !== 0){
+		if(Yii::$app->user->identity->group !== User::GROUP_ADMIN){
 			throw new NotFoundHttpException('The requested page does not exist.');
 		}
 
