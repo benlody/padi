@@ -212,7 +212,7 @@ AppAsset::register($this);
 			}
 
 			NavBar::begin([
-				'brandLabel' => '光隆庫存管理 - 測試版',
+				'brandLabel' => '光隆庫存管理',
 				'brandUrl' => Yii::$app->homeUrl,
 				'options' => [
 					'class' => 'navbar-inverse navbar-fixed-top',
