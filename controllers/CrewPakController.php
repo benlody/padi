@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\models\Log;
 use app\models\CrewPak;
 use app\models\Product;
 use yii\data\ArrayDataProvider;
@@ -60,6 +61,12 @@ class CrewPakController extends \yii\web\Controller
 			}
 
 			$model->insert();
+
+			$log = new Log();
+			$log->username = Yii::$app->user->identity->username;
+			$log->action = 'Add CrewPak ['.$model->id.']';
+			$log->insert();
+
 			return $this->redirect(['index']);
 
 		} else {
@@ -77,6 +84,7 @@ class CrewPakController extends \yii\web\Controller
 		if(Yii::$app->user->identity->group > User::GROUP_KL){
 			throw new NotFoundHttpException('The requested page does not exist.');
 		}
+
 		return $this->render('delete');
 	}
 

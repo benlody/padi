@@ -3,6 +3,7 @@
 namespace app\controllers;
 
 use app\models\User;
+use app\models\Log;
 use app\models\Order;
 use app\models\OrderSearch;
 use app\models\CrewPak;
@@ -70,6 +71,11 @@ class OrderController extends \yii\web\Controller
 			//FIXME error handle
 			$model->insert();
 
+			$log = new Log();
+			$log->username = Yii::$app->user->identity->username;
+			$log->action = 'Add order ['.$model->id.']';
+			$log->insert();
+
 			return $this->redirect(['list']);
 
 		} else {
@@ -109,6 +115,11 @@ class OrderController extends \yii\web\Controller
 			//FIXME error handle
 			$model->update();
 
+			$log = new Log();
+			$log->username = Yii::$app->user->identity->username;
+			$log->action = 'Modify order ['.$model->id.']';
+			$log->insert();
+
 			return $this->redirect(['list']);
 
 		} else {
@@ -128,6 +139,11 @@ class OrderController extends \yii\web\Controller
 		}
 
 		$this->findModel($id)->delete();
+
+		$log = new Log();
+		$log->username = Yii::$app->user->identity->username;
+		$log->action = 'Delete order ['.$id.']';
+		$log->insert();
 
 		return $this->redirect(['list']);
 	}
@@ -181,6 +197,12 @@ class OrderController extends \yii\web\Controller
 
 			$model->status = Order::STATUS_PROCESSING;
 			$model->update();
+
+			$log = new Log();
+			$log->username = Yii::$app->user->identity->username;
+			$log->action = 'Review order ['.$model->id.']';
+			$log->insert();
+
 			return $this->redirect(['list']);
 
 		} else {
@@ -426,6 +448,11 @@ class OrderController extends \yii\web\Controller
 				$this->sendMail($body, $subject, false);
 			}
 
+			$log = new Log();
+			$log->username = Yii::$app->user->identity->username;
+			$log->action = 'Delivery order ['.$model->id.']';
+			$log->insert();
+
 			if($model->status == Order::STATUS_DONE){
 				return $this->redirect(['list', 'status' => 'done']);
 			} else {
@@ -457,6 +484,11 @@ class OrderController extends \yii\web\Controller
 				$model->$key = $value;
 			}
 			$model->update();
+
+			$log = new Log();
+			$log->username = Yii::$app->user->identity->username;
+			$log->action = 'Edit order ['.$model->id.']';
+			$log->insert();
 
 			if($model->status == Order::STATUS_DONE){
 				return $this->redirect(['list', 'status' => 'done']);

@@ -3,6 +3,7 @@
 namespace app\controllers;
 
 use Yii;
+use app\models\Log;
 use app\models\Product;
 use app\models\ProductSearch;
 use yii\web\Controller;
@@ -89,6 +90,11 @@ class ProductController extends Controller
             Yii::$app->db->createCommand()->addColumn('xm_padi_transaction', $model->id, 'int(8) DEFAULT 0')->execute();
             Yii::$app->db->createCommand()->addColumn('xm_self_transaction', $model->id, 'int(8) DEFAULT 0')->execute();
 
+            $log = new Log();
+            $log->username = Yii::$app->user->identity->username;
+            $log->action = 'Add Product ['.$model->id.']';
+            $log->insert();
+
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('create', [
@@ -111,6 +117,10 @@ class ProductController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            $log = new Log();
+            $log->username = Yii::$app->user->identity->username;
+            $log->action = 'Modify Product ['.$model->id.']';
+            $log->insert();
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('update', [
@@ -131,6 +141,11 @@ class ProductController extends Controller
             throw new NotFoundHttpException('The requested page does not exist.');
         }
         $this->findModel($id)->delete();
+
+        $log = new Log();
+        $log->username = Yii::$app->user->identity->username;
+        $log->action = 'Delete Product ['.$id.']';
+        $log->insert();
 
         return $this->redirect(['index']);
     }

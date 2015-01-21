@@ -3,6 +3,7 @@
 namespace app\controllers;
 
 use app\models\User;
+use app\models\Log;
 use app\models\PurchaseOrder;
 use app\models\Order;
 use app\models\Product;
@@ -94,6 +95,11 @@ class InventoryController extends \yii\web\Controller
 
 			$transaction_model->insert();
 			$balance_model->insert();
+
+			$log = new Log();
+			$log->username = Yii::$app->user->identity->username;
+			$log->action = 'Adjust Inventory';
+			$log->insert();
 
 			return $this->redirect(['transaction',
 				'warehouse' => $warehouse,

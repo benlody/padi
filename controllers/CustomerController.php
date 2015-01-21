@@ -3,6 +3,7 @@
 namespace app\controllers;
 
 use Yii;
+use app\models\Log;
 use app\models\Customer;
 use app\models\CustomerSearch;
 use yii\web\Controller;
@@ -89,6 +90,10 @@ class CustomerController extends Controller
         $model = new Customer();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            $log = new Log();
+            $log->username = Yii::$app->user->identity->username;
+            $log->action = 'Add Customer ['.$model->id.']';
+            $log->insert();
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('create', [
@@ -111,6 +116,10 @@ class CustomerController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            $log = new Log();
+            $log->username = Yii::$app->user->identity->username;
+            $log->action = 'Update Customer ['.$model->id.']';
+            $log->insert();
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('update', [
@@ -131,6 +140,10 @@ class CustomerController extends Controller
             throw new NotFoundHttpException('The requested page does not exist.');
         }
         $this->findModel($id)->delete();
+        $log = new Log();
+        $log->username = Yii::$app->user->identity->username;
+        $log->action = 'Delete Customer ['.$model->id.']';
+        $log->insert();
 
         return $this->redirect(['index']);
     }

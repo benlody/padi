@@ -1,6 +1,8 @@
 <?php
 
 namespace app\controllers;
+
+use app\models\Log;
 use app\models\User;
 use app\models\Product;
 use app\models\PurchaseOrder;
@@ -57,6 +59,11 @@ class PurchaseOrderController extends \yii\web\Controller
 
 			//FIXME error handle
 			$model->insert();
+
+			$log = new Log();
+			$log->username = Yii::$app->user->identity->username;
+			$log->action = 'Add Produce ['.$model->id.']';
+			$log->insert();
 
 			return $this->redirect(['list']);
 
@@ -128,6 +135,11 @@ class PurchaseOrderController extends \yii\web\Controller
 			$self_transaction_model->insert();
 			$padi_balance_model->insert();
 			$self_balance_model->insert();
+
+			$log = new Log();
+			$log->username = Yii::$app->user->identity->username;
+			$log->action = 'Finish Produce ['.$model->id.']';
+			$log->insert();
 
 			return $this->redirect(['list', 'status' => 'done']);
 

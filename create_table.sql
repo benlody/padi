@@ -146,3 +146,23 @@ CREATE TABLE `shipping` (
   `request_fee` DOUBLE(8,2) NOT NULL,
   `extra_info` TEXT DEFAULT ''
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+CREATE TABLE IF NOT EXISTS `user` (
+  `id` int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  `username` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `auth_key` varchar(32) COLLATE utf8_unicode_ci NOT NULL,
+  `password_hash` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `password_reset_token` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `group` smallint(6) NOT NULL ,
+  `status` smallint(6) NOT NULL DEFAULT '10',
+  `created_at` int(11) NOT NULL,
+  `updated_at` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS `log` (
+  `id` int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  `username` CHAR(255) NOT NULL,
+  `action` TEXT DEFAULT '',
+  `ts` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;

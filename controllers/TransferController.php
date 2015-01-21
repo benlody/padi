@@ -1,6 +1,8 @@
 <?php
 
 namespace app\controllers;
+
+use app\models\Log;
 use app\models\Product;
 use app\models\Transfer;
 use app\models\TransferSearch;
@@ -74,6 +76,11 @@ class TransferController extends \yii\web\Controller
 
 				$model->insert();
 
+				$log = new Log();
+				$log->username = Yii::$app->user->identity->username;
+				$log->action = 'Add transfer ['.$model->id.']';
+				$log->insert();
+
 				return $this->redirect(['list']);
 
 			} else if(0 == strcmp($src, 'sydney')){
@@ -111,6 +118,11 @@ class TransferController extends \yii\web\Controller
 				$model->insert();
 				$transaction_model->insert();
 				$balance_model->insert();
+
+				$log = new Log();
+				$log->username = Yii::$app->user->identity->username;
+				$log->action = 'Add transfer ['.$model->id.']';
+				$log->insert();
 
 				return $this->redirect(['list', 'status' => 'done']);
 
@@ -162,6 +174,11 @@ class TransferController extends \yii\web\Controller
 				$dst_balance_model->insert();
 				$src_balance_model->insert();
 
+				$log = new Log();
+				$log->username = Yii::$app->user->identity->username;
+				$log->action = 'Add transfer ['.$model->id.']';
+				$log->insert();
+
 				return $this->redirect(['list', 'status' => 'done']);
 
 			} else {
@@ -176,6 +193,11 @@ class TransferController extends \yii\web\Controller
 				$model->status = Transfer::STATUS_NEW;
 
 				$model->insert();
+
+				$log = new Log();
+				$log->username = Yii::$app->user->identity->username;
+				$log->action = 'Add transfer ['.$model->id.']';
+				$log->insert();
 
 				return $this->redirect(['list']);
 			}
@@ -246,6 +268,11 @@ class TransferController extends \yii\web\Controller
 			$transaction_model->insert();
 			$balance_model->insert();
 
+			$log = new Log();
+			$log->username = Yii::$app->user->identity->username;
+			$log->action = 'Send transfer ['.$model->id.']';
+			$log->insert();
+
 			return $this->redirect(['list']);
 
 		} else if(isset($post_param['recv_done'])){
@@ -285,6 +312,11 @@ class TransferController extends \yii\web\Controller
 			$model->update();
 			$transaction_model->insert();
 			$balance_model->insert();
+
+			$log = new Log();
+			$log->username = Yii::$app->user->identity->username;
+			$log->action = 'Receive transfer ['.$model->id.']';
+			$log->insert();
 
 			return $this->redirect(['list', 'status' => 'done']);
 
@@ -331,6 +363,11 @@ class TransferController extends \yii\web\Controller
             throw new NotFoundHttpException('The requested page does not exist.');
         }
 		$this->findModel($id)->delete();
+
+		$log = new Log();
+		$log->username = Yii::$app->user->identity->username;
+		$log->action = 'Delete transfer ['.$id.']';
+		$log->insert();
 
 		return $this->redirect(['list']);
 	}

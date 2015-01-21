@@ -90,7 +90,7 @@ AppAsset::register($this);
 						'label' => '系統管理',
 						'items' => [
 							 ['label' => '新增帳號', 'url' => ['/site/signup']],
-							 ['label' => '日誌', 'url' => ['/site/log']],
+							 ['label' => '日誌', 'url' => ['/log/index']],
 						],
 					],
 					['label' => 'Logout (' . Yii::$app->user->identity->username . ')',
