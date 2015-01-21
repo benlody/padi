@@ -8,12 +8,29 @@ use app\models\Balance2;
 use app\models\Transaction1;
 use app\models\Transaction2;
 use yii\db\Query;
+use yii\filters\AccessControl;
 use Yii;
 
 require_once __DIR__  . '/../utils/utils.php';
 
 class InventoryController extends \yii\web\Controller
 {
+
+	public function behaviors()
+	{
+		return [
+			'access' => [
+				'class' => AccessControl::className(),
+				'rules' => [
+					[
+						'allow' => true,
+						'roles' => ['@'],
+					],
+				],
+			],
+		];
+	}
+
 	public function actionAdjust()
 	{
 		$product = new Product();

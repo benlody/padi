@@ -1,5 +1,4 @@
 <?php
-
 namespace app\controllers;
 
 use Yii;
@@ -7,18 +6,33 @@ use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
 use app\models\LoginForm;
-use app\models\ContactForm;
-use app\models\EntryForm;
+use app\models\PasswordResetRequestForm;
+use app\models\ResetPasswordForm;
+use app\models\SignupForm;
+use yii\base\InvalidParamException;
+use yii\web\BadRequestHttpException;
+use yii\web\NotFoundHttpException;
 
+/**
+ * Site controller
+ */
 class SiteController extends Controller
 {
+	/**
+	 * @inheritdoc
+	 */
 	public function behaviors()
 	{
 		return [
 			'access' => [
 				'class' => AccessControl::className(),
-				'only' => ['logout'],
+				'only' => ['logout', 'signup'],
 				'rules' => [
+					[
+						'actions' => ['signup'],
+						'allow' => true,
+						'roles' => ['@'],
+					],
 					[
 						'actions' => ['logout'],
 						'allow' => true,
@@ -35,6 +49,9 @@ class SiteController extends Controller
 		];
 	}
 
+	/**
+	 * @inheritdoc
+	 */
 	public function actions()
 	{
 		return [
@@ -61,7 +78,7 @@ class SiteController extends Controller
 
 		$model = new LoginForm();
 		if ($model->load(Yii::$app->request->post()) && $model->login()) {
-			return $this->goBack();
+			return $this->goHome();
 		} else {
 			return $this->render('login', [
 				'model' => $model,
@@ -76,42 +93,23 @@ class SiteController extends Controller
 		return $this->goHome();
 	}
 
-	public function actionContact()
+	public function actionSignup()
 	{
-		$model = new ContactForm();
-		if ($model->load(Yii::$app->request->post()) && $model->contact(Yii::$app->params['adminEmail'])) {
-			Yii::$app->session->setFlash('contactFormSubmitted');
-
-			return $this->refresh();
-		} else {
-			return $this->render('contact', [
-				'model' => $model,
-			]);
+		if(Yii::$app->user->identity->group !== 0){
+			throw new NotFoundHttpException('The requested page does not exist.');
 		}
-	}
 
-	public function actionAbout()
-	{
-		return $this->render('about');
-	}
-
-	public function actionSay($message = 'Hello')
-	{
-		return $this->render('say', ['message' => $message]);
-	}	
-	public function actionEntry()
-	{
-		$model = new EntryForm;
-
-		if ($model->load(Yii::$app->request->post()) && $model->validate()) {
-			// valid data received in $model
-
-			// do something meaningful here about $model ...
-
-			return $this->render('entry-confirm', ['model' => $model]);
-		} else {
-			// either the page is initially displayed or there is some validation error
-			return $this->render('entry', ['model' => $model]);
+		$model = new SignupForm();
+		if ($model->load(Yii::$app->request->post())) {
+			if ($user = $model->signup()) {
+				if (Yii::$app->getUser()->login($user)) {
+					return $this->goHome();
+				}
+			}
 		}
+
+		return $this->render('signup', [
+			'model' => $model,
+		]);
 	}
 }

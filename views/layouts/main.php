@@ -4,6 +4,7 @@ use yii\bootstrap\Nav;
 use yii\bootstrap\NavBar;
 use yii\widgets\Breadcrumbs;
 use app\assets\AppAsset;
+use app\models\User;
 
 /* @var $this \yii\web\View */
 /* @var $content string */
@@ -25,16 +26,14 @@ AppAsset::register($this);
 <?php $this->beginBody() ?>
 	<div class="wrap">
 		<?php
-			NavBar::begin([
-				'brandLabel' => '光隆庫存管理',
-				'brandUrl' => Yii::$app->homeUrl,
-				'options' => [
-					'class' => 'navbar-inverse navbar-fixed-top',
-				],
-			]);
-			echo Nav::widget([
-				'options' => ['class' => 'navbar-nav navbar-right'],
-				'items' => [
+
+			if(Yii::$app->user->isGuest) {
+				$items = [
+					['label' => 'Home', 'url' => ['/site/index']],
+					['label' => 'Login', 'url' => ['/site/login']],
+				];
+			} else if (Yii::$app->user->identity->group === User::GROUP_ADMIN){
+				$items = [
 					['label' => 'Home', 'url' => ['/site/index']],
 					[
 						'label' => '庫存',
@@ -88,12 +87,90 @@ AppAsset::register($this);
 							 ['label' => '新增會員', 'url' => ['/customer/create']],
 						],
 					],
-					Yii::$app->user->isGuest ?
-						['label' => 'Login', 'url' => ['/site/login']] :
-						['label' => 'Logout (' . Yii::$app->user->identity->username . ')',
-							'url' => ['/site/logout'],
-							'linkOptions' => ['data-method' => 'post']],
+					[
+						'label' => '系統管理',
+						'items' => [
+							 ['label' => '新增帳號', 'url' => ['/site/signup']],
+							 ['label' => '日誌', 'url' => ['/site/log']],
+						],
+					],
+					['label' => 'Logout (' . Yii::$app->user->identity->username . ')',
+						'url' => ['/site/logout'],
+						'linkOptions' => ['data-method' => 'post']
+					],
+				];
+			} else {
+				$items = [
+					['label' => 'Home', 'url' => ['/site/index']],
+					[
+						'label' => '庫存',
+						'items' => [
+							 ['label' => '庫存明細', 'url' => ['/inventory/transaction']],
+							 ['label' => '庫存總覽', 'url' => ['/inventory/overview']],
+							 ['label' => '庫存調整', 'url' => ['/inventory/adjust']],
+						],
+					],
+					[
+						'label' => '訂單',
+						'items' => [
+							 '<li class="dropdown-header" align="center"><font color="green">會員訂單</font></li>',
+							 ['label' => '新增會員訂單', 'url' => ['/order/add']],
+							 ['label' => '會員訂單列表', 'url' => ['/order/list']],
+							 ['label' => '會員訂單查詢', 'url' => ['/order/search']],
+							 ['label' => '出貨明細', 'url' => ['/order/ship_overview']],
+							 '<li class="divider"></li>',
+							 '<li class="dropdown-header" align="center"><font color="green">內部訂單/轉移</font></li>',
+							 ['label' => '新增內部訂單', 'url' => ['/transfer/add']],
+							 ['label' => '內部訂單列表', 'url' => ['/transfer/list']],
+							 '<li class="divider"></li>',
+							 '<li class="dropdown-header" align="center"><font color="green">統計</font></li>',
+							 ['label' => '工作訂單統計', 'url' => ['/order/summary']],
+						],
+					],
+					[
+						'label' => '生產',
+						'items' => [
+							 ['label' => '新增生產', 'url' => ['/purchase-order/add']],
+							 ['label' => '生產列表', 'url' => ['/purchase-order/list']],
+							 ['label' => '生產查詢', 'url' => ['/purchase-order/search']],
+						],
+					],
+					[
+						'label' => '產品與套裝',
+						'items' => [
+							 '<li class="dropdown-header" align="center"><font color="green">產品</font></li>',
+							 ['label' => '產品列表', 'url' => ['/product/index']],
+							 ['label' => '新增產品', 'url' => ['/product/create']],
+							 '<li class="divider"></li>',
+							 '<li class="dropdown-header" align="center"><font color="green">套裝</font></li>',
+							 ['label' => '套裝列表', 'url' => ['/crew-pak/index']],
+							 ['label' => '新增套裝', 'url' => ['/crew-pak/add']],
+						],
+					],
+					[
+						'label' => 'PADI會員',
+						'items' => [
+							 ['label' => '會員列表', 'url' => ['/customer/index']],
+							 ['label' => '新增會員', 'url' => ['/customer/create']],
+						],
+					],
+					['label' => 'Logout (' . Yii::$app->user->identity->username . ')',
+						'url' => ['/site/logout'],
+						'linkOptions' => ['data-method' => 'post']
+					],
+				];
+			}
+
+			NavBar::begin([
+				'brandLabel' => '光隆庫存管理 - 測試版',
+				'brandUrl' => Yii::$app->homeUrl,
+				'options' => [
+					'class' => 'navbar-inverse navbar-fixed-top',
 				],
+			]);
+			echo Nav::widget([
+				'options' => ['class' => 'navbar-nav navbar-right'],
+				'items' => $items
 			]);
 			NavBar::end();
 		?>

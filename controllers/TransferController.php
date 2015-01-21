@@ -11,11 +11,26 @@ use app\models\Transaction2;
 use yii\data\ActiveDataProvider;
 use yii\db\Query;
 use Yii;
+use yii\filters\AccessControl;
 
 require_once __DIR__  . '/../utils/utils.php';
 
 class TransferController extends \yii\web\Controller
 {
+	public function behaviors()
+	{
+		return [
+			'access' => [
+				'class' => AccessControl::className(),
+				'rules' => [
+					[
+						'allow' => true,
+						'roles' => ['@'],
+					],
+				],
+			],
+		];
+	}
 	public function actionAdd()
 	{
 

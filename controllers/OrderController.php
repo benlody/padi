@@ -16,6 +16,7 @@ use app\models\Transfer;
 use yii\data\ActiveDataProvider;
 use yii\data\ArrayDataProvider;
 use yii\db\Query;
+use yii\filters\AccessControl;
 use Yii;
 
 require_once __DIR__  . '/../utils/utils.php';
@@ -25,6 +26,21 @@ require '../../mail/PHPMailer/PHPMailerAutoload.php';
 
 class OrderController extends \yii\web\Controller
 {
+	public function behaviors()
+	{
+		return [
+			'access' => [
+				'class' => AccessControl::className(),
+				'rules' => [
+					[
+						'allow' => true,
+						'roles' => ['@'],
+					],
+				],
+			],
+		];
+	}
+
 	public function actionAdd()
 	{
 		

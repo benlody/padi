@@ -16,6 +16,8 @@ $this->title = '光隆庫存管理系統';
 			} else {
 				echo '<p class="lead">Welcome '.Yii::$app->user->identity->username.'</p>';
 			}
+			print_r(Yii::$app->user->identity);
+			print_r(Yii::$app->user);
 		?>
 
     </div>
