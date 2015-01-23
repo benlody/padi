@@ -55,20 +55,7 @@ $this->params['breadcrumbs'][] = $this->title;
 						'format' => 'raw',
 						'label' => '運送方式',
 						'value' => function ($model) {
-							switch($model->ship_type){
-							case 'sea':
-								$ret = '海運';
-								break;
-							case 'air':
-								$ret = '空運';
-								break;
-							case 'internal':
-								$ret = '內部轉移';
-								break;
-							default:
-								$ret = $model->ship_type;
-							}
-							return $ret;
+							return ShippingType::getTransferShippingType($model->ship_type);
 						}
 					],
 					[
@@ -121,20 +108,7 @@ $this->params['breadcrumbs'][] = $this->title;
 						'format' => 'raw',
 						'label' => '運送方式',
 						'value' => function ($model) {
-							switch($model->ship_type){
-							case 'sea':
-								$ret = '海運';
-								break;
-							case 'air':
-								$ret = '空運';
-								break;
-							case 'internal':
-								$ret = '內部轉移';
-								break;
-							default:
-								$ret = $model->ship_type;
-							}
-							return $ret;
+							return ShippingType::getTransferShippingType($model->ship_type);
 						}
 					],
 					[

@@ -18,6 +18,7 @@ use app\models\User;
 use yii\web\NotFoundHttpException;
 
 require_once __DIR__  . '/../utils/utils.php';
+require_once __DIR__  . '/../utils/enum.php';
 
 class TransferController extends \yii\web\Controller
 {
@@ -61,7 +62,7 @@ class TransferController extends \yii\web\Controller
 					'product' =>  $product->find()->column()
 				]);
 
-			} else if(0 == strcmp($dst, 'sydney')){
+			} else if(0 == strncmp($dst, 'padi', 4)){
 
 				$pos = strpos($src, '_');
 				$warehouse = substr($src, 0, $pos);
@@ -83,7 +84,7 @@ class TransferController extends \yii\web\Controller
 
 				return $this->redirect(['list']);
 
-			} else if(0 == strcmp($src, 'sydney')){
+			} else if(0 == strncmp($src, 'padi', 4)){
 
 				$pos = strpos($dst, '_');
 				$warehouse = substr($dst, 0, $pos);
@@ -241,7 +242,7 @@ class TransferController extends \yii\web\Controller
 			foreach ($post_param['Transfer'] as $key => $value) {
 				$model->$key = $value;
 			}
-			if(0 == strcmp('sydney', $dst)){
+			if(0 == strncmp('padi', $dst, 4)){
 				$model->status = Transfer::STATUS_DONE;
 			} else {
 				$model->status = Transfer::STATUS_ONTHEWAY;
@@ -483,11 +484,7 @@ class TransferController extends \yii\web\Controller
 		echo 'XIAMEN COLOR TRADE LIMITED<br>';
 		echo chineseToUnicode('包裝打捆紀錄單').'<br><span style="font-size: small;">'.chineseToUnicode('日期').':'.$model->send_date.'</span></span></p>';
 		echo '<p style="text-align: left;">'.chineseToUnicode('取货地点：厦门市火炬东路28号').'<br>';
-		if(0 == strcmp($model->ship_type, 'sea')){
-			echo chineseToUnicode('送货方式：■海運 □空運').'</p>';
-		} else if(0 == strcmp($model->ship_type, 'air')){
-			echo chineseToUnicode('送货方式：□海運 ■空運').'</p>';
-		}
+		echo chineseToUnicode('送貨方式：■'.\ShippingType::getTransferShippingType($model->ship_type)).'</p>';
 
 		echo '<style type="text/css">';
 		echo '.tg  {border-collapse:collapse;border-spacing:0;}';
@@ -549,11 +546,7 @@ class TransferController extends \yii\web\Controller
 		echo 'Kuang Lung Printing Factory Co., Ltd.<br>';
 		echo chineseToUnicode('包裝打捆紀錄單').'<br><span style="font-size: small;">'.chineseToUnicode('日期').':'.$model->send_date.'</span></span></p>';
 		echo '<p style="text-align: left;">'.chineseToUnicode('公司地址：台北市漢口街一段61號2F TEL:02-23314526 FAX:02-23832251').'<br>';
-		if(0 == strcmp($model->ship_type, 'sea')){
-			echo chineseToUnicode('送貨方式：■海運 □空運').'</p>';
-		} else if(0 == strcmp($model->ship_type, 'air')){
-			echo chineseToUnicode('送貨方式：□海運 ■空運').'</p>';
-		}
+		echo chineseToUnicode('送貨方式：■'.\ShippingType::getTransferShippingType($model->ship_type)).'</p>';
 
 		echo '<style type="text/css">';
 		echo '.tg  {border-collapse:collapse;border-spacing:0;}';

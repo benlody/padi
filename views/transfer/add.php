@@ -26,7 +26,8 @@ $this->registerJsFile(Yii::$app->request->getBaseUrl().'/js/transfer_add.js',['d
 			'xm_self' => '廈門卡樂兒自有庫存',
 			'tw_padi' => '台灣光隆PADI庫存',
 			'tw_self' => '台灣光隆自有庫存',
-			'sydney' => '雪梨PADI',
+			'padi_sydney' => 'PADI Asia Pacific',
+			'padi_usa' => 'PADI America',
 			], ['class' => 'form-control', 'id' => 'src_warehouse', 'onchange' => 'onchange_src()'])
 		?>
 		<div class="help-block"></div>
@@ -38,19 +39,16 @@ $this->registerJsFile(Yii::$app->request->getBaseUrl().'/js/transfer_add.js',['d
 			'xm_self' => '廈門卡樂兒自有庫存',
 			'tw_padi' => '台灣光隆PADI庫存',
 			'tw_self' => '台灣光隆自有庫存',
-			'sydney' => '雪梨PADI',
+			'padi_sydney' => 'PADI Asia Pacific',
+			'padi_usa' => 'PADI America',
 			], ['class' => 'form-control', 'id' => 'dst_warehouse', 'onchange' => 'onchange_dst()'])
 		?>
 		<div class="help-block"></div>
 
 		<label class="control-label">運送方式</label>
 		<div>
-		<?= Html::dropDownList('Transfer[ship_type]', '', [
-			'' => '',
-			'sea' => '海運',
-			'air' => '空運',
-			'internal' => '內部轉移',
-			], ['class' => 'form-control', 'id' => 'ship_type'])
+		<?= Html::dropDownList('Transfer[ship_type]', '', 
+				ShippingType::getTransferType(), ['class' => 'form-control', 'id' => 'ship_type'])
 		?>
 		<div class="help-block"></div>
 

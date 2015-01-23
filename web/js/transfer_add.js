@@ -51,7 +51,7 @@ function onchange_dst() {
 		document.getElementById("transfer-english_addr").value = ' ';
 		document.getElementById("transfer-contact").value = '陳學輝';
 		document.getElementById("transfer-tel").value = '+886-2331-4526';
-	} else {
+	} else if(dst == 'padi_sydney') {
 		document.getElementById("transfer-chinese_addr").value = ' ';
 		document.getElementById("transfer-english_addr").value = 'PADI Asia Pacific---UNIT 3, 4 SKYLINE PLACE FRENCHS FOREST NSW 2086 AUSTRALIA';
 		document.getElementById("transfer-contact").value = 'Norman';

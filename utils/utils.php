@@ -48,8 +48,11 @@ function get_warehouse_name($warehouse_id){
 		case 'tw_self':
 			$name = '台灣光隆自有庫存';
 			break;
-		case 'sydney':
-			$name = '雪梨PADI';
+		case 'padi_sydney':
+			$name = 'PADI Asia Pacific';
+			break;
+		case 'padi_usa':
+			$name = 'PADI America';
 			break;
 		default:
 			$name = $warehouse_id;
@@ -558,7 +561,8 @@ function orders_to_shipment_table($orders, $warehouse){
 				'<td bgcolor="#FFA500"></td></tr>';
 	$table_out = $table_out.$row;
 
-	if('tw' == $warehouse){
+//	if('tw' == $warehouse){
+	if(false){
 		$row = '<tr><td bgcolor="#FFA500" colspan="2"><b>Total in AUD</b></td>'.
 					'<td bgcolor="#FFA500"></td>'.
 					'<td bgcolor="#FFA500"></td>'.

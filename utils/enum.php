@@ -11,6 +11,17 @@ class ShippingType
 	const T_NEW = 12;
 	const T_SELFPICK = 20;
 
+
+	protected static $transfer_type = array(
+			'sea' => '海運',
+			'air' => '空運',
+			'dhl' => 'DHL',
+			'sf' => '順豐快遞',
+			'blair' => '寶聯空運',
+			'blsea' => '寶聯海運',
+			'internal' => '內部轉移',
+		);
+
 	protected static $type = array(
 			'' => '',
 			0 => '標準快遞',
@@ -22,8 +33,23 @@ class ShippingType
 			20 => '客戶自取'
 		);
 
+	protected static $type_enu = array(
+			'' => '',
+			0 => '標準快遞',
+			1 => '順丰特惠',
+			2 => '物流普運',
+			10 => 'Post Office',
+			11 => 'SF Express',
+			12 => 'Normal Express',
+			20 => 'Pick up'
+		);
+
 	public function getType(){
 		return self::$type;
+	}
+
+	public function getTransferType(){
+		return self::$transfer_type;
 	}
 
 	public function getXMType(){
@@ -47,8 +73,16 @@ class ShippingType
 		);
 	}
 
-	static public function getShippingType($t){
-		return self::$type[$t];
+	static public function getShippingType($t, $lang='cht'){
+		if($lang == 'cht'){
+			return self::$type[$t];
+		} else {
+			return self::$type_enu[$t];
+		}
+	}
+
+	static public function getTransferShippingType($t){
+		return self::$transfer_type[$t];
 	}
 
 }

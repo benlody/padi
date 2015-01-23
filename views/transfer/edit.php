@@ -25,7 +25,8 @@ $this->registerJsFile(Yii::$app->request->getBaseUrl().'/js/transfer_edit.js',['
 				'xm_self' => '廈門卡樂兒自有庫存',
 				'tw_padi' => '台灣光隆PADI庫存',
 				'tw_self' => '台灣光隆自有庫存',
-				'sydney' => '雪梨PADI',
+				'padi_sydney' => 'PADI Asia Pacific',
+				'padi_usa' => 'PADI America',
 			], ['readonly' => true]) ?>
 
 		<?= $form->field($model, 'dst_warehouse', ['labelOptions' => ['label' => '轉入倉儲']])->dropDownList([
@@ -33,14 +34,12 @@ $this->registerJsFile(Yii::$app->request->getBaseUrl().'/js/transfer_edit.js',['
 				'xm_self' => '廈門卡樂兒自有庫存',
 				'tw_padi' => '台灣光隆PADI庫存',
 				'tw_self' => '台灣光隆自有庫存',
-				'sydney' => '雪梨PADI',
+				'padi_sydney' => 'PADI Asia Pacific',
+				'padi_usa' => 'PADI America',
 			], ['readonly' => true]) ?>
 
-		<?= $form->field($model, 'ship_type', ['labelOptions' => ['label' => '運送方式']])->dropDownList([
-				'sea' => '海運',
-				'air' => '空運',
-				'internal' => '內部轉移',
-			], ['readonly' => true]) ?>
+		<?= $form->field($model, 'ship_type', ['labelOptions' => ['label' => '運送方式']])->dropDownList(
+				ShippingType::getTransferType(), ['readonly' => true]) ?>
 
 		<?= $form->field($model, 'chinese_addr', ['labelOptions' => ['label' => '中文地址']])->textInput(['readonly' => true]) ?>
 		<?= $form->field($model, 'english_addr', ['labelOptions' => ['label' => '英文地址']])->textInput(['readonly' => true]) ?>
