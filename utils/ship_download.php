@@ -31,6 +31,9 @@ function ship_download($orders, $warehouse, $from, $to){
 				->setCellValue('J'.$idx, 'FREIGTH')
 				->setCellValue('K'.$idx, 'Tracking#')
 				->setCellValue('L'.$idx, 'Date');
+	$objPHPExcel->getActiveSheet()->getStyle('A'.$idx.':L'.$idx)->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID);
+	$objPHPExcel->getActiveSheet()->getStyle('A'.$idx.':L'.$idx)->getFill()->getStartColor()->setRGB('6ea9ec');
+
 
 	$idx++;
 
@@ -52,7 +55,7 @@ function ship_download($orders, $warehouse, $from, $to){
 						->setCellValue('E'.$idx, $info['cnt'])
 						->setCellValue('F'.$idx, $order['date'])
 						->setCellValue('G'.$idx, $order['english_addr'])
-						->setCellValue('H'.$idx, ShippingType::getShippingType($order['ship_type']))
+						->setCellValue('H'.$idx, ' ')
 						->setCellValue('I'.$idx, $service_fee)
 						->setCellValue('J'.$idx, ' ')
 						->setCellValue('K'.$idx, ' ')
@@ -72,7 +75,7 @@ function ship_download($orders, $warehouse, $from, $to){
 						->setCellValue('E'.$idx, $info['cnt'])
 						->setCellValue('F'.$idx, $order['date'])
 						->setCellValue('G'.$idx, $order['english_addr'])
-						->setCellValue('H'.$idx, ShippingType::getShippingType($order['ship_type']))
+						->setCellValue('H'.$idx, ' ')
 						->setCellValue('I'.$idx, $service_fee)
 						->setCellValue('J'.$idx, ' ')
 						->setCellValue('K'.$idx, ' ')
@@ -82,7 +85,7 @@ function ship_download($orders, $warehouse, $from, $to){
 
 		foreach ($ship_info as $info) {
 
-			$ship_fee = $info['request_fee'];
+			$ship_fee = Fee::getShipFreightFee($info['fee'], $order['region'], $warehouse, $info['type'], $info['weight']);
 			$subtotal_ship_fee += $ship_fee;
 
 			$objPHPExcel->setActiveSheetIndex(0)
@@ -91,13 +94,14 @@ function ship_download($orders, $warehouse, $from, $to){
 						->setCellValue('C'.$idx, get_customer_name($order['customer_id']))
 						->setCellValue('D'.$idx, ' ')
 						->setCellValue('E'.$idx, ' ')
-						->setCellValue('F'.$idx, ' ')
+						->setCellValue('F'.$idx, $order['date'])
 						->setCellValue('G'.$idx, $order['english_addr'])
-						->setCellValue('H'.$idx, ShippingType::getShippingType($order['ship_type']))
+						->setCellValue('H'.$idx, ShippingType::getShippingType($order['ship_type'], 'enu'))
 						->setCellValue('I'.$idx, ' ')
 						->setCellValue('J'.$idx, $ship_fee)
-						->setCellValue('K'.$idx, substr($info['id'], 0, strpos($info['id'], '_')))
+						->setCellValue('K'.$idx, '#'.substr($info['id'], 0, strpos($info['id'], '_')))
 						->setCellValue('L'.$idx, $order['done_date']);
+
 			$idx++;
 
 		}
@@ -117,6 +121,9 @@ function ship_download($orders, $warehouse, $from, $to){
 					->setCellValue('L'.$idx, ' ');
 
 		$objPHPExcel->setActiveSheetIndex(0)->mergeCells('A'.$idx.':B'.$idx);
+
+		$objPHPExcel->getActiveSheet()->getStyle('A'.$idx.':L'.$idx)->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID);
+		$objPHPExcel->getActiveSheet()->getStyle('A'.$idx.':L'.$idx)->getFill()->getStartColor()->setRGB('F0E68C');
 
 		$idx++;
 
@@ -140,14 +147,15 @@ function ship_download($orders, $warehouse, $from, $to){
 				->setCellValue('L'.$idx, ' ');
 
 	$objPHPExcel->setActiveSheetIndex(0)->mergeCells('A'.$idx.':E'.$idx);
-
-	$idx++;
+	$objPHPExcel->getActiveSheet()->getStyle('A'.$idx.':L'.$idx)->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID);
+	$objPHPExcel->getActiveSheet()->getStyle('A'.$idx.':L'.$idx)->getFill()->getStartColor()->setRGB('FFA500');
 
 	// Rename worksheet
 	$objPHPExcel->getActiveSheet()->setTitle('Freight and Service Fee');
-	$objPHPExcel->getActiveSheet()->getStyle('D2:D'.$idx)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_RIGHT);
+	$objPHPExcel->getActiveSheet()->getStyle('D2:D'.$idx)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
 	$objPHPExcel->getActiveSheet()->getStyle('A2:A'.$idx)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
 	$objPHPExcel->getActiveSheet()->getStyle('A1:L1')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+	$objPHPExcel->getActiveSheet(0)->getStyle('A1:L'.$idx)->getBorders()->getAllborders()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
 
 	// Set active sheet index to the first sheet, so Excel opens this as the first sheet
 	$objPHPExcel->setActiveSheetIndex(0);

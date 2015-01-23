@@ -20,6 +20,7 @@ require_once __DIR__  . '/../../utils/enum.php';
 					'id:text:訂單編號',
 					'customer_id:text:會員編號',
 					'date:text:日期',
+					'done_date:text:出庫日期',
 					'chinese_addr:text:中文地址',
 					'english_addr:text:英文地址',
 					'contact:text:聯絡人',

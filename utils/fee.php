@@ -11,7 +11,7 @@ class Fee
 		if(0 == strcmp('xm', $warehouse)){
 			$fee = 7 * $qty;
 		} else {
-			$fee = 30 * $qty;
+			$fee = round((30 * $qty) * 100 / 24) / 100;
 		}
 		return $fee;
 	}
@@ -21,7 +21,7 @@ class Fee
 		if(0 == strcmp('xm', $warehouse)){
 			$fee = 2 * $qty;
 		} else {
-			$fee = 5 * $qty;
+			$fee = round((5 * $qty) * 100 / 24) / 100;
 		}
 		return $fee;
 	}
@@ -143,10 +143,10 @@ class Fee
 			}
 
 		} else {
-			$fee = 1.1 * $org_fee;
+			$fee = 1.1 * $org_fee / 25.3;
 		}
 
-		return $fee;
+		return ceil($fee);
 	}
 
 }

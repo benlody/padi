@@ -14,13 +14,8 @@ use yii\helpers\Url;
 	foreach ($ship_array as $ship_info) {
 		$ship_out = $ship_out.'&nbsp;&nbsp;&nbsp;&nbsp;Tracking No.: '.substr($ship_info['id'], 0, strpos($ship_info['id'], '_')).'<br>';
 		$fee = Fee::getShipFreightFee($ship_info['fee'], $region, $warehouse, $ship_info['type'], $ship_info['weight']);
-		if(0 == strcmp('tw', $warehouse)){
-			$display_fee = ceil($fee / 25.3);
-		} else {
-			$display_fee = ceil($fee);
-		}
-		$total_fee += $display_fee;
-		$ship_out = $ship_out.'&nbsp;&nbsp;&nbsp;&nbsp;Freight Fee: '.$display_fee;
+		$total_fee += $fee;
+		$ship_out = $ship_out.'&nbsp;&nbsp;&nbsp;&nbsp;Freight Fee: '.$fee;
 		$ship_out = $ship_out.((0 == strcmp('xm', $warehouse)) ? 'RMB<br>' : 'AUD<br>');
 		$ship_out = $ship_out.'&nbsp;&nbsp;&nbsp;&nbsp;Packing: '.(isset($ship_info['box']) ? $ship_info['box'].'box' : $ship_info['pack'].'pack').'<br>';
 		$ship_out = $ship_out.'&nbsp;&nbsp;&nbsp;&nbsp;Weight: '.$ship_info['weight'].'KG<br>';

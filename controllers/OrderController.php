@@ -264,9 +264,6 @@ class OrderController extends \yii\web\Controller
 
 		if(isset($post_param['done'])){
 
-			$old_ship_array = json_decode($model->shipping_info);
-			$new_ship_array = $this->get_ship($post_param, $now);
-
 			$warehouse = $post_param['Order']['warehouse'];
 			$padi_balance_model = new Balance1($warehouse, 'padi');
 			$padi_transaction_model = new Transaction1($warehouse, 'padi');
@@ -278,6 +275,7 @@ class OrderController extends \yii\web\Controller
 					$content->product->$product->done = true;
 					$padi_transaction_model->$product -= ($content->product->$product->cnt - $old_cnt);
 					$padi_balance_model->$product -= ($content->product->$product->cnt - $old_cnt);
+					$complement_cnt[$product] += ($content->product->$product->cnt - $old_cnt);
 
 					$warning_cnt = $query->select('*')
 										->from('product')
@@ -304,6 +302,7 @@ class OrderController extends \yii\web\Controller
 						$content->crewpak->$crewpak->detail->$product->done = true;
 						$padi_transaction_model->$product -= ($content->crewpak->$crewpak->detail->$product->cnt - $old_cnt);
 						$padi_balance_model->$product -= ($content->crewpak->$crewpak->detail->$product->cnt - $old_cnt);
+						$complement_cnt[$product] += ($content->crewpak->$crewpak->detail->$product->cnt - $old_cnt);
 
 						$warning_cnt = $query->select('*')
 											->from('product')
@@ -330,6 +329,7 @@ class OrderController extends \yii\web\Controller
 					$content->product->$product->done = $cnt;
 					$padi_transaction_model->$product -= ($cnt - $old_cnt);
 					$padi_balance_model->$product -= ($cnt - $old_cnt);
+					$complement_cnt[$product] += ($cnt - $old_cnt);
 
 					$warning_cnt = $query->select('*')
 										->from('product')
@@ -360,6 +360,7 @@ class OrderController extends \yii\web\Controller
 						$content->crewpak->$crewpak->detail->$product->done = $cnt;
 						$padi_transaction_model->$product -= ($cnt - $old_cnt);
 						$padi_balance_model->$product -= ($cnt - $old_cnt);
+						$complement_cnt[$product] += ($cnt - $old_cnt);
 
 						$warning_cnt = $query->select('*')
 											->from('product')
@@ -374,11 +375,15 @@ class OrderController extends \yii\web\Controller
 				}
 			}
 
+			$old_ship_array = json_decode($model->shipping_info);
+			$new_ship_array = $this->get_ship($post_param, $now, $complement_cnt, (null != $model->done_date));
+
 			$post_param['Order']['content'] = json_encode($content);
 			$post_param['Order']['done_date'] = date("Y-m-d", strtotime($post_param['Order']['done_date']));
 			foreach ($post_param['Order'] as $key => $value) {
 				$model->$key = $value;
 			}
+
 			if($old_ship_array){
 				$model->shipping_info = json_encode(array_merge($old_ship_array, $new_ship_array));
 			} else {
@@ -516,7 +521,7 @@ class OrderController extends \yii\web\Controller
 
 		$orders = $query->select('*')
 						->from('order')
-						->where('warehouse = "'.$warehouse.'" AND status = 1 AND done_date BETWEEN  "'.$from.'" AND "'.$to.'"')
+						->where('warehouse = "'.$warehouse.'" AND status != 0 AND done_date BETWEEN  "'.$from.'" AND "'.$to.'"')
 						->orderBy('id ASC')
 						->all();
 
@@ -706,7 +711,7 @@ class OrderController extends \yii\web\Controller
 		return $content;
 	}
 
-	protected function get_ship($post_param, $now){
+	protected function get_ship($post_param, $now, $complement_cnt, $complement = false){
 
 		$ship_array = array();
 
@@ -740,8 +745,13 @@ class OrderController extends \yii\web\Controller
 			$ship_content['weight'] = $weight;
 			$ship_content['fee'] = $fee;
 			$ship_content['type'] = $post_param['Order']['ship_type'];
+			$ship_content['date'] = date("Y-m-d", strtotime($post_param['Order']['done_date']));
+			$ship_content['complement'] = $complement;
 
 			if(0 == $x){
+				if($complement){
+					$ship_content['complement_cnt'] = $complement_cnt;
+				}
 				$ship_content['content']['crewpak'] = $post_param['crewpak'];
 				$ship_content['content']['product'] = $post_param['product'];
 			} else {
@@ -849,7 +859,7 @@ class OrderController extends \yii\web\Controller
 			echo chineseToUnicode('送貨單位：□中華郵政 □順丰快遞 □新航快遞 ').'<span style="font-size: 24px;">'.
 					chineseToUnicode('■客戶自取').'</span></p>';
 		} else {
-			echo chineseToUnicode('送貨單位：□中華郵政 □順丰快遞 □新航快遞').'</p>';
+			echo chineseToUnicode('送貨單位：■'.\ShippingType::getShippingType($model->ship_type)).'</p>';
 		}
 
 		echo '<table class="tg" style="undefined;table-layout: fixed; width: 700px">';
