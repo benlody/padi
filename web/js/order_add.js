@@ -69,6 +69,10 @@ function fill_customer_info() {
 		},
 		success: function(resp){
 			var cus_info = JSON.parse(resp);
+			if(cus_info.extra_info.trim() !== '' && cus_info.extra_info !== null){
+				alert(cus_info.extra_info);
+				document.getElementById("order-extra_info").value = cus_info.extra_info;
+			}
 			document.getElementById("order-chinese_addr").value = cus_info.chinese_addr;
 			document.getElementById("order-english_addr").value = cus_info.english_addr;
 			document.getElementById("order-contact").value = cus_info.contact;

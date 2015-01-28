@@ -839,7 +839,7 @@ class OrderController extends \yii\web\Controller
 		}
 		echo '<p>'.chineseToUnicode('总重：').'</p>';
 		echo '<p>'.chineseToUnicode('运单号码：').'</p>';
-		echo '<p>'.chineseToUnicode('备注：').'</p>';
+		echo '<p>'.chineseToUnicode('备注：').chineseToUnicode($model->extra_info).'</p>';
 	}
 
 	protected function download_tw_header($model){
@@ -859,7 +859,7 @@ class OrderController extends \yii\web\Controller
 			echo chineseToUnicode('送貨單位：□中華郵政 □順丰快遞 □新航快遞 ').'<span style="font-size: 24px;">'.
 					chineseToUnicode('■客戶自取').'</span></p>';
 		} else {
-			echo chineseToUnicode('送貨單位：■'.\ShippingType::getShippingType($model->ship_type)).'</p>';
+			echo chineseToUnicode('送貨單位：■').'<span style="font-size: 24px;">'.chineseToUnicode(\ShippingType::getShippingType($model->ship_type)).'</p>';
 		}
 
 		echo '<table class="tg" style="undefined;table-layout: fixed; width: 700px">';
@@ -965,6 +965,7 @@ class OrderController extends \yii\web\Controller
 		echo '<p>'.chineseToUnicode('覆核：').'</p>';
 		echo '<p>'.chineseToUnicode('出貨：').'</p>';
 		echo '<p>'.chineseToUnicode('運費：').'</p>';
+		echo '<p>'.chineseToUnicode('備註：').chineseToUnicode($model->extra_info).'</p>';
 		echo '<p style="text-align: center;"><span style="font-size: 24px;">'.$p.'/'.$page.'</span></p>';
 		echo '</div> ';
 

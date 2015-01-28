@@ -537,7 +537,7 @@ class TransferController extends \yii\web\Controller
 		echo '<p>'.chineseToUnicode('总箱数：').'</p>';
 		echo '<p>'.chineseToUnicode('总重：').'</p>';
 		echo '<p>'.chineseToUnicode('运单号码：').'</p>';
-		echo '<p>'.chineseToUnicode('备注：').'</p>';
+		echo '<p>'.chineseToUnicode('备注：').chineseToUnicode($model->extra_info).'</p>';
 	}
 
 	protected function download_tw($model){
@@ -593,6 +593,7 @@ class TransferController extends \yii\web\Controller
 
 		echo '</table>';
 
+		echo '<p>'.chineseToUnicode('備註：').chineseToUnicode($model->extra_info).'</p>';
 		echo '<p>'.chineseToUnicode('執行者簽名：').'</p>';
 		echo '<p>'.chineseToUnicode('覆核： □已確認語文版本皆正確 □已確認產品數量皆正確    簽名:').'</p>';
 	}
