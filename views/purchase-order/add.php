@@ -17,14 +17,20 @@ $this->registerJsFile(Yii::$app->request->getBaseUrl().'/js/purchase_order_add.j
 
 	<?php $form = ActiveForm::begin(); ?>
 
-		<?= $form->field($model, 'id') ?>
+		<?= $form->field($model, 'id', ['labelOptions' => ['label' => '生產編號']]) ?>
+
+		<div class="form-group field-order-date">
+		<label class="control-label" for="order-date">日期</label>
 		<?php
 			echo DatePicker::widget([
 				'name' => 'PurchaseOrder[date]',
 				'value' => date("Y-m-d", strtotime('today')),
 			]);
 		?>
-		<?= $form->field($model, 'warehouse')->dropDownList([
+		<div class="help-block"></div>
+		</div>
+
+		<?= $form->field($model, 'warehouse', ['labelOptions' => ['label' => '倉儲']])->dropDownList([
 			'xm' => '廈門卡樂兒',
 			'tw' => '台灣光隆',
 			])
@@ -33,7 +39,7 @@ $this->registerJsFile(Yii::$app->request->getBaseUrl().'/js/purchase_order_add.j
 		<div>
 
 		<div class="input_fields_wrap_product">
-			<label class="control-label">Product / 原始訂單數量 / 預計生產數量</label>
+			<label class="control-label">產品名稱 / 原始訂單數量 / 預計生產數量</label>
 			<div>
 				<select class="form-group" name="product">
 					<option value='empty'></option>
@@ -59,7 +65,7 @@ $this->registerJsFile(Yii::$app->request->getBaseUrl().'/js/purchase_order_add.j
 		<div class="help-block"></div>
 		</div>
 
-		<?= $form->field($model, 'extra_info')->textArea(['rows' => 6]) ?>
+		<?= $form->field($model, 'extra_info', ['labelOptions' => ['label' => '備註']])->textArea(['rows' => 6]) ?>
 	
 		<div class="form-group">
 			<?= Html::submitButton(Yii::t('app', 'Submit'), ['class' => 'btn btn-primary']) ?>

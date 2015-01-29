@@ -17,9 +17,9 @@ $this->registerJsFile(Yii::$app->request->getBaseUrl().'/js/purchase_order_edit.
 
 	<?php $form = ActiveForm::begin(); ?>
 
-		<?= $form->field($model, 'id')->textInput(['readonly' => true]) ?>
-		<?= $form->field($model, 'date')->textInput(['readonly' => true]) ?>
-		<?= $form->field($model, 'warehouse')->dropDownList([
+		<?= $form->field($model, 'id', ['labelOptions' => ['label' => '生產編號']])->textInput(['readonly' => true]) ?>
+		<?= $form->field($model, 'date', ['labelOptions' => ['label' => '日期']])->textInput(['readonly' => true]) ?>
+		<?= $form->field($model, 'warehouse', ['labelOptions' => ['label' => '倉儲']])->dropDownList([
 			'xm' => '廈門卡樂兒',
 			'tw' => '台灣光隆',
 			], ['readonly' => true])
@@ -37,7 +37,7 @@ $this->registerJsFile(Yii::$app->request->getBaseUrl().'/js/purchase_order_edit.
 		</div>		
 
 		<div class="input_fields_wrap_product">
-			<label class="control-label">Product / 原始訂單數量 / 實際生產數量</label>
+			<label class="control-label">產品名稱 / 原始訂單數量 / 實際生產數量</label>
 
 			<?php
 				$content = json_decode($model->toArray()['content']);
@@ -63,9 +63,8 @@ $this->registerJsFile(Yii::$app->request->getBaseUrl().'/js/purchase_order_edit.
 		</div>
 		<div class="help-block"></div>
 		
+		<?= $form->field($model, 'extra_info', ['labelOptions' => ['label' => '備註']])->textArea(['rows' => 6]) ?>
 
-		<?= $form->field($model, 'extra_info')->textArea(['rows' => 6]) ?>
-	
 		<div class="form-group">
 			<?= Html::submitButton('完工入庫', ['class' => 'btn btn-primary', 'name' => 'done', 'onclick' => 'return check_cnt()']) ?>
 		</div>

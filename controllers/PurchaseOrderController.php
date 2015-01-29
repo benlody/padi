@@ -153,6 +153,40 @@ class PurchaseOrderController extends \yii\web\Controller
 		}
 	}
 
+	public function actionEdit_only($id)
+	{
+
+		if(Yii::$app->user->identity->group > User::GROUP_XM){
+			throw new NotFoundHttpException('The requested page does not exist.');
+		}
+
+		$model = $this->findModel($id);
+		$post_param = Yii::$app->request->post();
+
+		if(isset($post_param['save'])){
+			foreach ($post_param['PurchaseOrder'] as $key => $value) {
+				$model->$key = $value;
+			}
+			$model->update();
+
+			$log = new Log();
+			$log->username = Yii::$app->user->identity->username;
+			$log->action = 'Edit Produce ['.$model->id.']';
+			$log->insert();
+
+			if($model->status == PurchaseOrder::STATUS_DONE){
+				return $this->redirect(['list', 'status' => 'done']);
+			} else {
+				return $this->redirect(['list']);
+			}
+
+		} else {
+
+			return $this->render('edit_only', [
+				'model' => $model,
+			]);
+		}
+	}
 	public function actionIndex()
 	{
 		return $this->render('index');
@@ -177,6 +211,22 @@ class PurchaseOrderController extends \yii\web\Controller
 			'sort' => $sort,
 		]);
 
+	}
+
+	public function actionDelete($id)
+	{
+		if(Yii::$app->user->identity->group > User::GROUP_KL){
+			throw new NotFoundHttpException('The requested page does not exist.');
+		}
+
+		$this->findModel($id)->delete();
+
+		$log = new Log();
+		$log->username = Yii::$app->user->identity->username;
+		$log->action = 'Delete Produce ['.$id.']';
+		$log->insert();
+
+		return $this->redirect(['list']);
 	}
 
 	/**
