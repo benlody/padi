@@ -146,7 +146,7 @@ class InventoryController extends \yii\web\Controller
 		$provider = new ArrayDataProvider([
 				'allModels' => $overview,
 				'pagination' => [
-					'pageSize' => 100,
+					'pageSize' => 500,
 				],
 		]);
 
