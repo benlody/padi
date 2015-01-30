@@ -118,9 +118,42 @@ class InventoryController extends \yii\web\Controller
 		return $this->render('index');
 	}
 
-	public function actionOverview()
+	public function actionOverview($warehouse='xm')
 	{
-		return $this->render('overview');
+		$query = new Query;
+		$product = new Product();
+		$product_aray = $product->find()->column();
+		$overview = array();
+
+		$padi_balance = $query->select('*')
+						->from($warehouse.'_padi_balance')
+						->orderBy('ts DESC')
+						->one();
+
+		$self_balance = $query->select('*')
+						->from($warehouse.'_self_balance')
+						->orderBy('ts DESC')
+						->one();
+
+		foreach ($product_aray as $p) {
+			if($padi_balance[$p] || $self_balance[$p]){
+				$overview[$p]['id'] = $p;
+				$overview[$p]['padi'] = $padi_balance[$p] ? $padi_balance[$p] : 0;
+				$overview[$p]['self'] = $self_balance[$p] ? $self_balance[$p] : 0;
+			}
+		}
+
+		$provider = new ArrayDataProvider([
+				'allModels' => $overview,
+				'pagination' => [
+					'pageSize' => 100,
+				],
+		]);
+
+		return $this->render('overview', [
+				'warehouse' => $warehouse,
+				'provider' => $provider,
+			]);
 	}
 
 	public function actionTransaction($warehouse='xm', $type='padi', $from='', $to='')

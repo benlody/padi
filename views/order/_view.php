@@ -23,6 +23,11 @@ require_once __DIR__  . '/../../utils/enum.php';
 					'done_date:text:出庫日期',
 					'chinese_addr:text:中文地址',
 					'english_addr:text:英文地址',
+					[
+						'label' => '地區',
+						'format' => 'raw',
+						'value' => ShippingRegion::getRegion($model->region)
+					],
 					'contact:text:聯絡人',
 					'tel:text:電話',
 					[

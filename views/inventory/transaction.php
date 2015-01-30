@@ -59,10 +59,5 @@ $this->registerCssFile(Yii::$app->request->getBaseUrl().'/css/transaction_table_
 			echo '<p><br><br>'.Html::encode($crewpak_id).'</p>';
 			echo transaction_to_table($start_balance, $end_balance, $transaction, $crewpak_product);
 		}
-
-
-
-
-
 	?>
 
