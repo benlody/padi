@@ -169,19 +169,19 @@ class InventoryController extends \yii\web\Controller
 		}
 		$start_balance = $query->select('*')
 						->from($warehouse.'_'.$type.'_balance')
-						->where('ts < "'.$from.'"')
+						->where('date < "'.$from.'"')
 						->orderBy('ts DESC')
 						->one();
 
 		$end_balance = $query->select('*')
 						->from($warehouse.'_'.$type.'_balance')
-						->where('ts <= "'.$to.'"')
+						->where('date <= "'.$to.'"')
 						->orderBy('ts DESC')
 						->one();
 
 		$transaction = $query->select('*')
 						->from($warehouse.'_'.$type.'_transaction')
-						->where('ts BETWEEN  "'.$from.'" AND "'.$to.'"')
+						->where('date BETWEEN  "'.$from.'" AND "'.$to.'"')
 						->orderBy('ts DESC')
 						->all();
 
