@@ -91,41 +91,20 @@ class TransferController extends \yii\web\Controller
 				$warehouse_type = substr($dst, $pos + 1);
 
 				$post_param['Transfer']['send_date'] = date("Y-m-d", strtotime($post_param['date']));
-				$post_param['Transfer']['recv_date'] = date("Y-m-d", strtotime($post_param['date']));
 
 				foreach ($post_param['Transfer'] as $key => $value) {
 					$model->$key = $value;
 				}
-				$model->status = Transfer::STATUS_DONE;
-
-				$transaction_model =  new Transaction1($warehouse, $warehouse_type);
-				$balance_model =  new Balance1($warehouse, $warehouse_type);
-				get_balance($balance_model, $warehouse, $warehouse_type);
-
-				foreach ($content as $p_name => $cnt) {
-					$transaction_model->$p_name += $cnt;
-					$balance_model->$p_name += $cnt;
-				}
-
-				$now = strtotime('now');
-				$transaction_model->serial = 'transfer_'.$post_param['Transfer']['id'].'_'.$now;
-				$transaction_model->date = date("Y-m-d", strtotime($post_param['date']));
-				$transaction_model->extra_info = $post_param['Transfer']['extra_info'];
-
-				$balance_model->serial = 'transfer_'.$post_param['Transfer']['id'].'_'.$now;
-				$balance_model->date = date("Y-m-d", strtotime($post_param['date']));
-				$balance_model->extra_info = $post_param['Transfer']['extra_info'];
+				$model->status = Transfer::STATUS_ONTHEWAY;
 
 				$model->insert();
-				$transaction_model->insert();
-				$balance_model->insert();
 
 				$log = new Log();
 				$log->username = Yii::$app->user->identity->username;
 				$log->action = 'Add transfer ['.$model->id.']';
 				$log->insert();
 
-				return $this->redirect(['list', 'status' => 'done']);
+				return $this->redirect(['list']);
 
 			} else if(0 == strncmp($src, $dst, strpos($dst, '_'))){
 
