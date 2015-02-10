@@ -21,7 +21,7 @@ $this->params['breadcrumbs'][] = $this->title;
 		if(0 == strcmp($status, 'done')){
 			$subtitle = ' - 已出貨';
 			$btn_lable = '列出未出貨';
-			$btn_cfg = ['list', 'status' => '', 'detail' => $detail, 'sort' => $sort];
+			$btn_cfg = ['list', 'status' => '', 'detail' => $detail, 'sort' => '-date'];
 			$config = [
 				'dataProvider' => $dataProvider,
 				'columns' => [
@@ -74,7 +74,7 @@ $this->params['breadcrumbs'][] = $this->title;
 		} else {
 			$subtitle = ' - 未完成出貨';
 			$btn_lable = '列出已出貨';
-			$btn_cfg = ['list', 'status' => 'done', 'detail' => $detail, 'sort' => $sort];
+			$btn_cfg = ['list', 'status' => 'done', 'detail' => $detail, 'sort' => '-done_date'];
 			$config = [
 				'dataProvider' => $dataProvider,
 				'columns' => [

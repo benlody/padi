@@ -52,19 +52,19 @@ AppAsset::register($this);
 						'items' => [
 							 '<li class="dropdown-header" align="center"><font color="green">會員訂單</font></li>',
 							 ['label' => '新增會員訂單', 'url' => ['/order/add']],
-							 ['label' => '會員訂單列表', 'url' => ['/order/list']],
+							 ['label' => '會員訂單列表', 'url' => ['/order/list', 'sort' => '-date']],
 							 ['label' => '出貨明細', 'url' => ['/order/ship_overview']],
 							 '<li class="divider"></li>',
 							 '<li class="dropdown-header" align="center"><font color="green">內部訂單/轉移</font></li>',
 							 ['label' => '新增內部訂單', 'url' => ['/transfer/add']],
-							 ['label' => '內部訂單列表', 'url' => ['/transfer/list']],
+							 ['label' => '內部訂單列表', 'url' => ['/transfer/list', 'sort' => '-send_date']],
 						],
 					],
 					[
 						'label' => '生產',
 						'items' => [
 							 ['label' => '新增生產', 'url' => ['/purchase-order/add']],
-							 ['label' => '生產列表', 'url' => ['/purchase-order/list']],
+							 ['label' => '生產列表', 'url' => ['/purchase-order/list', 'sort' => '-date']],
 						],
 					],
 					[
@@ -116,17 +116,17 @@ AppAsset::register($this);
 						'label' => '訂單',
 						'items' => [
 							 '<li class="dropdown-header" align="center"><font color="green">會員訂單</font></li>',
-							 ['label' => '會員訂單列表', 'url' => ['/order/list']],
+							 ['label' => '會員訂單列表', 'url' => ['/order/list', 'sort' => '-date']],
 							 ['label' => '出貨明細', 'url' => ['/order/ship_overview']],
 							 '<li class="divider"></li>',
 							 '<li class="dropdown-header" align="center"><font color="green">內部訂單/轉移</font></li>',
-							 ['label' => '內部訂單列表', 'url' => ['/transfer/list']],
+							 ['label' => '內部訂單列表', 'url' => ['/transfer/list', 'sort' => '-send_date']],
 						],
 					],
 					[
 						'label' => '生產',
 						'items' => [
-							 ['label' => '生產列表', 'url' => ['/purchase-order/list']],
+							 ['label' => '生產列表', 'url' => ['/purchase-order/list', 'sort' => '-date']],
 						],
 					],
 					[
@@ -170,19 +170,19 @@ AppAsset::register($this);
 						'items' => [
 							 '<li class="dropdown-header" align="center"><font color="green">會員訂單</font></li>',
 							 ['label' => '新增會員訂單', 'url' => ['/order/add']],
-							 ['label' => '會員訂單列表', 'url' => ['/order/list']],
+							 ['label' => '會員訂單列表', 'url' => ['/order/list', 'sort' => '-date']],
 							 ['label' => '出貨明細', 'url' => ['/order/ship_overview']],
 							 '<li class="divider"></li>',
 							 '<li class="dropdown-header" align="center"><font color="green">內部訂單/轉移</font></li>',
 							 ['label' => '新增內部訂單', 'url' => ['/transfer/add']],
-							 ['label' => '內部訂單列表', 'url' => ['/transfer/list']],
+							 ['label' => '內部訂單列表', 'url' => ['/transfer/list', 'sort' => '-send_date']],
 						],
 					],
 					[
 						'label' => '生產',
 						'items' => [
 							 ['label' => '新增生產', 'url' => ['/purchase-order/add']],
-							 ['label' => '生產列表', 'url' => ['/purchase-order/list']],
+							 ['label' => '生產列表', 'url' => ['/purchase-order/list', 'sort' => '-date']],
 						],
 					],
 					[

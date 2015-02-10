@@ -154,24 +154,14 @@ class OrderController extends \yii\web\Controller
 		$searchModel = new OrderSearch();
 		if(0 == strcmp($status, 'done')){
 			$search_param['OrderSearch'] = array('status' => Order::STATUS_DONE);
-			if(0 == strcmp($sort, '-date')){
-				$sort = '-done_date';
-			}
 			$dataProvider = $searchModel->search($search_param);
 		} else {
-
-			if(0 == strcmp($sort, '-done_date')){
-				$sort = '-date';
-			}
-
 			$query = Order::find();
 			$query->Where('status != '.Order::STATUS_DONE);
 
 			$dataProvider = new ActiveDataProvider([
 				'query' => $query,
 			]);
-
-
 		}
 
 		return $this->render('list', [
