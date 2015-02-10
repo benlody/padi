@@ -76,7 +76,7 @@ class OrderController extends \yii\web\Controller
 			$log->action = 'Add order ['.$model->id.']';
 			$log->insert();
 
-			return $this->redirect(['list']);
+			return $this->redirect(['list', 'sort' => '-date']);
 
 		} else {
 			return $this->render('add', [
@@ -120,7 +120,7 @@ class OrderController extends \yii\web\Controller
 			$log->action = 'Modify order ['.$model->id.']';
 			$log->insert();
 
-			return $this->redirect(['list']);
+			return $this->redirect(['list', 'sort' => '-date']);
 
 		} else {
 			return $this->render('modify', [
@@ -145,7 +145,7 @@ class OrderController extends \yii\web\Controller
 		$log->action = 'Delete order ['.$id.']';
 		$log->insert();
 
-		return $this->redirect(['list']);
+		return $this->redirect(['list', 'sort' => '-date']);
 	}
 
 	public function actionList($status='', $detail = true, $sort='-date')
@@ -193,7 +193,7 @@ class OrderController extends \yii\web\Controller
 			$log->action = 'Review order ['.$model->id.']';
 			$log->insert();
 
-			return $this->redirect(['list']);
+			return $this->redirect(['list', 'sort' => '-date']);
 
 		} else {
 
@@ -449,9 +449,9 @@ class OrderController extends \yii\web\Controller
 			$log->insert();
 
 			if($model->status == Order::STATUS_DONE){
-				return $this->redirect(['list', 'status' => 'done']);
+				return $this->redirect(['list', 'status' => 'done', 'sort' => '-done_date']);
 			} else {
-				return $this->redirect(['list']);
+				return $this->redirect(['list', 'sort' => '-date']);
 			}
 
 		} else {
@@ -486,9 +486,9 @@ class OrderController extends \yii\web\Controller
 			$log->insert();
 
 			if($model->status == Order::STATUS_DONE){
-				return $this->redirect(['list', 'status' => 'done']);
+				return $this->redirect(['list', 'status' => 'done', 'sort' => '-done_date']);
 			} else {
-				return $this->redirect(['list']);
+				return $this->redirect(['list', 'sort' => '-date']);
 			}
 
 		} else {
@@ -544,6 +544,15 @@ class OrderController extends \yii\web\Controller
 						->all();
 
 		ship_download($orders, $warehouse, $from, $to);
+	}
+
+	public function actionAjaxFee()
+	{
+		$post_param = Yii::$app->request->post();
+
+		$req_fee = \Fee::getShipFreightFee($post_param['org_fee'], $post_param['region'], $post_param['warehouse'], $post_param['type'], $post_param['weight'], $post_param['box']);
+
+		return $req_fee;
 	}
 
 	public function actionGet()
@@ -713,6 +722,7 @@ class OrderController extends \yii\web\Controller
 			$packing_type_idx = "packing_type_".$x;
 			$weight_idx = "weight_".$x;
 			$fee_idx = "shipping_fee_".$x;
+			$req_fee_idx = "req_fee_".$x;
 
 			if(!isset($post_param[$ship_idx])){
 				break;
@@ -728,12 +738,14 @@ class OrderController extends \yii\web\Controller
 			$packing_type = $post_param[$packing_type_idx];
 			$weight = $post_param[$weight_idx];
 			$fee = $post_param[$fee_idx];
+			$req_fee = $post_param[$req_fee_idx];
 
 			$ship_content = array();
 			$ship_content['id'] = $ship.'_'.$now;
 			$ship_content[$packing_type] = $packing_cnt;
 			$ship_content['weight'] = $weight;
 			$ship_content['fee'] = $fee;
+			$ship_content['req_fee'] = $req_fee;
 			$ship_content['type'] = $post_param['Order']['ship_type'];
 			$ship_content['date'] = date("Y-m-d", strtotime($post_param['Order']['done_date']));
 			$ship_content['complement'] = $complement;

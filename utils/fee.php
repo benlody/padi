@@ -26,7 +26,7 @@ class Fee
 		return $fee;
 	}
 
-	static public function getShipFreightFee($org_fee, $region, $warehouse, $type, $weight){
+	static public function getShipFreightFee($org_fee, $region, $warehouse, $type, $weight, $box){
 
 		if(ShippingType::T_SELFPICK == $type){
 			return 0;
@@ -143,7 +143,11 @@ class Fee
 			}
 
 		} else {
-			$fee = 1.1 * $org_fee / 25.3;
+			if(ShippingType::T_NEW == $type){
+				$fee = 11 * $box;
+			} else {
+				$fee = 1.1 * $org_fee / 24;
+			}
 		}
 
 		return ceil($fee);

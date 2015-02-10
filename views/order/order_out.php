@@ -13,7 +13,7 @@ use yii\helpers\Url;
 	$ship_out = '';
 	foreach ($ship_array as $ship_info) {
 		$ship_out = $ship_out.'&nbsp;&nbsp;&nbsp;&nbsp;Tracking No.: '.substr($ship_info['id'], 0, strpos($ship_info['id'], '_')).'<br>';
-		$fee = Fee::getShipFreightFee($ship_info['fee'], $region, $warehouse, $ship_info['type'], $ship_info['weight']);
+		$fee = isset($ship_info['req_fee']) ? $ship_info['req_fee'] : Fee::getShipFreightFee($ship_info['fee'], $region, $warehouse, $ship_info['type'], $ship_info['weight'], $ship_info['box']);
 		$total_fee += $fee;
 		$ship_out = $ship_out.'&nbsp;&nbsp;&nbsp;&nbsp;Freight Fee: '.$fee;
 		$ship_out = $ship_out.((0 == strcmp('xm', $warehouse)) ? 'RMB<br>' : 'AUD<br>');

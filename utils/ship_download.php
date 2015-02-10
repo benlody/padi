@@ -85,7 +85,7 @@ function ship_download($orders, $warehouse, $from, $to){
 
 		foreach ($ship_info as $info) {
 
-			$ship_fee = Fee::getShipFreightFee($info['fee'], $order['region'], $warehouse, $info['type'], $info['weight']);
+			$ship_fee = isset($info['req_fee']) ? $info['req_fee'] : Fee::getShipFreightFee($info['fee'], $region, $warehouse, $info['type'], $info['weight'], $info['box']);
 			$subtotal_ship_fee += $ship_fee;
 
 			$objPHPExcel->setActiveSheetIndex(0)

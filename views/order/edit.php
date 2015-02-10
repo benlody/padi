@@ -57,12 +57,13 @@ $this->registerJsFile(Yii::$app->request->getBaseUrl().'/js/order_edit.js',['dep
 			<div>
 			<p><b>
 				Tracking Number:&nbsp;<input name="shipping_0" type="text" required/>
-				&nbsp;&nbsp;&nbsp;包裝:&nbsp;<input name="packing_cnt_0" type="number" style="width:60px;" required/>
+				&nbsp;&nbsp;&nbsp;包裝:&nbsp;<input name="packing_cnt_0" type="number" style="width:60px;" onchange="count_fee(0)" required/>
 				<select name="packing_type_0">
 					<option value="box">箱</option>
 					<option value="pack">包</option>
-				</select>&nbsp;&nbsp;&nbsp;重量:&nbsp;<input name="weight_0" type="number" step="0.01" style="width:100px;" required/>KG
-				</select>&nbsp;&nbsp;&nbsp;運費:&nbsp;<input name="shipping_fee_0" type="number" step="0.01" style="width:100px;" required/>
+				</select>&nbsp;&nbsp;&nbsp;重量:&nbsp;<input name="weight_0" type="number" step="0.01" style="width:100px;" onchange="count_fee(0)" required/>KG
+				&nbsp;&nbsp;&nbsp;原始運費:&nbsp;<input name="shipping_fee_0" type="number" step="0.01" style="width:100px;" onchange="count_fee(0)" required/>
+				&nbsp;&nbsp;&nbsp;請款運費:&nbsp;<input name="req_fee_0" type="number" step="0.01" style="width:100px;" required/>
 			</b></p>
 			</div>
 		</div>

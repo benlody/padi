@@ -72,12 +72,13 @@ $(document).ready(function() {
 			var newIn = '';
 			newIn += '<div><p><b>';
 			newIn += 'Tracking Number:&nbsp;<input name="shipping_' + ship_cnt +'" type="text" />';
-			newIn += '&nbsp;&nbsp;&nbsp;包裝:&nbsp;<input name="packing_cnt_' + ship_cnt +'" type="number" style="width:60px;"/>';
+			newIn += '&nbsp;&nbsp;&nbsp;包裝:&nbsp;<input name="packing_cnt_' + ship_cnt +'" type="number" style="width:60px;" onchange="count_fee(' + ship_cnt +')" />';
 			newIn += '<select name="packing_type_' + ship_cnt +'">';
 			newIn += '<option value="box">箱</option>';
 			newIn += '<option value="pack">包</option>';
-			newIn += '</select>&nbsp;&nbsp;&nbsp;重量:&nbsp;<input name="weight_' + ship_cnt +'" type="number" style="width:100px;"/>KG';
-			newIn += '</select>&nbsp;&nbsp;&nbsp;運費:&nbsp;<input name="shipping_fee_' + ship_cnt +'" type="number" style="width:100px;"/></b></p></div>';
+			newIn += '</select>&nbsp;&nbsp;&nbsp;重量:&nbsp;<input name="weight_' + ship_cnt +'" type="number" step="0.01" style="width:100px;" onchange="count_fee(' + ship_cnt +')" />KG';
+			newIn += '&nbsp;&nbsp;&nbsp;原始運費:&nbsp;<input name="shipping_fee_' + ship_cnt +'" type="number" step="0.01" style="width:100px;" onchange="count_fee(' + ship_cnt +')" />';
+			newIn += '&nbsp;&nbsp;&nbsp;請款運費:&nbsp;<input name="req_fee_' + ship_cnt +'" type="number" step="0.01" style="width:100px;"/></b></p></div>';
 
 			ship_cnt++; //text box increment
 			$(wrapper_ship).append(newIn); //add input box
@@ -107,4 +108,30 @@ function check_missing(){
 	}
 
 	return ret;
+}
+
+function count_fee(idx){
+	jQuery.ajax({
+		// The url must be appropriate for your configuration;
+		// this works with the default config of 1.1.11
+		url: 'index.php?r=order/ajax-fee',
+		type: "POST",
+
+		data: {
+			org_fee: document.getElementsByName("shipping_fee_" + idx)[0].value,
+			region: document.getElementById("order-region").value,
+			warehouse: document.getElementById("order-warehouse").value,
+			weight: document.getElementsByName("weight_" + idx)[0].value,
+			box: document.getElementsByName("packing_cnt_" + idx)[0].value,
+			type: document.getElementById("order-ship_type").value,
+		},
+
+		error: function(xhr,tStatus,e){
+			console.log(arguments);
+		},
+		success: function(resp){
+			var req_fee = JSON.parse(resp);
+			document.getElementsByName("req_fee_" + idx)[0].value = req_fee;
+		}
+	});
 }
