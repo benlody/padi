@@ -27,6 +27,7 @@ $this->registerJsFile(Yii::$app->request->getBaseUrl().'/js/order_edit.js',['dep
 			],['readonly' => true])
 		?>
 		<?= $form->field($model, 'customer_id', ['labelOptions' => ['label' => '會員編號']])->textInput(['readonly' => true]) ?>
+		<?= $form->field($model, 'customer_name', ['labelOptions' => ['label' => '會員名稱']])->textInput(['readonly' => true]) ?>
 		<?= $form->field($model, 'chinese_addr')->textInput(['readonly' => true]) ?>
 		<?= $form->field($model, 'english_addr')->textInput(['readonly' => true]) ?>
 		<?= $form->field($model, 'region', ['labelOptions' => ['label' => '地區']])

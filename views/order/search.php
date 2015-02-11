@@ -47,14 +47,7 @@ $this->params['breadcrumbs'][] = $this->title;
 			'columns' => [
 				'id:text:Order編號',
 				'customer_id:text:會員編號',
-				[
-					'attribute' => 'customer_name',
-					'format' => 'raw',
-					'label' => '會員名稱',
-					'value' => function ($model) {
-						return get_customer_name($model->customer_id);
-					}
-				],
+				'customer_name:text:會員名稱',
 				'date:text:日期',
 				'done_date:text:出貨日期',
 				[

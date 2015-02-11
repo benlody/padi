@@ -19,6 +19,7 @@ require_once __DIR__  . '/../../utils/enum.php';
 		'attributes' => [
 					'id:text:訂單編號',
 					'customer_id:text:會員編號',
+					'customer_name:text:會員名稱',
 					'date:text:日期',
 					'done_date:text:出庫日期',
 					'chinese_addr:text:中文地址',

@@ -18,7 +18,7 @@ class OrderSearch extends Order
     public function rules()
     {
         return [
-            [['id', 'customer_id', 'chinese_addr', 'english_addr', 'region', 'contact', 'tel', 'content', 'date', 'done_date', 'warehouse', 'shipping_info', 'extra_info'], 'safe'],
+            [['id', 'customer_id', 'customer_name', 'chinese_addr', 'english_addr', 'region', 'contact', 'tel', 'content', 'date', 'done_date', 'warehouse', 'shipping_info', 'extra_info'], 'safe'],
             [['ship_type', 'status'], 'integer'],
         ];
     }
@@ -60,6 +60,7 @@ class OrderSearch extends Order
 
         $query->andFilterWhere(['like', 'id', $this->id])
             ->andFilterWhere(['like', 'customer_id', $this->customer_id])
+            ->andFilterWhere(['like', 'customer_name', $this->customer_name])
             ->andFilterWhere(['like', 'chinese_addr', $this->chinese_addr])
             ->andFilterWhere(['like', 'english_addr', $this->english_addr])
             ->andFilterWhere(['like', 'region', $this->region])
@@ -83,6 +84,7 @@ class OrderSearch extends Order
 
         $query->andFilterWhere(['like', 'id', $params['id']])
             ->andFilterWhere(['like', 'customer_id', $params['customer_id']])
+            ->andFilterWhere(['like', 'customer_name', $params['customer_name']])
             ->andFilterWhere(['or', ['like', 'chinese_addr', $params['addr']], ['like', 'english_addr', $params['addr']]])
             ;
 

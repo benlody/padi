@@ -179,6 +179,10 @@ class OrderController extends \yii\web\Controller
 
 	public function actionSearch(){
 
+		if(Yii::$app->user->identity->group > User::GROUP_KL){
+			throw new NotFoundHttpException('The requested page does not exist.');
+		}
+
 		$post_param = Yii::$app->request->post();
 		$searchModel = new OrderSearch();
 
@@ -459,7 +463,7 @@ class OrderController extends \yii\web\Controller
 						'order_id' => $post_param['Order']['id'],
 						'warehouse' => $warehouse,
 						'customer_id' => $post_param['Order']['customer_id'],
-						'customer_name' => get_customer_name($model->customer_id),
+						'customer_name' => $post_param['Order']['customer_name'],
 						'region' => $post_param['Order']['region'],
 						]);
 			$subject = YII_ENV_DEV ? 'Freight Info (Test) - '.$post_param['Order']['id'] : 'Freight Info - '.$post_param['Order']['id'];

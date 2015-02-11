@@ -45,7 +45,7 @@ class Order extends \yii\db\ActiveRecord
 	{
 		return [
 			[['id', 'customer_id', 'content', 'ship_type', 'date', 'warehouse', 'status'], 'required'],
-			[['chinese_addr', 'english_addr', 'contact', 'tel', 'content', 'shipping_info', 'extra_info'], 'string'],
+			[['customer_name', 'chinese_addr', 'english_addr', 'contact', 'tel', 'content', 'shipping_info', 'extra_info'], 'string'],
 			[['ship_type', 'status'], 'integer'],
 			[['date', 'done_date'], 'safe'],
 			[['id', 'customer_id', 'region', 'warehouse'], 'string', 'max' => 255]
@@ -60,6 +60,7 @@ class Order extends \yii\db\ActiveRecord
 		return [
 			'id' => Yii::t('app', 'ID'),
 			'customer_id' => Yii::t('app', 'Customer ID'),
+			'customer_name' => Yii::t('app', 'Customer Name'),
 			'chinese_addr' => Yii::t('app', 'Chinese Addr'),
 			'english_addr' => Yii::t('app', 'English Addr'),
 			'region' => Yii::t('app', 'Region'),

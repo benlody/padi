@@ -92,6 +92,7 @@ CREATE TABLE `xm_padi_transaction` (
 CREATE TABLE `order` (
   `id` CHAR(255) NOT NULL PRIMARY KEY,
   `customer_id` CHAR(255) NOT NULL,
+  `customer_name` TEXT DEFAULT '',
   `chinese_addr` TEXT DEFAULT '',
   `english_addr` TEXT DEFAULT '',
   `region` CHAR(255) DEFAULT '',

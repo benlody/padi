@@ -58,6 +58,7 @@ require_once __DIR__  . '/../../utils/enum.php';
 			<div class="help-block"></div>
 		</div>
 
+		<?= $form->field($model, 'customer_name', ['labelOptions' => ['label' => '會員名稱']]) ?>
 		<?= $form->field($model, 'chinese_addr', ['labelOptions' => ['label' => '中文地址']]) ?>
 		<?= $form->field($model, 'english_addr', ['labelOptions' => ['label' => '英文地址']]) ?>
 		<?= $form->field($model, 'region', ['labelOptions' => ['label' => '地區']])->dropDownList(ShippingRegion::getRegionList()) ?>

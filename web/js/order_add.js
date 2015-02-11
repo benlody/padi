@@ -73,6 +73,8 @@ function fill_customer_info() {
 				alert(cus_info.extra_info);
 				document.getElementById("order-extra_info").value = cus_info.extra_info;
 			}
+			document.getElementById("order-extra_info").value = cus_info.extra_info;
+			document.getElementById("order-customer_name").value = cus_info.english_name;
 			document.getElementById("order-chinese_addr").value = cus_info.chinese_addr;
 			document.getElementById("order-english_addr").value = cus_info.english_addr;
 			document.getElementById("order-contact").value = cus_info.contact;
