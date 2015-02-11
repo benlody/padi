@@ -177,6 +177,26 @@ class OrderController extends \yii\web\Controller
 
 	}
 
+	public function actionSearch(){
+
+		$post_param = Yii::$app->request->post();
+		$searchModel = new OrderSearch();
+
+		if(isset($post_param['search'])){
+
+			$dataProvider = $searchModel->mysearch($post_param['OrderSearch']);
+
+			return $this->render('search', [
+				'search_param' => $post_param['OrderSearch'],
+				'dataProvider' => $dataProvider,
+			]);
+
+		}
+
+		return $this->render('search');
+	}
+
+
 	public function actionReview($id)
 	{
 

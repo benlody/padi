@@ -72,4 +72,21 @@ class OrderSearch extends Order
 
         return $dataProvider;
     }
+
+    public function mysearch($params)
+    {
+        $query = Order::find();
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+        ]);
+
+        $query->andFilterWhere(['like', 'id', $params['id']])
+            ->andFilterWhere(['like', 'customer_id', $params['customer_id']])
+            ->andFilterWhere(['or', ['like', 'chinese_addr', $params['addr']], ['like', 'english_addr', $params['addr']]])
+            ;
+
+        return $dataProvider;
+    }
+
 }

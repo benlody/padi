@@ -20,7 +20,6 @@ $this->registerJsFile(Yii::$app->request->getBaseUrl().'/js/transfer_add.js',['d
 		<?= $form->field($model, 'id', ['labelOptions' => ['label' => '編號']]) ?>
 
 		<label class="control-label">來源倉儲</label>
-		<div>
 		<?= Html::dropDownList('Transfer[src_warehouse]', 'xm_padi', [
 			'xm_padi' => '廈門卡樂兒PADI庫存',
 			'xm_self' => '廈門卡樂兒自有庫存',
@@ -33,7 +32,6 @@ $this->registerJsFile(Yii::$app->request->getBaseUrl().'/js/transfer_add.js',['d
 		<div class="help-block"></div>
 
 		<label class="control-label">目的倉儲</label>
-		<div>
 		<?= Html::dropDownList('Transfer[dst_warehouse]', 'xm_padi', [
 			'xm_padi' => '廈門卡樂兒PADI庫存',
 			'xm_self' => '廈門卡樂兒自有庫存',
@@ -46,7 +44,6 @@ $this->registerJsFile(Yii::$app->request->getBaseUrl().'/js/transfer_add.js',['d
 		<div class="help-block"></div>
 
 		<label class="control-label">運送方式</label>
-		<div>
 		<?= Html::dropDownList('Transfer[ship_type]', '', 
 				ShippingType::getTransferType(), ['class' => 'form-control', 'id' => 'ship_type'])
 		?>
