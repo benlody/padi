@@ -35,6 +35,10 @@ $this->params['breadcrumbs'][] = $this->title;
 	<?= Html::input('text', 'OrderSearch[addr]', $search_param['addr'], ['class' => 'form-control', 'id' => 'OrderSearch_addr']) ?>
 	<div class="help-block"></div>
 
+	<label class="control-label">產品內容</label>
+	<?= Html::input('text', 'OrderSearch[content]', $search_param['content'], ['class' => 'form-control', 'id' => 'OrderSearch_content']) ?>
+	<div class="help-block"></div>
+
 	<div class="form-group">
 		<?= Html::submitButton(Yii::t('app', 'Search'), ['class' => 'btn btn-primary', 'name' => 'search']) ?>
 	</div>

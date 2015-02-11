@@ -82,11 +82,16 @@ class OrderSearch extends Order
             'query' => $query,
         ]);
 
+        $contents = explode(',',$params['content']);
+
         $query->andFilterWhere(['like', 'id', $params['id']])
             ->andFilterWhere(['like', 'customer_id', $params['customer_id']])
             ->andFilterWhere(['like', 'customer_name', $params['customer_name']])
-            ->andFilterWhere(['or', ['like', 'chinese_addr', $params['addr']], ['like', 'english_addr', $params['addr']]])
-            ;
+            ->andFilterWhere(['or', ['like', 'chinese_addr', $params['addr']], ['like', 'english_addr', $params['addr']]]);
+
+        foreach ($contents as $content) {
+            $query->andFilterWhere(['like', 'content', $content]);
+        }
 
         return $dataProvider;
     }
