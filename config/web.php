@@ -74,6 +74,9 @@ $config = [
 				],
 			],
 		],
+		'formatter' => [
+			'dateFormat' => 'MM/d/Y',
+		],
 	],
 	'params' => $params,
 ];
