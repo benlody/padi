@@ -3,16 +3,16 @@
 use yii\helpers\Html;
 
 /* @var $this yii\web\View */
-$this->title = '光隆庫存管理系統';
+$this->title = Yii::t('app', 'Kuang Lung PADI Inventory');
 ?>
 <div class="site-index">
 
     <div class="jumbotron">
-        <h1>光隆庫存管理系統</h1>
+        <h1><?= $this->title?></h1>
 
 		<?php
 			if(Yii::$app->user->isGuest){
-				echo Html::a('登入系統', ['login'], ['class' => 'btn btn-lg btn-success']);
+				echo Html::a(Yii::t('app', 'Login'), ['login'], ['class' => 'btn btn-lg btn-success']);
 			} else {
 				echo '<p class="lead">Welcome '.Yii::$app->user->identity->username.'</p>';
 			}

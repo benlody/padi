@@ -2,6 +2,10 @@
 return [
     'Submit' => '送出',
     'Print' => '列印',
+    'Login' => '登入',
+    'Username' => '帳號',
+    'Password' => '密碼',
+
 
     'Kuang Lung PADI Inventory - Test' => '光隆PADI庫存管理 - 測試版',
     'Kuang Lung PADI Inventory' => '光隆PADI庫存管理',
