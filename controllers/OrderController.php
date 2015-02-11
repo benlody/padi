@@ -151,6 +151,10 @@ class OrderController extends \yii\web\Controller
 	public function actionList($status='', $detail = true, $sort='-date')
 	{
 
+		if(Yii::$app->user->identity->group > User::GROUP_XM){
+			throw new NotFoundHttpException('The requested page does not exist.');
+		}
+
 		$searchModel = new OrderSearch();
 		if(0 == strcmp($status, 'done')){
 			$search_param['OrderSearch'] = array('status' => Order::STATUS_DONE);
@@ -206,6 +210,10 @@ class OrderController extends \yii\web\Controller
 
 	public function actionView($id)
 	{
+
+		if(Yii::$app->user->identity->group > User::GROUP_XM){
+			throw new NotFoundHttpException('The requested page does not exist.');
+		}
 
 		$model = $this->findModel($id);
 
@@ -265,7 +273,6 @@ class OrderController extends \yii\web\Controller
 					$content->product->$product->done = true;
 					$padi_transaction_model->$product -= ($content->product->$product->cnt - $old_cnt);
 					$padi_balance_model->$product -= ($content->product->$product->cnt - $old_cnt);
-					$complement_cnt[$product] += ($content->product->$product->cnt - $old_cnt);
 
 					$warning_cnt = $query->select('*')
 										->from('product')
@@ -319,7 +326,6 @@ class OrderController extends \yii\web\Controller
 					$content->product->$product->done = $cnt;
 					$padi_transaction_model->$product -= ($cnt - $old_cnt);
 					$padi_balance_model->$product -= ($cnt - $old_cnt);
-					$complement_cnt[$product] += ($cnt - $old_cnt);
 
 					$warning_cnt = $query->select('*')
 										->from('product')
@@ -501,6 +507,10 @@ class OrderController extends \yii\web\Controller
 
 	public function actionShip_overview($warehouse='xm', $from='', $to='')
 	{
+		if(Yii::$app->user->identity->group > User::GROUP_KL){
+			throw new NotFoundHttpException('The requested page does not exist.');
+		}
+
 		$query = new Query;
 		if(!$from){
 			$from = date("Y-m-d", strtotime("first day of this month"));
@@ -511,7 +521,7 @@ class OrderController extends \yii\web\Controller
 
 		$orders = $query->select('*')
 						->from('order')
-						->where('warehouse = "'.$warehouse.'" AND status != 0 AND done_date BETWEEN  "'.$from.'" AND "'.$to.'"')
+						->where('warehouse = "'.$warehouse.'" AND status != 0 AND done_date IS NOT NULL AND (done_date BETWEEN  "'.$from.'" AND "'.$to.'" OR date BETWEEN  "'.$from.'" AND "'.$to.'")')
 						->orderBy('id ASC')
 						->all();
 
@@ -539,7 +549,7 @@ class OrderController extends \yii\web\Controller
 
 		$orders = $query->select('*')
 						->from('order')
-						->where('warehouse = "'.$warehouse.'" AND done_date BETWEEN  "'.$from.'" AND "'.$to.'"')
+						->where('warehouse = "'.$warehouse.'" AND status != 0 AND done_date IS NOT NULL AND (done_date BETWEEN  "'.$from.'" AND "'.$to.'" OR date BETWEEN  "'.$from.'" AND "'.$to.'")')
 						->orderBy('id ASC')
 						->all();
 
@@ -554,17 +564,6 @@ class OrderController extends \yii\web\Controller
 
 		return $req_fee;
 	}
-
-	public function actionGet()
-	{
-		return $this->render('get');
-	}
-
-	public function actionIndex()
-	{
-		return $this->render('index');
-	}
-
 
 	protected function sendMail($body, $subject, $external = false){
 		$mail = new \PHPMailer;

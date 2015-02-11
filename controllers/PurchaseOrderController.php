@@ -75,11 +75,6 @@ class PurchaseOrderController extends \yii\web\Controller
 		}
 	}
 
-	public function actionCancel()
-	{
-		return $this->render('cancel');
-	}
-
 	public function actionEdit($id)
 	{
 
@@ -187,13 +182,13 @@ class PurchaseOrderController extends \yii\web\Controller
 			]);
 		}
 	}
-	public function actionIndex()
-	{
-		return $this->render('index');
-	}
 
 	public function actionList($status='', $detail = true, $sort='-date')
 	{
+
+		if(Yii::$app->user->identity->group > User::GROUP_XM){
+			throw new NotFoundHttpException('The requested page does not exist.');
+		}
 
 		$searchModel = new PurchaseOrderSearch();
 		if(0 == strcmp($status, 'done')){

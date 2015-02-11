@@ -31,22 +31,22 @@ function get_puchase_order_status($status){
 function get_warehouse_name($warehouse_id){
 	switch($warehouse_id){
 		case 'xm':
-			$name = '廈門卡樂兒';
+			$name = Yii::t('app', 'XDC');
 			break;
 		case 'xm_padi':
-			$name = '廈門卡樂兒PADI庫存';
+			$name = Yii::t('app', 'XDC PADI Balance');
 			break;
 		case 'xm_self':
-			$name = '廈門卡樂兒自有庫存';
+			$name = Yii::t('app', 'XDC Self Balance');
 			break;
 		case 'tw':
-			$name = '台灣光隆';
+			$name = Yii::t('app', 'Warehouse T');
 			break;
 		case 'tw_padi':
-			$name = '台灣光隆PADI庫存';
+			$name = Yii::t('app', 'Warehouse T PADI Balance');
 			break;
 		case 'tw_self':
-			$name = '台灣光隆自有庫存';
+			$name = Yii::t('app', 'Warehouse T Self Balance');
 			break;
 		case 'padi_sydney':
 			$name = 'PADI Asia Pacific';
@@ -439,7 +439,7 @@ function transaction_to_table($start_balance, $end_balance, $transaction, $produ
 	return $table_out;
 }
 
-function orders_to_shipment_table($orders, $warehouse){
+function orders_to_shipment_table($orders, $warehouse, $from, $to){
 
 	$total_service_fee = 0;
 	$total_ship_fee = 0;
@@ -470,45 +470,81 @@ function orders_to_shipment_table($orders, $warehouse){
 		$subtotal_orig_fee = 0;
 		$subtotal_c_qty = 0;
 		$subtotal_p_qty = 0;
-		foreach ($content['crewpak'] as $crewpak => $info) {
-			$service_fee = Fee::getCrewpackServiceFee($info['cnt'], $warehouse);
-			$subtotal_service_fee += $service_fee;
-			$subtotal_c_qty += $info['cnt'];
-			$row = '<tr><td>'.$order['id'].'</td>'.
-						'<td>'.$order['customer_id'].'</td>'.
-						'<td>'.$crewpak.'</td>'.
-						'<td>'.$info['cnt'].'</td>'.
-						'<td></td>'.
-						'<td>'.$order['date'].'</td>'.
-						'<td></td>'.
-						'<td>'.$service_fee.'</td>'.
-						'<td></td>'.
-						'<td></td>'.
-						'<td></td>'.
-						'<td>'.$order['done_date'].'</td></tr>';
-			$table_out = $table_out.$row;
+
+		$cnt_service = true;
+		foreach ($ship_info as $info) {
+			if(!isset($info['date']) || $info['date'] < $from || $info['date'] > $to){
+				$cnt_service = false;
+				break;
+			}
 		}
 
-		foreach ($content['product'] as $product => $info) {
-			$service_fee = Fee::getProductServiceFee($info['cnt'], $warehouse);
-			$subtotal_service_fee += $service_fee;
-			$subtotal_p_qty += $info['cnt'];
-			$row = '<tr><td>'.$order['id'].'</td>'.
-						'<td>'.$order['customer_id'].'</td>'.
-						'<td>'.$product.'</td>'.
-						'<td></td>'.
-						'<td>'.$info['cnt'].'</td>'.
-						'<td>'.$order['date'].'</td>'.
-						'<td></td>'.
-						'<td>'.$service_fee.'</td>'.
-						'<td></td>'.
-						'<td></td>'.
-						'<td></td>'.
-						'<td>'.$order['done_date'].'</td></tr>';
-			$table_out = $table_out.$row;
+		if($cnt_service){
+			foreach ($content['crewpak'] as $crewpak => $info) {
+				$service_fee = Fee::getCrewpackServiceFee($info['cnt'], $warehouse);
+				$subtotal_service_fee += $service_fee;
+				$subtotal_c_qty += $info['cnt'];
+				$row = '<tr><td>'.$order['id'].'</td>'.
+							'<td>'.$order['customer_id'].'</td>'.
+							'<td>'.$crewpak.'</td>'.
+							'<td>'.$info['cnt'].'</td>'.
+							'<td></td>'.
+							'<td>'.$order['date'].'</td>'.
+							'<td></td>'.
+							'<td>'.$service_fee.'</td>'.
+							'<td></td>'.
+							'<td></td>'.
+							'<td></td>'.
+							'<td>'.$order['done_date'].'</td></tr>';
+				$table_out = $table_out.$row;
+			}
+
+			foreach ($content['product'] as $product => $info) {
+				$service_fee = Fee::getProductServiceFee($info['cnt'], $warehouse);
+				$subtotal_service_fee += $service_fee;
+				$subtotal_p_qty += $info['cnt'];
+				$row = '<tr><td>'.$order['id'].'</td>'.
+							'<td>'.$order['customer_id'].'</td>'.
+							'<td>'.$product.'</td>'.
+							'<td></td>'.
+							'<td>'.$info['cnt'].'</td>'.
+							'<td>'.$order['date'].'</td>'.
+							'<td></td>'.
+							'<td>'.$service_fee.'</td>'.
+							'<td></td>'.
+							'<td></td>'.
+							'<td></td>'.
+							'<td>'.$order['done_date'].'</td></tr>';
+				$table_out = $table_out.$row;
+			}
 		}
 
 		foreach ($ship_info as $info) {
+			if(!isset($info['date']) || $info['date'] < $from || $info['date'] > $to){
+				continue;
+			}
+
+			if(isset($info['complement_cnt'])){
+				foreach ($info['complement_cnt'] as $product => $cnt) {
+					$service_fee = Fee::getProductServiceFee($cnt, $warehouse);
+					$subtotal_service_fee += $service_fee;
+					$subtotal_p_qty += $cnt;
+					$row = '<tr><td>'.$order['id'].'</td>'.
+								'<td>'.$order['customer_id'].'</td>'.
+								'<td>'.$product.' - 補寄</td>'.
+								'<td></td>'.
+								'<td>'.$cnt.'</td>'.
+								'<td>'.$order['date'].'</td>'.
+								'<td></td>'.
+								'<td>'.$service_fee.'</td>'.
+								'<td></td>'.
+								'<td></td>'.
+								'<td></td>'.
+								'<td>'.$order['done_date'].'</td></tr>';
+					$table_out = $table_out.$row;
+				}
+			}
+
 			$ship_fee = isset($info['req_fee']) ? $info['req_fee'] : Fee::getShipFreightFee($info['fee'], $region, $warehouse, $info['type'], $info['weight'], $info['box']);
 			$subtotal_ship_fee += $ship_fee;
 			$subtotal_orig_fee += $info['fee'];
@@ -517,7 +553,7 @@ function orders_to_shipment_table($orders, $warehouse){
 						'<td></td>'.
 						'<td></td>'.
 						'<td></td>'.
-						'<td></td>'.
+						'<td>'.$order['date'].'</td>'.
 						'<td>'.ShippingType::getShippingType($info['type']).'</td>'.
 						'<td></td>'.
 						'<td>'.$info['fee'].'</td>'.

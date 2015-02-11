@@ -52,4 +52,4 @@ $this->registerCssFile(Yii::$app->request->getBaseUrl().'/css/transaction_table_
 		}
 	?>
 
-	<?= orders_to_shipment_table($orders, $warehouse)?>
+	<?= orders_to_shipment_table($orders, $warehouse, $from, $to)?>

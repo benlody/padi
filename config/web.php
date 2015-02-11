@@ -2,9 +2,23 @@
 
 $params = require(__DIR__ . '/params.php');
 
+$supportedLangs = array('zh-TW', 'zh-CN', 'zh', 'en-US', 'en');
+$languages = explode(',',$_SERVER['HTTP_ACCEPT_LANGUAGE']);
+foreach($languages as $lang)
+{
+	$language = 'zh-TW';
+    if(in_array($lang, $supportedLangs))
+    {
+        $language  = $lang;
+        break;
+    }
+}
+
 $config = [
 	'id' => 'basic',
 	'basePath' => dirname(__DIR__),
+	'language' => $language,
+//	'language' => 'en-US',
 	'bootstrap' => ['log'],
 	'components' => [
 		'request' => [
@@ -47,6 +61,19 @@ $config = [
 			],
 		],
 		'db' => require(__DIR__ . '/db.php'),
+		'i18n' => [
+			'translations' => [
+				'*' => [
+					'class' => 'yii\i18n\PhpMessageSource',
+					'basePath' => '@app/messages',
+					'sourceLanguage' => 'en-US',
+					'fileMap' => [
+						'app' => 'app.php',
+						'app/error' => 'error.php',
+					],
+				],
+			],
+		],
 	],
 	'params' => $params,
 ];

@@ -98,7 +98,7 @@ AppAsset::register($this);
 						'linkOptions' => ['data-method' => 'post']
 					],
 				];
-			} else if (Yii::$app->user->identity->group === User::GROUP_XM || Yii::$app->user->identity->group === User::GROUP_PADI){
+			} else if (Yii::$app->user->identity->group === User::GROUP_XM){
 				$items = [
 					['label' => 'Home', 'url' => ['/site/index']],
 					[
@@ -143,6 +143,58 @@ AppAsset::register($this);
 						'label' => 'PADI會員',
 						'items' => [
 							 ['label' => '會員列表', 'url' => ['/customer/index']],
+						],
+					],
+					['label' => 'Logout (' . Yii::$app->user->identity->username . ')',
+						'url' => ['/site/logout'],
+						'linkOptions' => ['data-method' => 'post']
+					],
+				];
+			} else if (Yii::$app->user->identity->group === User::GROUP_PADI){
+				$items = [
+					['label' => 'Home', 'url' => ['/site/index']],
+					[
+						'label' => Yii::t('app', 'Inventory'),
+						'items' => [
+							 '<li class="dropdown-header" align="center"><font color="green">'.Yii::t('app', 'Inventory').'</font></li>',
+//							 ['label' => '庫存明細', 'url' => ['/inventory/transaction']],
+							 ['label' => Yii::t('app', 'Inventory Overview'), 'url' => ['/inventory/overview']],
+//							 '<li class="divider"></li>',
+//							 '<li class="dropdown-header" align="center"><font color="green">統計</font></li>',
+//							 ['label' => '工作項目統計', 'url' => ['/inventory/summary']],
+						],
+					],
+/*					[
+						'label' => '訂單',
+						'items' => [
+							 '<li class="dropdown-header" align="center"><font color="green">會員訂單</font></li>',
+							 ['label' => '會員訂單列表', 'url' => ['/order/list', 'sort' => '-date']],
+							 ['label' => '出貨明細', 'url' => ['/order/ship_overview']],
+							 '<li class="divider"></li>',
+							 '<li class="dropdown-header" align="center"><font color="green">內部訂單/轉移</font></li>',
+							 ['label' => '內部訂單列表', 'url' => ['/transfer/list', 'sort' => '-send_date']],
+						],
+					],
+					[
+						'label' => '生產',
+						'items' => [
+							 ['label' => '生產列表', 'url' => ['/purchase-order/list', 'sort' => '-date']],
+						],
+					],
+*/					[
+						'label' => Yii::t('app', 'Product & Crew-Pak'),
+						'items' => [
+							 '<li class="dropdown-header" align="center"><font color="green">'.Yii::t('app', 'Product').'</font></li>',
+							 ['label' => Yii::t('app', 'Product List'), 'url' => ['/product/index']],
+							 '<li class="divider"></li>',
+							 '<li class="dropdown-header" align="center"><font color="green">'.Yii::t('app', 'Crew-Pak').'</font></li>',
+							 ['label' => Yii::t('app', 'Crew-Pak List'), 'url' => ['/crew-pak/index']],
+						],
+					],
+					[
+						'label' => Yii::t('app', 'Member'),
+						'items' => [
+							 ['label' => Yii::t('app', 'Member List'), 'url' => ['/customer/index']],
 						],
 					],
 					['label' => 'Logout (' . Yii::$app->user->identity->username . ')',
@@ -212,7 +264,7 @@ AppAsset::register($this);
 			}
 
 			NavBar::begin([
-				'brandLabel' => '光隆庫存管理',
+				'brandLabel' => Yii::t('app', 'Kuang Lung PADI Inventory'),
 				'brandUrl' => Yii::$app->homeUrl,
 				'options' => [
 					'class' => 'navbar-inverse navbar-fixed-top',
@@ -235,7 +287,7 @@ AppAsset::register($this);
 
 	<footer class="footer">
 		<div class="container">
-			<p class="pull-left">&copy; 光隆庫存管理 <?= date('Y') ?></p>
+			<p class="pull-left">&copy; <?= Yii::t('app', 'Kuang Lung PADI Inventory').' '.date('Y') ?></p>
 			<p class="pull-right"></p>
 		</div>
 	</footer>
