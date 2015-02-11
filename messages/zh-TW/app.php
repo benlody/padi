@@ -3,8 +3,14 @@ return [
     'Submit' => '送出',
     'Print' => '列印',
     'Login' => '登入',
+    'Update' => '更新',
+    'Delete' => '刪除',
     'Username' => '帳號',
     'Password' => '密碼',
+
+    'Chinese Name' => '中文名稱',
+    'English Name' => '英文名稱',
+    'Remark' => '備註',
 
 
     'Kuang Lung PADI Inventory - Test' => '光隆PADI庫存管理 - 測試版',
@@ -19,6 +25,10 @@ return [
     'Product' => '產品',
     'Product List' => '產品列表',
     'Product No.' => '產品編號',
+    'Create Product' => '新增產品',
+    'Warning Cnt Tw' => '台灣安全庫存量',
+    'Warning Cnt Xm' => '廈門安全庫存量',
+    'Weight (g)' => '重量(克)',
 
 
     'Crew-Pak' => '套裝',
