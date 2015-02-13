@@ -5,7 +5,7 @@ use yii\grid\GridView;
 
 require_once __DIR__  . '/../../utils/utils.php';
 
-$this->title = Yii::t('app', '套裝');
+$this->title = Yii::t('app', 'Crew-Pak List');
 $this->params['breadcrumbs'][] = $this->title;
 
 ?>
@@ -18,15 +18,14 @@ $this->params['breadcrumbs'][] = $this->title;
 	$config = [
 		'dataProvider' => $dataProvider,
 		'columns' => [
-			'id:text:套裝',
+			'id:text:'.Yii::t('app', 'Crew-Pak No.'),
 			[
 				'format' => 'raw',
-				'label' => '套裝內容',
+				'label' => Yii::t('app', 'Crew-Pak Content'),
 				'value' => function ($model) {
 					return crewpak_index_to_table($model['id'], $model['content']);
 				}
 			],
-			'extra_info:text:備註',
 		],
 	];
 

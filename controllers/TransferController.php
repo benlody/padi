@@ -223,6 +223,7 @@ class TransferController extends \yii\web\Controller
 			}
 			if(0 == strncmp('padi', $dst, 4)){
 				$model->status = Transfer::STATUS_DONE;
+				$model->recv_date = $model->send_date;
 			} else {
 				$model->status = Transfer::STATUS_ONTHEWAY;
 			}

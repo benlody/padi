@@ -47,17 +47,17 @@ class Customer extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => Yii::t('app', 'ID'),
+            'id' => Yii::t('app', 'Member No.'),
             'chinese_name' => Yii::t('app', 'Chinese Name'),
             'english_name' => Yii::t('app', 'English Name'),
             'level' => Yii::t('app', 'Level'),
             'contact' => Yii::t('app', 'Contact'),
             'tel' => Yii::t('app', 'Tel'),
             'email' => Yii::t('app', 'Email'),
-            'chinese_addr' => Yii::t('app', 'Chinese Addr'),
-            'english_addr' => Yii::t('app', 'English Addr'),
+            'chinese_addr' => Yii::t('app', 'Chinese Address'),
+            'english_addr' => Yii::t('app', 'English Address'),
             'region' => Yii::t('app', 'Region'),
-            'extra_info' => Yii::t('app', 'Extra Info'),
+            'extra_info' => Yii::t('app', 'Remark'),
         ];
     }
 }

@@ -17,9 +17,11 @@ $this->params['breadcrumbs'][] = $this->title;
 	<?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
 	<p>
-		<?= Html::a(Yii::t('app', 'Create Product', [
-	'modelClass' => 'Product',
-]), ['create'], ['class' => 'btn btn-success']) ?>
+		<?php
+			if(Yii::$app->user->identity->group <= User::GROUP_KL){
+				echo Html::a(Yii::t('app', 'Create Product'), ['create'], ['class' => 'btn btn-success']);
+			}
+		?>
 	</p>
 
 	<?php 

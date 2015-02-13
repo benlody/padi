@@ -47,8 +47,8 @@ class Product extends \yii\db\ActiveRecord
 			'id' => Yii::t('app', 'Product No.'),
 			'chinese_name' => Yii::t('app', 'Chinese Name'),
 			'english_name' => Yii::t('app', 'English Name'),
-			'warning_cnt_tw' => Yii::t('app', 'Warning Cnt Tw'),
-			'warning_cnt_xm' => Yii::t('app', 'Warning Cnt Xm'),
+			'warning_cnt_tw' => Yii::t('app', 'Safety Stock Tw'),
+			'warning_cnt_xm' => Yii::t('app', 'Safety Stock Xm'),
 			'weight' => Yii::t('app', 'Weight (g)'),
 			'extra_info' => Yii::t('app', 'Remark'),
 		];

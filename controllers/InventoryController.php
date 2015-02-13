@@ -121,6 +121,7 @@ class InventoryController extends \yii\web\Controller
 	public function actionOverview($warehouse='xm')
 	{
 		$query = new Query;
+		$query2 = new Query;
 		$product = new Product();
 		$product_aray = $product->find()->column();
 		$overview = array();
@@ -135,11 +136,19 @@ class InventoryController extends \yii\web\Controller
 						->orderBy('ts DESC')
 						->one();
 
+		$safety = $query2->select('id, warning_cnt_'.$warehouse)
+						->from('product')
+						->all();
+		foreach ($safety as $value) {
+			$safety_stock[$value['id']] = $value['warning_cnt_'.$warehouse];
+		}
+
 		foreach ($product_aray as $p) {
 			if($padi_balance[$p] || $self_balance[$p]){
 				$overview[$p]['id'] = $p;
 				$overview[$p]['padi'] = $padi_balance[$p] ? $padi_balance[$p] : 0;
 				$overview[$p]['self'] = $self_balance[$p] ? $self_balance[$p] : 0;
+				$overview[$p]['safety'] = $safety_stock[$p] ? $safety_stock[$p] : 0;
 			}
 		}
 

@@ -21,7 +21,19 @@ $this->registerJsFile(Yii::$app->request->getBaseUrl().'/js/inventory_overview.j
 			'dataProvider' => $provider,
 			'columns' => [
 				'id:text:'.Yii::t('app', 'Product No.'),
-				'padi:text:'.Yii::t('app', 'Balance'),
+				[
+					'attribute' => 'padi',
+					'format' => 'raw',
+					'label' => Yii::t('app', 'Balance'),
+					'value' => function ($model) {
+						if($model['safety'] > $model['padi']){
+							return '<font color="red">'.$model['padi'].'</font>';
+						} else {
+							return $model['padi'];
+						}
+					}
+				],
+				'safety:text:'.Yii::t('app', 'Safety Stock'),
 			],
 		];
 	} else {
@@ -29,8 +41,20 @@ $this->registerJsFile(Yii::$app->request->getBaseUrl().'/js/inventory_overview.j
 			'dataProvider' => $provider,
 			'columns' => [
 				'id:text:'.Yii::t('app', 'Product No.'),
-				'padi:text:'.Yii::t('app', 'PADI Balance'),
+				[
+					'attribute' => 'padi',
+					'format' => 'raw',
+					'label' => Yii::t('app', 'PADI Balance'),
+					'value' => function ($model) {
+						if($model['safety'] > $model['padi']){
+							return '<font color="red">'.$model['padi'].'</font>';
+						} else {
+							return $model['padi'];
+						}
+					}
+				],
 				'self:text:'.Yii::t('app', 'Self Balance'),
+				'safety:text:'.Yii::t('app', 'Safety Stock'),
 			],
 		];
 	}
