@@ -139,6 +139,7 @@ class InventoryController extends \yii\web\Controller
 		$safety = $query2->select('id, warning_cnt_'.$warehouse)
 						->from('product')
 						->all();
+
 		foreach ($safety as $value) {
 			$safety_stock[$value['id']] = $value['warning_cnt_'.$warehouse];
 		}
@@ -162,8 +163,89 @@ class InventoryController extends \yii\web\Controller
 		return $this->render('overview', [
 				'warehouse' => $warehouse,
 				'provider' => $provider,
-			]);
+		]);
 	}
+
+	public function actionLow_stock($warehouse='xm')
+	{
+
+		$query = new Query;
+		$query2 = new Query;
+		$query3 = new Query;
+		$product = new Product();
+		$product_aray = $product->find()->column();
+		$lowstock = array();
+		$lowstock_c = array();
+
+		$padi_balance = $query->select('*')
+						->from($warehouse.'_padi_balance')
+						->orderBy('ts DESC')
+						->one();
+
+		$safety = $query2->select('id, warning_cnt_'.$warehouse)
+						->from('product')
+						->all();
+
+		$crewpak = $query3->select('*')
+						->from('crew_pak')
+						->all();
+
+		foreach ($safety as $value) {
+			$safety_stock[$value['id']] = $value['warning_cnt_'.$warehouse];
+		}
+
+		foreach ($product_aray as $p) {
+			if($safety_stock[$p] > 0 && $padi_balance[$p] < $safety_stock[$p]){
+				$lowstock[$p]['id'] = $p;
+				$lowstock[$p]['padi'] = $padi_balance[$p] ? $padi_balance[$p] : 0;
+				$lowstock[$p]['safety'] = $safety_stock[$p] ? $safety_stock[$p] : 0;
+				foreach ($crewpak as $c) {
+					$skip = false;
+					if(0 != $c[$p]){
+						$content = array();
+						foreach ($product_aray as $pp) {
+							if(0 != $c[$pp]){
+								if($safety_stock[$pp] == 0){
+									$skip = true;
+									break;
+								}
+								$content[$pp] = $c[$pp];
+							}
+						}
+						if($skip){
+							break;
+						}
+						$lowstock_c[$c['id']]['id'] = $c['id'];
+						$lowstock_c[$c['id']]['content'] = $content;
+						if(!isset($lowstock_c[$c['id']]['low'])){
+							$lowstock_c[$c['id']]['low'] = array();
+						}
+						array_push($lowstock_c[$c['id']]['low'], $p);
+					}
+				}
+			}
+		}
+
+		$provider = new ArrayDataProvider([
+				'allModels' => $lowstock,
+				'pagination' => [
+					'pageSize' => 500,
+				],
+		]);
+		$provider_c = new ArrayDataProvider([
+				'allModels' => $lowstock_c,
+				'pagination' => [
+					'pageSize' => 500,
+				],
+		]);
+
+		return $this->render('low_stock', [
+				'warehouse' => $warehouse,
+				'provider' => $provider,
+				'provider_c' => $provider_c,
+		]);
+	}
+
 
 	public function actionTransaction($warehouse='xm', $type='padi', $from='', $to='')
 	{

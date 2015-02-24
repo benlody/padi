@@ -22,7 +22,8 @@ return [
 
     'Inventory' => '庫存',
     'Inventory Overview' => '庫存總覽',
-
+    'Low Stock Items' => '低庫存項目',
+    'Low Stock Content' => '低庫存內容',
 
     'Product & Crew-Pak' => '產品與套裝',
     'Product' => '產品',
