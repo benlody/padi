@@ -216,4 +216,178 @@ function ship_download($orders, $warehouse, $from, $to){
 
 }
 
+
+
+function ship_download_service($orders, $warehouse, $from, $to){
+
+	$objPHPExcel = new \PHPExcel();
+
+	// Set document properties
+	$objPHPExcel->getProperties()->setCreator("Kuang Lung")
+								 ->setLastModifiedBy("Kuang Lung")
+								 ->setTitle('金璽服務費 '.date("Y-m", strtotime($to)))
+								 ->setSubject('金璽服務費 '.date("Y-m", strtotime($to)))
+								 ->setDescription('金璽服務費 '.date("Y-m", strtotime($to)));
+
+	$idx = 1;
+	$total_service_fee = 0;
+	$total_ship_fee = 0;
+
+	$objPHPExcel->setActiveSheetIndex(0)
+				->setCellValue('A'.$idx, '訂單編號')
+				->setCellValue('B'.$idx, '會員編號')
+				->setCellValue('C'.$idx, '項目')
+				->setCellValue('D'.$idx, '套裝數量')
+				->setCellValue('E'.$idx, '單品數量')
+				->setCellValue('F'.$idx, '服務費')
+				->setCellValue('G'.$idx, '訂單日期');
+	$objPHPExcel->getActiveSheet()->getStyle('A'.$idx.':G'.$idx)->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID);
+	$objPHPExcel->getActiveSheet()->getStyle('A'.$idx.':G'.$idx)->getFill()->getStartColor()->setRGB('6ea9ec');
+
+
+	$idx++;
+
+	foreach ($orders as $order) {
+		$content = json_decode($order['content'], true);
+		$ship_info = json_decode($order['shipping_info'], true);
+
+		$subtotal_service_fee = 0;
+		$subtotal_ship_fee = 0;
+
+		$cnt_service = true;
+		foreach ($ship_info as $info) {
+			if(!isset($info['date']) || $info['date'] < $from || $info['date'] > $to){
+				$cnt_service = false;
+				break;
+			}
+		}
+
+		if(!$cnt_service){
+			break;
+		}
+
+
+		if($cnt_service){
+
+			foreach ($content['crewpak'] as $crewpak => $info) {
+				$service_fee = $info['cnt'] * 5;
+				$subtotal_service_fee += $service_fee;
+
+				$objPHPExcel->setActiveSheetIndex(0)
+							->setCellValue('A'.$idx, $order['id'])
+							->setCellValue('B'.$idx, $order['customer_id'])
+							->setCellValue('C'.$idx, $crewpak)
+							->setCellValue('D'.$idx, $info['cnt'])
+							->setCellValue('E'.$idx, '')
+							->setCellValue('F'.$idx, $service_fee)
+							->setCellValue('G'.$idx, $order['date']);
+				$idx++;
+			}
+
+			foreach ($content['product'] as $product => $info) {
+				$service_fee = $info['cnt'] * 1.5;
+				$subtotal_service_fee += $service_fee;
+
+				$objPHPExcel->setActiveSheetIndex(0)
+							->setCellValue('A'.$idx, $order['id'])
+							->setCellValue('B'.$idx, $order['customer_id'])
+							->setCellValue('C'.$idx, $product)
+							->setCellValue('D'.$idx, '')
+							->setCellValue('E'.$idx, $info['cnt'])
+							->setCellValue('F'.$idx, $service_fee)
+							->setCellValue('G'.$idx, $order['date']);
+				$idx++;
+			}
+		}
+/*
+		foreach ($ship_info as $info) {
+			if(!isset($info['date']) || $info['date'] < $from || $info['date'] > $to){
+				continue;
+			}
+
+			if(isset($info['complement_cnt'])){
+				foreach ($info['complement_cnt'] as $product => $cnt) {
+					$service_fee = Fee::getProductServiceFee($cnt, $warehouse);
+					$subtotal_service_fee += $service_fee;
+					$objPHPExcel->setActiveSheetIndex(0)
+								->setCellValue('A'.$idx, $order['id'])
+								->setCellValue('B'.$idx, $order['customer_id'])
+								->setCellValue('C'.$idx, $order['customer_name'])
+								->setCellValue('D'.$idx, $product.' - 補寄')
+								->setCellValue('E'.$idx, $info['cnt'])
+								->setCellValue('F'.$idx, $order['date'])
+								->setCellValue('G'.$idx, $order['english_addr'])
+								->setCellValue('H'.$idx, ' ')
+								->setCellValue('I'.$idx, $service_fee)
+								->setCellValue('J'.$idx, ' ')
+								->setCellValue('K'.$idx, ' ')
+								->setCellValue('L'.$idx, $order['done_date']);
+					$idx++;
+				}
+			}
+		}
+*/
+		$objPHPExcel->setActiveSheetIndex(0)
+					->setCellValue('A'.$idx, $order['id'].' Subtotal')
+					->setCellValue('B'.$idx, $order['id'].' Subtotal')
+					->setCellValue('C'.$idx, ' ')
+					->setCellValue('D'.$idx, ' ')
+					->setCellValue('E'.$idx, ' ')
+					->setCellValue('F'.$idx, $subtotal_service_fee)
+					->setCellValue('G'.$idx, ' ');
+
+		$objPHPExcel->setActiveSheetIndex(0)->mergeCells('A'.$idx.':B'.$idx);
+
+		$objPHPExcel->getActiveSheet()->getStyle('A'.$idx.':G'.$idx)->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID);
+		$objPHPExcel->getActiveSheet()->getStyle('A'.$idx.':G'.$idx)->getFill()->getStartColor()->setRGB('F0E68C');
+
+		$idx++;
+
+		$total_service_fee += $subtotal_service_fee;
+
+	}
+
+	$objPHPExcel->setActiveSheetIndex(0)
+				->setCellValue('A'.$idx, 'Total')
+				->setCellValue('B'.$idx, 'Total')
+				->setCellValue('C'.$idx, ' ')
+				->setCellValue('D'.$idx, ' ')
+				->setCellValue('E'.$idx, ' ')
+				->setCellValue('F'.$idx, $total_service_fee)
+				->setCellValue('G'.$idx, ' ');
+
+	$objPHPExcel->setActiveSheetIndex(0)->mergeCells('A'.$idx.':E'.$idx);
+	$objPHPExcel->getActiveSheet()->getStyle('A'.$idx.':G'.$idx)->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID);
+	$objPHPExcel->getActiveSheet()->getStyle('A'.$idx.':G'.$idx)->getFill()->getStartColor()->setRGB('FFA500');
+
+	// Rename worksheet
+	$objPHPExcel->getActiveSheet()->setTitle('服務費');
+	$objPHPExcel->getActiveSheet()->getStyle('A2:A'.$idx)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
+	$objPHPExcel->getActiveSheet()->getStyle('A1:G1')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+	$objPHPExcel->getActiveSheet(0)->getStyle('A1:G'.$idx)->getBorders()->getAllborders()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
+
+	// Set active sheet index to the first sheet, so Excel opens this as the first sheet
+	$objPHPExcel->setActiveSheetIndex(0);
+
+	// Redirect output to a client’s web browser (Excel5)
+	header('Content-Type: application/vnd.ms-excel');
+	header('Content-Disposition: attachment;filename="'.'金璽服務費 '.date("Y-m", strtotime($to)).'.xls"');
+	header('Cache-Control: max-age=0');
+	// If you're serving to IE 9, then the following may be needed
+	header('Cache-Control: max-age=1');
+
+	// If you're serving to IE over SSL, then the following may be needed
+	header ('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
+	header ('Last-Modified: '.gmdate('D, d M Y H:i:s').' GMT'); // always modified
+	header ('Cache-Control: cache, must-revalidate'); // HTTP/1.1
+	header ('Pragma: public'); // HTTP/1.0
+
+	$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
+	ob_end_clean(); 
+
+	$objWriter->save('php://output');
+
+}
+
+
 ?>

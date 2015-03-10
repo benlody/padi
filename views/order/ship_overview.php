@@ -37,11 +37,19 @@ $this->registerCssFile(Yii::$app->request->getBaseUrl().'/css/transaction_table_
 
 		echo '<br>';
 
-		echo Html::a('下載XSL', ['ship_download',
+		echo Html::a('下載PADI運費請款單', ['ship_download',
 				'from' => $from,
 				'to' => $to,
 				'warehouse' => $warehouse,
 			], ['class' => 'btn btn-success']).'&nbsp;&nbsp;';
+
+		if($warehouse == 'xm'){
+			echo Html::a('下載金璽服務費報價單', ['ship_download_service',
+					'from' => $from,
+					'to' => $to,
+					'warehouse' => $warehouse,
+				], ['class' => 'btn btn-success']).'&nbsp;&nbsp;';
+		}
 
 		foreach (['xm', 'tw'] as $w) {
 			echo Html::a(get_warehouse_name($w), ['ship_overview',

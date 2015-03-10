@@ -580,6 +580,30 @@ class OrderController extends \yii\web\Controller
 		ship_download($orders, $warehouse, $from, $to);
 	}
 
+	public function actionShip_download_service($warehouse='xm', $from='', $to='')
+	{
+		if(Yii::$app->user->identity->group > User::GROUP_KL){
+			throw new NotFoundHttpException('The requested page does not exist.');
+		}
+
+		$query = new Query;
+		if(!$from){
+			$from = date("Y-m-d", strtotime("first day of this month"));
+		}
+		if(!$to){
+			$to = date("Y-m-d", strtotime("last day of this month"));
+		}
+
+		$orders = $query->select('*')
+						->from('order')
+						->where('warehouse = "'.$warehouse.'" AND status != 0 AND done_date IS NOT NULL AND (done_date BETWEEN  "'.$from.'" AND "'.$to.'" OR date BETWEEN  "'.$from.'" AND "'.$to.'")')
+						->orderBy('id ASC')
+						->all();
+
+		ship_download_service($orders, $warehouse, $from, $to);
+	}
+
+
 	public function actionAjaxFee()
 	{
 		$post_param = Yii::$app->request->post();
