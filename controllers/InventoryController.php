@@ -126,6 +126,10 @@ class InventoryController extends \yii\web\Controller
 		$product_aray = $product->find()->column();
 		$overview = array();
 
+		if(Yii::$app->user->identity->group == User::GROUP_XM && $warehouse != 'xm'){
+			throw new NotFoundHttpException('The requested page does not exist.');
+		}
+
 		$padi_balance = $query->select('*')
 						->from($warehouse.'_padi_balance')
 						->orderBy('ts DESC')
@@ -176,6 +180,10 @@ class InventoryController extends \yii\web\Controller
 		$product_aray = $product->find()->column();
 		$lowstock = array();
 		$lowstock_c = array();
+
+		if(Yii::$app->user->identity->group == User::GROUP_XM && $warehouse != 'xm'){
+			throw new NotFoundHttpException('The requested page does not exist.');
+		}
 
 		$padi_balance = $query->select('*')
 						->from($warehouse.'_padi_balance')
@@ -258,6 +266,11 @@ class InventoryController extends \yii\web\Controller
 		if(!$to){
 			$to = date("Y-m-d", strtotime("last day of this month"));
 		}
+
+		if(Yii::$app->user->identity->group == User::GROUP_XM && $warehouse != 'xm'){
+			throw new NotFoundHttpException('The requested page does not exist.');
+		}
+
 		$start_balance = $query->select('*')
 						->from($warehouse.'_'.$type.'_balance')
 						->where('date < "'.$from.'"')
@@ -314,7 +327,11 @@ class InventoryController extends \yii\web\Controller
 	{
 
 		$xm_provider = $this->get_summary_provider('xm');
-		$tw_provider = $this->get_summary_provider('tw');
+		if(Yii::$app->user->identity->group == User::GROUP_XM){
+			$tw_provider = new ArrayDataProvider;
+		} else {
+			$tw_provider = $this->get_summary_provider('tw');
+		}
 
 		return $this->render('summary', [
 			'tw_provider' => $tw_provider,

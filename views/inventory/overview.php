@@ -65,10 +65,12 @@ $this->registerJsFile(Yii::$app->request->getBaseUrl().'/js/inventory_overview.j
 <div>
 	<h2><? echo get_warehouse_name($warehouse).'&nbsp;&nbsp;&nbsp;&nbsp;'.date("Y-m-d", strtotime('now')); ?></h2>
 	<?php
-		foreach (['xm', 'tw'] as $w) {
-			echo Html::a(get_warehouse_name($w), ['overview',
-				'warehouse' => $w,
-			], ['class' => 'btn btn-primary']).'&nbsp;&nbsp;';
+		if(Yii::$app->user->identity->group != User::GROUP_XM){
+			foreach (['xm', 'tw'] as $w) {
+				echo Html::a(get_warehouse_name($w), ['overview',
+					'warehouse' => $w,
+				], ['class' => 'btn btn-primary']).'&nbsp;&nbsp;';
+			}
 		}
 
 	?>

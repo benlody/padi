@@ -115,6 +115,7 @@ AppAsset::register($this);
 							 ['label' => '工作項目統計', 'url' => ['/inventory/summary']],
 						],
 					],
+/*
 					[
 						'label' => '訂單',
 						'items' => [
@@ -132,6 +133,7 @@ AppAsset::register($this);
 							 ['label' => '生產列表', 'url' => ['/purchase-order/list', 'sort' => '-date']],
 						],
 					],
+					*/
 					[
 						'label' => '產品與套裝',
 						'items' => [

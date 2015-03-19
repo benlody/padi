@@ -151,7 +151,7 @@ class OrderController extends \yii\web\Controller
 	public function actionList($status='', $detail = true, $sort='-date')
 	{
 
-		if(Yii::$app->user->identity->group > User::GROUP_XM){
+		if(Yii::$app->user->identity->group > User::GROUP_KL){
 			throw new NotFoundHttpException('The requested page does not exist.');
 		}
 
@@ -235,7 +235,7 @@ class OrderController extends \yii\web\Controller
 	public function actionView($id)
 	{
 
-		if(Yii::$app->user->identity->group > User::GROUP_XM){
+		if(Yii::$app->user->identity->group > User::GROUP_KL){
 			throw new NotFoundHttpException('The requested page does not exist.');
 		}
 
@@ -248,7 +248,7 @@ class OrderController extends \yii\web\Controller
 
 	public function actionDownload($id)
 	{
-		if(Yii::$app->user->identity->group > User::GROUP_XM){
+		if(Yii::$app->user->identity->group > User::GROUP_KL){
 			throw new NotFoundHttpException('The requested page does not exist.');
 		}
 
@@ -273,7 +273,7 @@ class OrderController extends \yii\web\Controller
 
 	public function actionEdit($id)
 	{
-		if(Yii::$app->user->identity->group > User::GROUP_XM){
+		if(Yii::$app->user->identity->group > User::GROUP_KL){
 			throw new NotFoundHttpException('The requested page does not exist.');
 		}
 
@@ -497,7 +497,7 @@ class OrderController extends \yii\web\Controller
 	public function actionEdit_only($id)
 	{
 
-		if(Yii::$app->user->identity->group > User::GROUP_XM){
+		if(Yii::$app->user->identity->group > User::GROUP_KL){
 			throw new NotFoundHttpException('The requested page does not exist.');
 		}
 

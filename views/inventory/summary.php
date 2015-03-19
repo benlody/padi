@@ -3,6 +3,7 @@
 
 use yii\helpers\Html;
 use yii\grid\GridView;
+use app\models\User;
 
 $this->title = Yii::t('app', '工作訂單統計');
 $this->params['breadcrumbs'][] = $this->title;
@@ -41,8 +42,15 @@ $tw_config = [
 	<h2>廈門</h2>
 	<?= GridView::widget($xm_config); ?>
 </div>
-<div>
-	<h2>台灣</h2>
-	<?= GridView::widget($tw_config); ?>
-</div>
+
+<?php
+
+	if(Yii::$app->user->identity->group != User::GROUP_XM){
+		echo '<div><h2>台灣</h2>';
+		echo GridView::widget($tw_config);
+		echo '</div>';
+	}
+
+?>
+
 

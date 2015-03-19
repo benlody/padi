@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\grid\GridView;
+use app\models\User;
 
 require_once __DIR__  . '/../../utils/utils.php';
 
@@ -40,6 +41,11 @@ $this->registerCssFile(Yii::$app->request->getBaseUrl().'/css/transaction_table_
 
 		foreach (['padi', 'self'] as $t) {
 			foreach (['xm', 'tw'] as $w) {
+
+				if(Yii::$app->user->identity->group == User::GROUP_XM && $w != 'xm'){
+					continue;
+				}
+
 				echo Html::a(get_warehouse_name($w.'_'.$t), ['transaction',
 						'from' => $from,
 						'to' => $to,
@@ -50,7 +56,7 @@ $this->registerCssFile(Yii::$app->request->getBaseUrl().'/css/transaction_table_
 		}
 	?>
 
-	<p><?= '<br><br>'.Html::encode('總覽') ?></p>
+	<p><?= '<br>'.Html::encode('總覽') ?></p>
 
 	<?= transaction_to_table($start_balance, $end_balance, $transaction, $product)?>
 

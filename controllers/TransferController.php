@@ -197,7 +197,7 @@ class TransferController extends \yii\web\Controller
 
 	public function actionEdit($id)
 	{
-        if(Yii::$app->user->identity->group > User::GROUP_XM){
+        if(Yii::$app->user->identity->group > User::GROUP_KL){
             throw new NotFoundHttpException('The requested page does not exist.');
         }
 		$model = $this->findModel($id);
@@ -311,7 +311,7 @@ class TransferController extends \yii\web\Controller
 
 	public function actionList($status='', $detail = true, $sort='-send_date')
 	{
-		if(Yii::$app->user->identity->group > User::GROUP_XM){
+		if(Yii::$app->user->identity->group > User::GROUP_KL){
 			throw new NotFoundHttpException('The requested page does not exist.');
 		}
 
@@ -354,7 +354,7 @@ class TransferController extends \yii\web\Controller
 
 	public function actionDownload($id)
 	{
-        if(Yii::$app->user->identity->group > User::GROUP_XM){
+        if(Yii::$app->user->identity->group > User::GROUP_KL){
             throw new NotFoundHttpException('The requested page does not exist.');
         }
 		$model = $this->findModel($id);
