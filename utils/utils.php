@@ -472,11 +472,8 @@ function orders_to_shipment_table($orders, $warehouse, $from, $to){
 		$subtotal_p_qty = 0;
 
 		$cnt_service = true;
-		foreach ($ship_info as $info) {
-			if(!isset($info['date']) || $info['date'] < $from || $info['date'] > $to){
-				$cnt_service = false;
-				break;
-			}
+		if(!isset($order['date']) || $order['date'] < $from || $order['date'] > $to){
+			$cnt_service = false;
 		}
 
 		if($cnt_service){
