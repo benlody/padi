@@ -40,9 +40,9 @@ class ShippingType
 
 	protected static $type_enu = array(
 			'' => '',
-			0 => '標準快遞',
-			1 => '順丰特惠',
-			2 => '物流普運',
+			0 => 'Standard Express',
+			1 => 'Economy Express',
+			2 => 'Land',
 			10 => 'Post Office',
 			11 => 'SF Express',
 			12 => 'Normal Express',
