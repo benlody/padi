@@ -6,7 +6,7 @@ $supportedLangs = array('zh-TW', 'zh-CN', 'zh', 'en-US', 'en');
 $languages = explode(',',$_SERVER['HTTP_ACCEPT_LANGUAGE']);
 foreach($languages as $lang)
 {
-	$language = 'zh-TW';
+	$language = 'en';
     if(in_array($lang, $supportedLangs))
     {
         $language  = $lang;
