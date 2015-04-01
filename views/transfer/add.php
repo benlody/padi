@@ -17,7 +17,9 @@ $this->registerJsFile(Yii::$app->request->getBaseUrl().'/js/transfer_add.js',['d
 
 	<?php $form = ActiveForm::begin(); ?>
 
-		<?= $form->field($model, 'id', ['labelOptions' => ['label' => '編號']]) ?>
+		<?= $form->field($model, 'id', ['labelOptions' => ['label' => '編號'],
+		 'inputOptions' => ['onchange' => 'onchange_id()', 'class' => 'form-control']
+		 ]) ?>
 
 		<label class="control-label">來源倉儲</label>
 		<?= Html::dropDownList('Transfer[src_warehouse]', 'xm_padi', [

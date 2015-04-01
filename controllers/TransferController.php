@@ -98,7 +98,7 @@ class TransferController extends \yii\web\Controller
 				$model->status = Transfer::STATUS_ONTHEWAY;
 
 				$model->insert();
-
+				
 				$log = new Log();
 				$log->username = Yii::$app->user->identity->username;
 				$log->action = 'Add transfer ['.$model->id.']';
@@ -374,6 +374,11 @@ class TransferController extends \yii\web\Controller
 		echo "</body>";
 		echo "</html>";
 
+	}
+
+	public function actionCheckExist(){
+		$post_param = Yii::$app->request->post();
+		return (Transfer::findOne($post_param['id']) !== null) ? 0 : -1;
 	}
 
 	protected function findModel($id)

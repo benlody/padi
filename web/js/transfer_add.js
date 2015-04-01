@@ -75,3 +75,30 @@ function onchange_src() {
 		document.getElementById("ship_type").value = '';
 	}
 }
+
+function onchange_id() {
+	var id = document.getElementById("transfer-id").value;
+	console.log(id);
+
+	jQuery.ajax({
+		// The url must be appropriate for your configuration;
+		// this works with the default config of 1.1.11
+		url: 'index.php?r=transfer/check-exist',
+		type: "POST",
+		data:{
+			id: id
+		},
+		error: function(xhr,tStatus,e){
+			console.log(arguments);
+		},
+		success: function(resp){
+			if(resp == 0){
+				alert('編號已存在 請重新輸入');
+				document.getElementById("transfer-id").value = '';
+			}
+		}
+	});
+
+
+}
+
