@@ -2,7 +2,7 @@
 
 $params = require(__DIR__ . '/params.php');
 
-$supportedLangs = array('zh-TW', 'zh-CN', 'zh', 'en-US', 'en');
+$supportedLangs = array('zh-TW', 'zh-CN', 'zh', 'en-US', 'en', 'en-au');
 $languages = explode(',',$_SERVER['HTTP_ACCEPT_LANGUAGE']);
 foreach($languages as $lang)
 {

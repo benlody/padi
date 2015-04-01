@@ -6,6 +6,7 @@ use yii\widgets\ActiveForm;
 
 require_once __DIR__  . '/../../utils/utils.php';
 require_once __DIR__  . '/../../utils/enum.php';
+$this->registerJsFile(Yii::$app->request->getBaseUrl().'/js/order_list.js',['depends' => [yii\web\JqueryAsset::className()]]);
 
 ?>
 
@@ -44,7 +45,7 @@ require_once __DIR__  . '/../../utils/enum.php';
 					[
 						'label' => '訂單內容',
 						'format' => 'raw',
-						'value' => order_content_to_table($model->content)
+						'value' => order_content_to_table($model->content, $model->id)
 					],
 					[
 						'label' => '運送方式',

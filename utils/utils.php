@@ -90,8 +90,8 @@ function transfer_content_to_table($content){
 	return $table_out;
 }
 
-function order_content_to_table($content){
-	$table_out = '<div id="w0" class="grid-view"><table class="table table-striped table-bordered"><thead><tr><th>產品編號</th><th>產品名稱</th><th>數量</th><th>出貨狀態</th></tr></thead><tbody>';
+function order_content_to_table($content, $id){
+	$table_out = '<a href="#" onclick=" return false;"><span class="glyphicon glyphicon glyphicon-eye-open" data-toggle="#'.$id.'"></span></a><div id="'.$id.'" class="grid-view" style="display: none;"><table class="table table-striped table-bordered table-tooltip"><thead><tr><th>產品編號</th><th>產品名稱</th><th>數量</th><th>出貨狀態</th></tr></thead><tbody>';
 
 	$content_array = json_decode($content);
 

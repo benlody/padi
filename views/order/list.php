@@ -12,8 +12,10 @@ require_once __DIR__  . '/../../utils/utils.php';
 
 $this->title = '訂單列表';
 $this->params['breadcrumbs'][] = $this->title;
+$this->registerJsFile(Yii::$app->request->getBaseUrl().'/js/order_list.js',['depends' => [yii\web\JqueryAsset::className()]]);
 
 ?>
+
 <div class="order-list">
 
 
@@ -50,7 +52,7 @@ $this->params['breadcrumbs'][] = $this->title;
 						'format' => 'raw',
 						'label' => '訂單內容',
 						'value' => function ($model) {
-							return order_content_to_table($model->content);
+							return order_content_to_table($model->content, $model->id);
 						}
 					],
 					'extra_info:text:備註',
@@ -97,7 +99,7 @@ $this->params['breadcrumbs'][] = $this->title;
 						'format' => 'raw',
 						'label' => '訂單內容',
 						'value' => function ($model) {
-							return order_content_to_table($model->content);
+							return order_content_to_table($model->content,$model->id);
 						}
 					],
 					'extra_info:text:備註',
