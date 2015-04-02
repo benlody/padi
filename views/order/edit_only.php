@@ -13,6 +13,8 @@ require_once __DIR__  . '/../../utils/enum.php';
 /* @var $form ActiveForm */
 $this->title = $model->id;
 $this->params['breadcrumbs'][] = $this->title;
+$this->registerJsFile(Yii::$app->request->getBaseUrl().'/js/order_list.js',['depends' => [yii\web\JqueryAsset::className()]]);
+
 ?>
 
 <div class="order-edit">
@@ -36,7 +38,7 @@ $this->params['breadcrumbs'][] = $this->title;
 		<?= $form->field($model, 'tel')->textInput(['readonly' => true]) ?>
 
 		<label class="control-label" for="order-content">訂單內容</label>
-		<?= order_content_to_table($model->toArray()['content']) ?>
+		<?= order_content_to_table($model->toArray()['content'], $model->id) ?>
 		<div class="help-block"></div>
 
 		<?= $form->field($model, 'ship_type', ['labelOptions' => ['label' => '運送方式']])
