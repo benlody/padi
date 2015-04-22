@@ -596,7 +596,7 @@ class OrderController extends \yii\web\Controller
 
 		$orders = $query->select('*')
 						->from('order')
-						->where('warehouse = "'.$warehouse.'" AND status != 0 AND done_date IS NOT NULL AND (done_date BETWEEN  "'.$from.'" AND "'.$to.'" OR date BETWEEN  "'.$from.'" AND "'.$to.'")')
+						->where('warehouse = "'.$warehouse.'" AND date BETWEEN  "'.$from.'" AND "'.$to.'"')
 						->orderBy('id ASC')
 						->all();
 
