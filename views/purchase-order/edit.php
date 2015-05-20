@@ -67,6 +67,7 @@ $this->registerJsFile(Yii::$app->request->getBaseUrl().'/js/purchase_order_edit.
 
 		<div class="form-group">
 			<?= Html::submitButton('完工入庫', ['class' => 'btn btn-primary', 'name' => 'done', 'onclick' => 'return check_cnt()']) ?>
+			<?= Html::submitButton('分批入庫', ['class' => 'btn btn-primary', 'name' => 'partial', 'onclick' => 'return check_cnt()']) ?>
 		</div>
 	<?php ActiveForm::end(); ?>
 

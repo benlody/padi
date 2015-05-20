@@ -138,6 +138,64 @@ class PurchaseOrderController extends \yii\web\Controller
 
 			return $this->redirect(['list', 'status' => 'done']);
 
+		} else if(isset($post_param['partial'])){
+
+			$done_date = date("Y-m-d", strtotime($post_param['PurchaseOrder']['done_date']));
+			$warehouse = $post_param['PurchaseOrder']['warehouse'];
+
+			$old_content = json_decode($model->content, true);
+			$old_content[$post_param["product"]]['padi_cnt'] += $content[$post_param["product"]]['padi_cnt'];
+			$old_content[$post_param["product"]]['self_cnt'] += $content[$post_param["product"]]['self_cnt'];
+			$old_content[$post_param["product"]]['print_cnt'] = 0;
+			$old_content[$post_param["product"]]['order_cnt'] = $content[$post_param["product"]]['order_cnt'];
+
+
+			$post_param['PurchaseOrder']['content'] = json_encode($old_content, JSON_FORCE_OBJECT);
+			$post_param['PurchaseOrder']['done_date'] = $done_date;
+
+			foreach ($post_param['PurchaseOrder'] as $key => $value) {
+				$model->$key = $value;
+			}
+
+			//FIXME error handle
+			$model->update();
+
+			$padi_balance_model = new Balance1($warehouse, 'padi');
+			$self_balance_model = new Balance2($warehouse, 'self');
+			$self_transaction_model = new Transaction1($warehouse, 'self');
+			$padi_transaction_model = new Transaction2($warehouse, 'padi');
+			get_balance($padi_balance_model, $warehouse, 'padi');
+			get_balance($self_balance_model, $warehouse, 'self');
+
+			$now = strtotime('now');
+			$padi_transaction_model->serial = 'PO_'.$post_param['PurchaseOrder']['id'].'_'.$now;;
+			$self_transaction_model->serial = 'PO_'.$post_param['PurchaseOrder']['id'].'_'.$now;;
+			$padi_balance_model->serial = 'PO_'.$post_param['PurchaseOrder']['id'].'_'.$now;;
+			$self_balance_model->serial = 'PO_'.$post_param['PurchaseOrder']['id'].'_'.$now;;
+			$padi_transaction_model->date = $done_date;
+			$self_transaction_model->date = $done_date;
+			$padi_balance_model->date = $done_date;
+			$self_balance_model->date = $done_date;
+
+			foreach ($content as $key => $value) {
+				$padi_transaction_model->$key = $value['padi_cnt'];
+				$self_transaction_model->$key = $value['self_cnt'];
+				$padi_balance_model->$key = $padi_balance_model->$key + $padi_transaction_model->$key;
+				$self_balance_model->$key = $self_balance_model->$key + $self_transaction_model->$key;
+			}
+
+			$padi_transaction_model->insert();
+			$self_transaction_model->insert();
+			$padi_balance_model->insert();
+			$self_balance_model->insert();
+
+			$log = new Log();
+			$log->username = Yii::$app->user->identity->username;
+			$log->action = 'Partial Finish Produce ['.$model->id.']';
+			$log->insert();
+
+			return $this->redirect(['list']);
+
 		} else {
 
 			// FIXME avoid edit a done PO
