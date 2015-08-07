@@ -11,7 +11,7 @@ class Fee
 		if(0 == strcmp('xm', $warehouse)){
 			$fee = 7 * $qty;
 		} else {
-			$fee = round((30 * $qty) * 100 / 24) / 100;
+			$fee = round((30 * $qty) * 100 / 22) / 100;
 		}
 		return $fee;
 	}
@@ -21,7 +21,7 @@ class Fee
 		if(0 == strcmp('xm', $warehouse)){
 			$fee = 2 * $qty;
 		} else {
-			$fee = round((5 * $qty) * 100 / 24) / 100;
+			$fee = round((5 * $qty) * 100 / 22) / 100;
 		}
 		return $fee;
 	}
@@ -146,7 +146,7 @@ class Fee
 			if(ShippingType::T_NEW == $type){
 				$fee = 11 * $box;
 			} else {
-				$fee = 1.1 * $org_fee / 24;
+				$fee = 1.1 * $org_fee / 22;
 			}
 		}
 
