@@ -33,6 +33,9 @@ class Fee
 		}
 
 		if(0 == strcmp('xm', $warehouse)){
+			$fee = 1.1 * $org_fee;
+
+/*
 			switch ($region) {
 				case 'Hebei':
 				case 'Yunnan':
@@ -141,6 +144,7 @@ class Fee
 					$fee = 1.1 * $org_fee;
 					break;
 			}
+*/
 
 		} else {
 			if(ShippingType::T_NEW == $type){
