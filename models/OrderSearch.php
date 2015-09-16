@@ -80,6 +80,9 @@ class OrderSearch extends Order
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+            'pagination' => [
+                'pageSize' => 300,
+            ],
         ]);
 
         $contents = explode(',',$params['content']);
