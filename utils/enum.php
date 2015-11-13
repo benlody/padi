@@ -145,6 +145,10 @@ class ShippingRegion
 			'Huizhou' => '惠州',
 			'Guiyang' => '貴陽',
 			'Nanjing' => '南京',
+			'Xian' => '西安',
+			'Tianjin' => '天津',
+			'Qinhuangdao' => '秦皇島',
+			'Tangshan' => '唐山',
 			'Else' => '其他',
 		);
 
