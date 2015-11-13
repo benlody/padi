@@ -301,6 +301,9 @@ class InventoryController extends \yii\web\Controller
 						->from('crew_pak')
 						->all();
 
+//		$crew_list['79190C'] = array();
+//		array_push($crew_list['79190C'], '79190C');
+
 		foreach ($crewpak as $c) {
 			$crew_list[$c['id']] = array();
 			foreach ($product as $p) {

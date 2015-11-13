@@ -557,6 +557,35 @@ class OrderController extends \yii\web\Controller
 		]);
 	}
 
+	public function actionStatistics($from='', $to='')
+	{
+		if(Yii::$app->user->identity->group > User::GROUP_KL){
+			throw new NotFoundHttpException('The requested page does not exist.');
+		}
+
+		$query = new Query;
+		if(!$from){
+			$from = date("Y-m-d", strtotime("first day of this month"));
+		}
+		if(!$to){
+			$to = date("Y-m-d", strtotime("last day of this month"));
+		}
+
+		$orders = $query->select('*')
+						->from('order')
+						->where('date BETWEEN  "'.$from.'" AND "'.$to.'"')
+						->orderBy('id ASC')
+						->all();
+
+		return $this->render('statistics' ,[
+			'warehouse' => $warehouse,
+			'from' => $from,
+			'to' => $to,
+			'orders' => $orders,
+		]);
+	}
+
+
 	public function actionShip_download($warehouse='xm', $from='', $to='')
 	{
 		if(Yii::$app->user->identity->group > User::GROUP_KL){
@@ -578,6 +607,30 @@ class OrderController extends \yii\web\Controller
 						->all();
 
 		ship_download($orders, $warehouse, $from, $to);
+	}
+
+
+	public function actionStat_download($from='', $to='')
+	{
+		if(Yii::$app->user->identity->group > User::GROUP_KL){
+			throw new NotFoundHttpException('The requested page does not exist.');
+		}
+
+		$query = new Query;
+		if(!$from){
+			$from = date("Y-m-d", strtotime("first day of this month"));
+		}
+		if(!$to){
+			$to = date("Y-m-d", strtotime("last day of this month"));
+		}
+
+		$orders = $query->select('*')
+						->from('order')
+						->where('date BETWEEN  "'.$from.'" AND "'.$to.'"')
+						->orderBy('id ASC')
+						->all();
+
+		stat_download($orders, $from, $to);
 	}
 
 	public function actionShip_download_service($warehouse='xm', $from='', $to='')

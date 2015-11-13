@@ -56,6 +56,7 @@ AppAsset::register($this);
 							 ['label' => '會員訂單列表', 'url' => ['/order/list', 'sort' => '-date']],
 							 ['label' => '訂單搜尋', 'url' => ['/order/search']],
 							 ['label' => '出貨明細', 'url' => ['/order/ship_overview']],
+							 ['label' => '訂單統計', 'url' => ['/order/statistics']],
 							 '<li class="divider"></li>',
 							 '<li class="dropdown-header" align="center"><font color="green">內部訂單/轉移</font></li>',
 							 ['label' => '新增內部訂單', 'url' => ['/transfer/add']],

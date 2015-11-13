@@ -608,6 +608,45 @@ function orders_to_shipment_table($orders, $warehouse, $from, $to){
 	return $table_out;
 }
 
+function orders_to_statistics_table($orders, $from, $to){
+
+
+	$table_out = '<div><table class="overflow-y"><thead><tr>'.
+					'<th>PO#</th>'.
+					'<th>DC#</th>'.
+					'<th>Date</th>'.
+					'<th>Region</th>'.
+					'<th>Chinese Addr</th>'.
+					'<th>Weight</th>'.
+					'</tr></thead><tbody>';
+
+
+	foreach ($orders as $order) {
+		$ship_info = json_decode($order['shipping_info'], true);
+
+		$subtotal_weight = 0;
+
+		if($ship_info !== null){
+			foreach ($ship_info as $info) {
+				$subtotal_weight += $info['weight'];
+			}
+			$row = '<tr><td>'.$order['id'].'</td>'.
+						'<td>'.$order['customer_id'].'</td>'.
+						'<td>'.$order['date'].'</td>'.
+						'<td>'.ShippingRegion::getRegion($order['region']).'</td>'.
+						'<td>'.$order['chinese_addr'].'</td>'.
+						'<td>'.$subtotal_weight.'</td>'.
+						'</tr>';
+			$table_out = $table_out.$row;
+		}
+	}
+
+	$table_out = $table_out.'</tbody></table></div>';
+
+	return $table_out;
+}
+
+
 function chineseToUnicode($str){
 	//split word
 	preg_match_all('/./u',$str,$matches);
