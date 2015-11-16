@@ -151,6 +151,8 @@ class ShippingRegion
 			'Tangshan' => '唐山',
 			'Wenchang ' => '海南文昌',
 			'Hangzhou' => '杭州',
+			'Chongqing' => '重慶',
+			'Wanning' => '海南萬寧',
 			'Else' => '其他',
 		);
 
