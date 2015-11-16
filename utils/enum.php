@@ -149,6 +149,8 @@ class ShippingRegion
 			'Tianjin' => '天津',
 			'Qinhuangdao' => '秦皇島',
 			'Tangshan' => '唐山',
+			'Wenchang ' => '海南文昌',
+			'Hangzhou' => '杭州',
 			'Else' => '其他',
 		);
 
