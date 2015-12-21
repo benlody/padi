@@ -72,10 +72,11 @@ function product_content_to_table($content, $done = false){
 }
 
 function transfer_content_to_table($content){
-	$table_out = '<div id="w0" class="grid-view"><table class="table table-striped table-bordered"><thead><tr><th>品名</th><th>數量</th></tr></thead><tbody>';
+	$table_out = '<div id="w0" class="grid-view"><table class="table table-striped table-bordered"><thead><tr><th>品名</th><th>名稱</th><th>數量</th></tr></thead><tbody>';
 	$content_array = json_decode($content);
 	foreach ($content_array as $key => $value) {
-		$table_out = $table_out.'<tr><td>'.$key.'</td><td>'.$value.'</td></tr>';
+
+		$table_out = $table_out.'<tr><td>'.$key.'</td><td>'.get_product_name($key).'</td><td>'.$value.'</td></tr>';
 	}
 	$table_out = $table_out.'</tbody></table></div>';
 
