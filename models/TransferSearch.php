@@ -45,6 +45,9 @@ class TransferSearch extends Transfer
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+            'pagination' => [
+                'pageSize' => 300,
+            ],
         ]);
 
         if (!($this->load($params) && $this->validate())) {
