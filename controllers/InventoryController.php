@@ -297,13 +297,25 @@ class InventoryController extends \yii\web\Controller
 			$transaction[$key] = $t;
 		}
 
+		$product_show = array();
+		foreach ($product as $p) {
+			if ($start_balance[$p] != 0 || $end_balance[$p] != 0){
+				array_push($product_show, $p);
+			}
+		}
+
 		$crewpak = $query2->select('*')
 						->from('crew_pak')
 						->all();
 
-//		$crew_list['79190C'] = array();
-//		array_push($crew_list['79190C'], '79190C');
+		$crew_list = array();
+/*
 
+		$crew_list['10317'] = array();
+		array_push($crew_list['10317'], '10317');
+*/
+
+/*
 		foreach ($crewpak as $c) {
 			$crew_list[$c['id']] = array();
 			foreach ($product as $p) {
@@ -312,7 +324,7 @@ class InventoryController extends \yii\web\Controller
 				}
 			}
 		}
-
+*/
 		return $this->render('transaction',[
 			'warehouse' => $warehouse,
 			'type' => $type,
@@ -321,7 +333,7 @@ class InventoryController extends \yii\web\Controller
 			'start_balance' => $start_balance,
 			'end_balance' => $end_balance,
 			'transaction' => $transaction,
-			'product' => $product,
+			'product' => $product_show,
 			'crew_list' => $crew_list
 		]);
 	}
