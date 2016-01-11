@@ -55,7 +55,7 @@ function ship_download($orders, $warehouse, $from, $to){
 		if($cnt_service){
 
 			foreach ($content['crewpak'] as $crewpak => $info) {
-				$service_fee = Fee::getCrewpackServiceFee($info['cnt'], $warehouse);
+				$service_fee = Fee::getCrewpackServiceFee($info['cnt'], $warehouse, $crewpak);
 				$subtotal_service_fee += $service_fee;
 
 				$objPHPExcel->setActiveSheetIndex(0)

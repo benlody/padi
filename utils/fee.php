@@ -6,9 +6,38 @@ require_once __DIR__  . '/enum.php';
 class Fee
 {
 
-	static public function getCrewpackServiceFee($qty, $warehouse){
+	static public function getCrewpackServiceFee($qty, $warehouse, $crewpak){
 
-		if(0 == strcmp('xm', $warehouse)){
+		if($crewpak == '70015KL' || 
+			$crewpak == '70470C' || 
+			$crewpak == '70470K' || 
+			$crewpak == 'P60032KSP' || 
+			$crewpak == 'P70014CL' || 
+			$crewpak == 'P70014KL' || 
+			$crewpak == 'P70015CL' || 
+			$crewpak == 'P70015KL' || 
+			$crewpak == 'P70080KL' || 
+			$crewpak == 'P70179CSP' || 
+			$crewpak == 'P70370CSP' || 
+			$crewpak == 'P70370KSP' || 
+			$crewpak == 'P70470CL' || 
+			$crewpak == 'P70470CSP' || 
+			$crewpak == 'P70470KL' || 
+			$crewpak == 'P70470KSP' || 
+			$crewpak == 'P71142CL' || 
+			$crewpak == 'P71142KL' || 
+			$crewpak == 'P71142KXL' || 
+			$crewpak == 'P79300CSP' || 
+			$crewpak == 'P79300KSP' || 
+			$crewpak == 'P79315CSP'
+		){
+			if(0 == strcmp('xm', $warehouse)){
+				$fee = 2 * $qty;
+			} else {
+				$fee = round((5 * $qty) * 100 / 22) / 100;
+			}
+		}
+		else if(0 == strcmp('xm', $warehouse)){
 			$fee = 7 * $qty;
 		} else {
 			$fee = round((30 * $qty) * 100 / 22) / 100;

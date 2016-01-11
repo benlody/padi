@@ -394,34 +394,35 @@ function get_balance(&$balance_model, $warehouse, $warehouse_type){
 
 
 function transaction_to_table($start_balance, $end_balance, $transaction, $product){
-	$table_out = '<div><table class="overflow-y"><thead><tr><th>日期</th><th>描述</th><th>編號</th>';
+	$table_out = '<div><table class="overflow-y"><thead><tr><th>Date</th><th>Type</th><th>ID</th><th>Remark</th>';
 
 	foreach ($product as $p_name) {
 		$table_out = $table_out.'<th>'.$p_name.'</th>';
 	}
 
-	$table_out = $table_out.'<th>備註</th></tr></thead><tbody><tr><th></th><th>期初餘額</th><th></th>';
+	$table_out = $table_out.'</tr></thead><tbody><tr><th></th><th>Balance of beginning</th><th></th><td></td>';
 	foreach ($product as $p_name) {
 		$table_out = $table_out.'<td>'.$start_balance[$p_name].'</td>';
 	}
 
-	$table_out = $table_out.'<td></td></tr><tr><th></th><th>期末餘額</th><th></th>';
+	$table_out = $table_out.'</tr><tr><th></th><th>Balance of end</th><th></th><td></td>';
 	foreach ($product as $p_name) {
 		$table_out = $table_out.'<td>'.$end_balance[$p_name].'</td>';
 	}
 
-	$table_out = $table_out.'<td></td></tr>';
+	$table_out = $table_out.'</tr>';
 
 	foreach ($transaction as $trans) {
 		$show_this_row = false;
 		$row = '<tr><th>'.$trans['date'].'</th><th>'.$trans['desc'].'</th><th>'.$trans['id'].'</th>';
+		$row = $row.'<td>'.$trans['extra_info'].'</td>';
 		foreach ($product as $p_name) {
 			if(0 != $trans[$p_name]){
 				$show_this_row = true;
 			}
 			$row = $row.'<td>'.(0 == $trans[$p_name] ? '' : $trans[$p_name]).'</td>';
 		}
-		$row = $row.'<td>'.$trans['extra_info'].'</td></tr>';
+		$row = $row.'</tr>';
 		if($show_this_row){
 			$table_out = $table_out.$row;
 		}
@@ -471,7 +472,7 @@ function orders_to_shipment_table($orders, $warehouse, $from, $to){
 
 		if($cnt_service){
 			foreach ($content['crewpak'] as $crewpak => $info) {
-				$service_fee = Fee::getCrewpackServiceFee($info['cnt'], $warehouse);
+				$service_fee = Fee::getCrewpackServiceFee($info['cnt'], $warehouse, $crewpak);
 				$subtotal_service_fee += $service_fee;
 				$subtotal_c_qty += $info['cnt'];
 				$row = '<tr><td>'.$order['id'].'</td>'.
