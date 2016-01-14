@@ -21,6 +21,11 @@ class Fee
 			$crewpak == 'P71142KXL' || 
 			$crewpak == 'P79300CSP' || 
 			$crewpak == 'P79300KSP' || 
+			$crewpak == '79300CSP' || 
+			$crewpak == '79300KSP' || 
+			$crewpak == 'P79315KSP' || 
+			$crewpak == '79315CSP' || 
+			$crewpak == '79315KSP' || 
 			$crewpak == 'P79315CSP'
 		){
 			if(0 == strcmp('xm', $warehouse)){
