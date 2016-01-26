@@ -260,11 +260,19 @@ class InventoryController extends \yii\web\Controller
 		$product = Product::find()->column();
 		$query = new Query;
 		$query2 = new Query;
+		$post_param = Yii::$app->request->post();
 		if(!$from){
 			$from = date("Y-m-d", strtotime("first day of this month"));
 		}
 		if(!$to){
 			$to = date("Y-m-d", strtotime("last day of this month"));
+		}
+
+		if($post_param['chose_from']){
+			$from = $post_param['chose_from'];
+		}
+		if($post_param['chose_to']){
+			$to = $post_param['chose_to'];
 		}
 
 		if(Yii::$app->user->identity->group == User::GROUP_XM && $warehouse != 'xm'){

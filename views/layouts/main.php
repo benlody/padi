@@ -163,7 +163,7 @@ AppAsset::register($this);
 						'label' => Yii::t('app', 'Inventory'),
 						'items' => [
 							 '<li class="dropdown-header" align="center"><font color="green">'.Yii::t('app', 'Inventory').'</font></li>',
-//							 ['label' => '庫存明細', 'url' => ['/inventory/transaction']],
+							 ['label' => Yii::t('app', 'Inventory Transaction'), 'url' => ['/inventory/transaction']],
 							 ['label' => Yii::t('app', 'Inventory Overview'), 'url' => ['/inventory/overview']],
 							 ['label' => Yii::t('app', 'Low Stock Items'), 'url' => ['/inventory/low_stock']],
 //							 '<li class="divider"></li>',

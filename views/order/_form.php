@@ -20,6 +20,8 @@ require_once __DIR__  . '/../../utils/enum.php';
 			echo DatePicker::widget([
 				'name' => 'Order[date]',
 				'value' => date("Y-m-d", strtotime('today')),
+				'dateFormat' => 'yyyy-MM-dd',
+
 			]);
 		?>
 		<div class="help-block"></div>

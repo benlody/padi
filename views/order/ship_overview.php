@@ -2,6 +2,8 @@
 
 use yii\helpers\Html;
 use yii\grid\GridView;
+use yii\jui\DatePicker;
+use yii\widgets\ActiveForm;
 
 require_once __DIR__  . '/../../utils/utils.php';
 
@@ -24,6 +26,34 @@ $this->registerCssFile(Yii::$app->request->getBaseUrl().'/css/transaction_table_
 		Form <b><?= $from?></b> to <b><?= $to?></b><br>
 
 	</div>
+
+	<?php $form = ActiveForm::begin(); ?>
+
+		<div class="form-group field-from">
+		<label class="control-label" for="from">From</label>
+		<?php
+			echo DatePicker::widget([
+				'name' => 'chose_from',
+				'value' => $from,
+				'dateFormat' => 'yyyy-MM-dd',
+
+			]);
+		?>
+		<label class="control-label" for="to">To</label>
+		<?php
+			echo DatePicker::widget([
+				'name' => 'chose_to',
+				'value' => $to,
+				'dateFormat' => 'yyyy-MM-dd',
+			]);
+
+		?>
+		<div class="form-group">
+			<?= Html::submitButton(Yii::t('app', 'Submit'), ['class' => 'btn btn-primary', 'name' => 'ship_overview']) ?>
+		</div>
+		</div>
+
+	<?php ActiveForm::end(); ?>
 
 	<?php
 		for($i = 0; $i < 6; $i++){

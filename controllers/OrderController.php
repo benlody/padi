@@ -535,12 +535,21 @@ class OrderController extends \yii\web\Controller
 			throw new NotFoundHttpException('The requested page does not exist.');
 		}
 
+		$post_param = Yii::$app->request->post();
+
 		$query = new Query;
 		if(!$from){
 			$from = date("Y-m-d", strtotime("first day of this month"));
 		}
 		if(!$to){
 			$to = date("Y-m-d", strtotime("last day of this month"));
+		}
+
+		if($post_param['chose_from']){
+			$from = $post_param['chose_from'];
+		}
+		if($post_param['chose_to']){
+			$to = $post_param['chose_to'];
 		}
 
 		$orders = $query->select('*')
