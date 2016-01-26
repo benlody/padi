@@ -22,7 +22,7 @@ return [
 
     'Inventory' => '庫存',
     'Inventory Overview' => '庫存總覽',
-    'Inventory Transction' => '庫存明細',
+    'Inventory Transaction' => '庫存明細',
     'Low Stock Items' => '低庫存項目',
     'Low Stock Content' => '低庫存內容',
 
