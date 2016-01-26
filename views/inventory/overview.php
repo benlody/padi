@@ -74,7 +74,9 @@ $this->registerJsFile(Yii::$app->request->getBaseUrl().'/js/inventory_overview.j
 		}
 
 	?>
+<!--
 	<?= Html::button(Yii::t('app', 'Print'), ['class' => 'btn btn-success', 'onclick' => "PrintElem('#print', '".get_warehouse_name($warehouse).'&nbsp;&nbsp;&nbsp;&nbsp;'.date("Y-m-d", strtotime('now'))."')"]) ?>
+-->
 	<div id="print">
 		<?= GridView::widget($config); ?>
 	</div>
