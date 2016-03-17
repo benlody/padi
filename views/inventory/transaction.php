@@ -49,6 +49,19 @@ $this->registerCssFile(Yii::$app->request->getBaseUrl().'/css/transaction_table_
 			]);
 
 		?>
+		<?php
+
+			echo '<div>';
+			echo '<label class="control-label" for="from">Choose a Product:  </label>';
+			echo '<select class="form-group" name="single_product">';
+			echo '<option value="'.$single_product.'" selected>'.$single_product.'</option>';
+			foreach ($product as $p) {
+				echo '<option value="'.$p.'">'.$p.'</option>';
+			}
+			echo '</select>';
+			echo '</div>';
+		?>
+
 		<div class="form-group">
 			<?= Html::submitButton(Yii::t('app', 'Submit'), ['class' => 'btn btn-primary', 'name' => 'transaction']) ?>
 		</div>

@@ -255,7 +255,7 @@ class InventoryController extends \yii\web\Controller
 	}
 
 
-	public function actionTransaction($warehouse='xm', $type='padi', $from='', $to='')
+	public function actionTransaction($warehouse='xm', $type='padi', $from='', $to='', $single_product='')
 	{
 		$product = Product::find()->column();
 		$query = new Query;
@@ -273,6 +273,9 @@ class InventoryController extends \yii\web\Controller
 		}
 		if($post_param['chose_to']){
 			$to = $post_param['chose_to'];
+		}
+		if($post_param['single_product']){
+			$single_product = $post_param['single_product'];
 		}
 
 		if(Yii::$app->user->identity->group == User::GROUP_XM && $warehouse != 'xm'){
@@ -317,12 +320,11 @@ class InventoryController extends \yii\web\Controller
 						->all();
 
 		$crew_list = array();
-/*
 
-		$crew_list['10317'] = array();
-		array_push($crew_list['10317'], '10317');
-*/
-
+		if($single_product){
+			$crew_list[$single_product] = array();
+			array_push($crew_list[$single_product], $single_product);
+}
 /*
 		foreach ($crewpak as $c) {
 			$crew_list[$c['id']] = array();
@@ -342,6 +344,7 @@ class InventoryController extends \yii\web\Controller
 			'end_balance' => $end_balance,
 			'transaction' => $transaction,
 			'product' => $product_show,
+			'single_product' => $single_product,
 			'crew_list' => $crew_list
 		]);
 	}
