@@ -103,9 +103,6 @@ $this->registerCssFile(Yii::$app->request->getBaseUrl().'/css/transaction_table_
 		}
 	?>
 
-	<p><?= '<br>'.Html::encode('總覽') ?></p>
-
-	<?= transaction_to_table($start_balance, $end_balance, $transaction, $product)?>
 
 	<?php
 		foreach ($crew_list as $crewpak_id => $crewpak_product) {
@@ -113,4 +110,8 @@ $this->registerCssFile(Yii::$app->request->getBaseUrl().'/css/transaction_table_
 			echo transaction_to_table($start_balance, $end_balance, $transaction, $crewpak_product);
 		}
 	?>
+
+	<p><?= '<br>'.Html::encode('總覽') ?></p>
+
+	<?= transaction_to_table($start_balance, $end_balance, $transaction, $product)?>
 
