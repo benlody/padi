@@ -36,6 +36,7 @@ class ShippingType
 			16 => 'DHL',
 			17 => '德揚國物',
 			18 => '全球快遞',
+			19 => '司機送貨',
 			20 => '客戶自取'
 		);
 
@@ -53,6 +54,7 @@ class ShippingType
 			16 => 'DHL',
 			17 => '德揚國物',
 			18 => '全球快遞',
+			19 => 'By Trunk',
 			20 => 'Pick up'
 		);
 
@@ -153,6 +155,8 @@ class ShippingRegion
 			'Hangzhou' => '杭州',
 			'Chongqing' => '重慶',
 			'Wanning' => '海南萬寧',
+			'Philippines' => '菲律賓',
+			'Malaysia' => '馬來西亞',
 			'Else' => '其他',
 		);
 
