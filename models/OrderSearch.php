@@ -96,6 +96,8 @@ class OrderSearch extends Order
             $query->andFilterWhere(['like', 'content', $content]);
         }
 
+        $query->addOrderBy('date DESC');
+
         return $dataProvider;
     }
 
