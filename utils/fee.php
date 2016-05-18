@@ -21,6 +21,8 @@ class Fee
 			$crewpak == 'P71142KXL' || 
 			$crewpak == 'P79300CSP' || 
 			$crewpak == 'P79300KSP' || 
+			$crewpak == 'P70491CSP' || 
+			$crewpak == 'P70491KSP' || 
 			$crewpak == '79300CSP' || 
 			$crewpak == '79300KSP' || 
 			$crewpak == 'P79315KSP' || 
