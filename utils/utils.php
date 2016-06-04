@@ -6,6 +6,7 @@ use app\models\Transfer;
 use app\models\Product;
 use app\models\CrewPak;
 use app\models\Customer;
+use app\models\Packing;
 use yii\db\Query;
 
 
@@ -60,6 +61,23 @@ function get_warehouse_name($warehouse_id){
 	return $name;
 }
 
+function get_warehouse_location($warehouse_id){
+	switch($warehouse_id){
+		case 'xm_padi':
+			$name = 'Xiamen, China';
+			break;
+		case 'tw_padi':
+			$name = 'Taipei, Taiwan';
+			break;
+		case 'padi_sydney':
+			$name = 'Sydney, Australia';
+			break;
+		default:
+			$name = $warehouse_id;
+	}
+	return $name;
+}
+
 function product_content_to_table($content, $done = false){
 	$table_out = '<div id="w0" class="grid-view"><table class="table table-striped table-bordered"><thead><tr><th>品名</th><th>訂單數量</th><th>PADI已入庫</th><th>自有已入庫</th></tr></thead><tbody>';
 	$content_array = json_decode($content);
@@ -103,6 +121,27 @@ function order_content_to_table($content, $id){
 	return $table_out;
 }
 
+function paditransfer_content_to_table($content, $id){
+	$content_array = json_decode($content);
+
+	$table_out = '<a href="#" onclick=" return false;"><span class="glyphicon glyphicon glyphicon-eye-open" data-toggle="#'.$id.'"></span></a><div id="'.$id.'" class="grid-view" style="display: none;"><table class="table table-striped table-bordered table-tooltip">';
+
+	$table_out = $table_out.'<thead><tr><th>產品編號</th><th>數量(箱)</th><th>qty</th><th>Total</th></tr></thead><tbody>';
+	$box_array = $content_array->packing;
+	foreach ($box_array as $p_name => $box_detail) {
+		$table_out = $table_out.'<tr><td>'.$p_name.'</td><td>'.$box_detail->cnt.'</td><td>'.$box_detail->qty.'</td><td>'.$box_detail->cnt * $box_detail->qty.'</td></tr>';
+	}
+
+	$table_out = $table_out.'<tr><th>產品編號</th><th>數量(pcs)</th></tr>';
+	$mix_array = $content_array->mix;
+	foreach ($mix_array as $p_name => $mix_detail) {
+		$table_out = $table_out.'<tr><td>'.$p_name.'</td><td>'.$mix_detail->cnt.'</td></tr>';
+	}
+	$table_out = $table_out.'</tbody></table></div>';
+
+
+	return $table_out;
+}
 
 function crewpak_to_table($crewpak_name, $crewpak_detail){
 
@@ -315,6 +354,36 @@ function get_customer_name($id, $array = false){
 	}
 
 	return $ret;
+}
+
+function get_packing($id){
+	$packing = Packing::find()
+		->where(['id' => $id])
+		->one();
+
+	$product = Product::find()
+		->where(['id' => $id])
+		->one();
+
+	$p = array();
+	$p['qty'] = $packing->qty;
+	$p['net_weight'] = $packing->net_weight;
+	$p['measurement'] = $packing->measurement;
+	$p['english_name'] = $product->english_name;
+	$p['chinese_name'] = $product->chinese_name;
+
+	return $p;
+}
+
+function get_mix($id){
+	$product = Product::find()
+		->where(['id' => $id])
+		->one();
+
+	$m = array();
+	$m['english_name'] = $product->english_name;
+	$m['chinese_name'] = $product->chinese_name;
+	return $m;
 }
 
 function get_check_icon($done){
