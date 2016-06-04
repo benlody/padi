@@ -39,7 +39,7 @@ class PadiTransferController extends Controller
 
 	public function actionAdd()
 	{
-		if(Yii::$app->user->identity->group > User::GROUP_KL){
+		if(Yii::$app->user->identity->group > User::GROUP_PADI){
 			throw new NotFoundHttpException('The requested page does not exist.');
 		}
 

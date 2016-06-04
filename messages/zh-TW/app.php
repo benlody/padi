@@ -65,5 +65,10 @@ return [
     'Warehouse T PADI Balance' => '台灣光隆PADI庫存',
     'Warehouse T Self Balance' => '台灣光隆自有庫存',
 
+    'ID' => '編號',
+    'Source Warehouse' => '來源倉儲',
+    'Destination Warehouse' => '目的倉儲',
+    'Date' => '日期',
+    'Content' => '內容',
 
 ];

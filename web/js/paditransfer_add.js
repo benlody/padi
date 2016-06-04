@@ -30,12 +30,12 @@ $(document).ready(function() {
 					}
 					newIn += '</select>';
 
-					newIn += '<label>&nbsp;每箱數量:</label><label id="label_qty_' + packing_cnt + '"></label>';
-					newIn += '<label>&nbsp;每箱淨重:</label><label id="label_weight_' + packing_cnt + '"></label>';
-					newIn += '<label>&nbsp;尺寸:</label><label id="label_measurement_' + packing_cnt + '"></label>';
-					newIn += '<label>&nbsp;&nbsp;&nbsp;&nbsp;箱數:</label><input type="number" name="box_' + packing_cnt + 
+					newIn += '<label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;qty per Box:</label><label id="label_qty_' + packing_cnt + '"></label>';
+					newIn += '<label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Net Weight per Box:</label><label id="label_weight_' + packing_cnt + '"></label>';
+					newIn += '<label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Measurement:</label><label id="label_measurement_' + packing_cnt + '"></label>';
+					newIn += '<label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Number of Box:&nbsp;</label><input type="number" name="box_' + packing_cnt + 
 								'" id="box_' + packing_cnt + '" value="0" onchange="box_hook(this.value,' + packing_cnt + ')">';
-					newIn += '<label>&nbsp;總數:</label><label id="label_total_' + packing_cnt + '"></label>';
+					newIn += '<label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Total:</label><label id="label_total_' + packing_cnt + '"></label>';
 					newIn += '</div>';
 
 					packing_cnt++; //text box increment
@@ -69,7 +69,7 @@ $(document).ready(function() {
 					}
 					newIn += '</select>';
 
-					newIn += '<label>&nbsp;&nbsp;&nbsp;&nbsp;數量:</label><input type="number" name="mix_' + product_cnt + 
+					newIn += '<label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Qty:&nbsp;</label><input type="number" name="mix_' + product_cnt + 
 						'" id="mix_' + product_cnt + '" value="0">';
 
 

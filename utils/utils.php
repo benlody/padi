@@ -126,13 +126,13 @@ function paditransfer_content_to_table($content, $id){
 
 	$table_out = '<a href="#" onclick=" return false;"><span class="glyphicon glyphicon glyphicon-eye-open" data-toggle="#'.$id.'"></span></a><div id="'.$id.'" class="grid-view" style="display: none;"><table class="table table-striped table-bordered table-tooltip">';
 
-	$table_out = $table_out.'<thead><tr><th>產品編號</th><th>數量(箱)</th><th>qty</th><th>Total</th></tr></thead><tbody>';
+	$table_out = $table_out.'<thead><tr><th>Product</th><th>Number of Boxes</th><th>qty per box</th><th>Total</th></tr></thead><tbody>';
 	$box_array = $content_array->packing;
 	foreach ($box_array as $p_name => $box_detail) {
 		$table_out = $table_out.'<tr><td>'.$p_name.'</td><td>'.$box_detail->cnt.'</td><td>'.$box_detail->qty.'</td><td>'.$box_detail->cnt * $box_detail->qty.'</td></tr>';
 	}
 
-	$table_out = $table_out.'<tr><th>產品編號</th><th>數量(pcs)</th></tr>';
+	$table_out = $table_out.'<tr><th>Product</th><th>Number of pcs</th></tr>';
 	$mix_array = $content_array->mix;
 	foreach ($mix_array as $p_name => $mix_detail) {
 		$table_out = $table_out.'<tr><td>'.$p_name.'</td><td>'.$mix_detail->cnt.'</td></tr>';

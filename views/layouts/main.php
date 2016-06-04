@@ -189,6 +189,13 @@ AppAsset::register($this);
 						],
 					],
 */					[
+						'label' => Yii::t('app', 'Transfer'),
+						'items' => [
+							 ['label' => Yii::t('app', 'Transfer Create'), 'url' => ['/padi-transfer/add']],
+							 ['label' => Yii::t('app', 'Transfer List'), 'url' => ['/padi-transfer/list', 'sort' => '-date']],
+						],
+					],
+					[
 						'label' => Yii::t('app', 'Product & Crew-Pak'),
 						'items' => [
 							 '<li class="dropdown-header" align="center"><font color="green">'.Yii::t('app', 'Product').'</font></li>',
@@ -196,6 +203,9 @@ AppAsset::register($this);
 							 '<li class="divider"></li>',
 							 '<li class="dropdown-header" align="center"><font color="green">'.Yii::t('app', 'Crew-Pak').'</font></li>',
 							 ['label' => Yii::t('app', 'Crew-Pak List'), 'url' => ['/crew-pak/index']],
+							 '<li class="divider"></li>',
+							 '<li class="dropdown-header" align="center"><font color="green">'.Yii::t('app', 'Packing').'</font></li>',
+							 ['label' => Yii::t('app', 'Packing Info'), 'url' => ['/packing/index']],
 						],
 					],
 					[

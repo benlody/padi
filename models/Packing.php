@@ -42,7 +42,7 @@ class Packing extends \yii\db\ActiveRecord
     {
         return [
             'id' => Yii::t('app', 'ID'),
-            'qty' => Yii::t('app', 'Qty'),
+            'qty' => Yii::t('app', 'Qty per Box'),
             'net_weight' => Yii::t('app', 'Net Weight'),
             'measurement' => Yii::t('app', 'Measurement'),
         ];

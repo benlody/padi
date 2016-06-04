@@ -10,7 +10,7 @@ require_once __DIR__  . '/../../utils/utils.php';
 /* @var $searchModel app\models\PurchaseOrderSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = '列表';
+$this->title = Yii::t('app', 'Transfer List');
 $this->params['breadcrumbs'][] = $this->title;
 $this->registerJsFile(Yii::$app->request->getBaseUrl().'/js/paditransfer_list.js',['depends' => [yii\web\JqueryAsset::className()]]);
 
@@ -24,12 +24,12 @@ $this->registerJsFile(Yii::$app->request->getBaseUrl().'/js/paditransfer_list.js
 		$config = [
 			'dataProvider' => $dataProvider,
 			'columns' => [
-				'id:text:編號',
-				'date:text:日期',
+				'id:text:'.Yii::t('app', 'ID'),
+				'date:text:'.Yii::t('app', 'Date'),
 				[
 					'attribute' => 'src_warehouse',
 					'format' => 'raw',
-					'label' => '來源倉儲',
+					'label' => Yii::t('app', 'Source Warehouse'),
 					'value' => function ($model) {
 						return get_warehouse_name($model->src_warehouse);
 					}
@@ -37,7 +37,7 @@ $this->registerJsFile(Yii::$app->request->getBaseUrl().'/js/paditransfer_list.js
 				[
 					'attribute' => 'dst_warehouse',
 					'format' => 'raw',
-					'label' => '目的倉儲',
+					'label' => Yii::t('app', 'Destination Warehouse'),
 					'value' => function ($model) {
 						return get_warehouse_name($model->dst_warehouse);
 					}
@@ -45,12 +45,12 @@ $this->registerJsFile(Yii::$app->request->getBaseUrl().'/js/paditransfer_list.js
 				[
 					'attribute' => 'content',
 					'format' => 'raw',
-					'label' => '內容',
+					'label' => Yii::t('app', 'Content'),
 					'value' => function ($model) {
 						return paditransfer_content_to_table($model->content,$model->id);
 					}
 				],
-				'extra_info:text:備註',
+				'extra_info:text:'.Yii::t('app', 'Remark'),
 				[
 					'attribute' => '',
 					'format' => 'raw',

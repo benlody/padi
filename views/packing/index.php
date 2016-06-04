@@ -1,5 +1,6 @@
 <?php
 
+use app\models\User;
 use yii\helpers\Html;
 use yii\grid\GridView;
 
@@ -12,28 +13,42 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="packing-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+	<h1><?= Html::encode($this->title) ?></h1>
+	<?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
-    <p>
-        <?= Html::a(Yii::t('app', 'Create {modelClass}', [
-    'modelClass' => 'Packing',
-]), ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
+	<p>
+		<?php
+			if(Yii::$app->user->identity->group <= User::GROUP_KL){
+				echo Html::a(Yii::t('app', 'Create Packing'), ['create'], ['class' => 'btn btn-success']);
+			}
+		?>
+	</p>
+	<?php 
+		if(Yii::$app->user->identity->group <= User::GROUP_KL){
+			$columns = array(
+				'id',
+				'qty',
+				'net_weight:ntext',
+				'measurement:ntext',
+				[
+					'class' => 'yii\grid\ActionColumn',
+				],
+			);
+		} else {
+			$columns = array(
+				'id',
+				'qty',
+				'net_weight:ntext',
+				'measurement:ntext',
+			);
+		}
 
-    <?= GridView::widget([
-        'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
-        'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
+		echo GridView::widget([
+			'dataProvider' => $dataProvider,
+			'filterModel' => $searchModel,
+			'columns' => $columns,
+		]);
 
-            'id',
-            'qty',
-            'net_weight:ntext',
-            'measurement:ntext',
-
-            ['class' => 'yii\grid\ActionColumn'],
-        ],
-    ]); ?>
+ 	?>
 
 </div>
