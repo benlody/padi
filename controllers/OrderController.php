@@ -478,11 +478,7 @@ class OrderController extends \yii\web\Controller
 			$log->action = 'Delivery order ['.$model->id.']';
 			$log->insert();
 
-			if($model->status == Order::STATUS_DONE){
-				return $this->redirect(['list', 'status' => 'done', 'sort' => '-done_date']);
-			} else {
-				return $this->redirect(['list', 'sort' => '-date']);
-			}
+			return $this->redirect(['list', 'sort' => '-date']);
 
 		} else {
 
