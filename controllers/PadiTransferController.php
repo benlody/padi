@@ -273,7 +273,7 @@ class PadiTransferController extends Controller
 			}
 
 			$mix_id =  $post_param[$mix_idx];				
-			$mix_info = get_mix($packing_id);
+			$mix_info = get_mix($mix_id);
 
 			$mix_content[$mix_id]['cnt'] += $mix_cnt;
 			$mix_content[$mix_id]['id'] = $mix_id;
