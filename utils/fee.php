@@ -28,7 +28,10 @@ class Fee
 			$crewpak == 'P79315KSP' || 
 			$crewpak == '79315CSP' || 
 			$crewpak == '79315KSP' || 
+			$crewpak == 'P79168CSP' || 
 			$crewpak == 'P79315CSP'
+
+
 		){
 			if(0 == strcmp('xm', $warehouse)){
 				$fee = 2 * $qty;
