@@ -876,15 +876,15 @@ class OrderController extends \yii\web\Controller
 		echo chineseToUnicode('包裝打捆紀錄單').'<br><span style="font-size: small;">'.chineseToUnicode('日期').':'.$model->date.'</span></span></p>';
 		echo '<p style="text-align: left;">'.chineseToUnicode('取货地点：厦门市火炬东路28号').'<br>';
 		if($model->ship_type == \ShippingType::T_STD_EXPR){
-			echo chineseToUnicode('送货单位：■顺丰标快 □顺丰特惠 □顺丰物流普运').'</p>';
+			echo chineseToUnicode('送货单位：■顺丰次日 □顺丰隔日 □顺丰物流普运').'</p>';
 		} else if ($model->ship_type == \ShippingType::T_SF_SP){
-			echo chineseToUnicode('送货单位：□顺丰标快 ■顺丰特惠 □顺丰物流普运').'</p>';
+			echo chineseToUnicode('送货单位：□顺丰次日 ■顺丰隔日 □顺丰物流普运').'</p>';
 		} else if ($model->ship_type == \ShippingType::T_SF_NORMAL){
-			echo chineseToUnicode('送货单位：□顺丰标快 □顺丰特惠 ■顺丰物流普运').'</p>';
+			echo chineseToUnicode('送货单位：□顺丰次日 □顺丰隔日 ■顺丰物流普运').'</p>';
 		} else if ($model->ship_type == \ShippingType::T_SELFPICK){
-			echo chineseToUnicode('送货单位：□顺丰标快 □顺丰特惠 □顺丰物流普运 ■客戶自取').'</p>';
+			echo chineseToUnicode('送货单位：□顺丰次日 □顺丰隔日 □顺丰物流普运 ■客戶自取').'</p>';
 		} else {
-			echo chineseToUnicode('送货单位：□顺丰标快 □顺丰特惠 □顺丰物流普运').'</p>';
+			echo chineseToUnicode('送货单位：□顺丰次日 □顺丰隔日 □顺丰物流普运').'</p>';
 		}
 
 		echo '<style type="text/css">';

@@ -24,8 +24,8 @@ class ShippingType
 
 	protected static $type = array(
 			'' => '',
-			0 => '標準快遞',
-			1 => '順丰特惠',
+			0 => '順丰次日',
+			1 => '順丰隔日',
 			2 => '物流普運',
 			10 => '中華郵政',
 			11 => '順丰快遞',
@@ -42,8 +42,8 @@ class ShippingType
 
 	protected static $type_enu = array(
 			'' => '',
-			0 => 'Standard Express',
-			1 => 'Economy Express',
+			0 => 'SF Next Day',
+			1 => 'SF Third Day',
 			2 => 'Land',
 			10 => 'Post Office',
 			11 => 'SF Express',
@@ -69,8 +69,8 @@ class ShippingType
 	public function getXMType(){
 		return  array(
 			'' => '',
-			0 => '標準快遞',
-			1 => '順丰特惠',
+			0 => '順丰次日',
+			1 => '順丰隔日',
 			2 => '物流普運',
 			20 => '客戶自取'
 		);
