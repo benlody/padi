@@ -13,7 +13,6 @@ use app\models\Balance1;
 use app\models\Balance2;
 use app\models\Transaction1;
 use app\models\Transaction2;
-use app\models\Shipping;
 use app\models\Transfer;
 use yii\data\ActiveDataProvider;
 use yii\data\ArrayDataProvider;
@@ -434,19 +433,6 @@ class OrderController extends \yii\web\Controller
 			$padi_transaction_model->insert();
 			$padi_balance_model->insert();
 
-			foreach ($new_ship_array as $ship_info) {
-				$ship = new Shipping;
-				$ship->id = $ship_info['id'];
-				$ship->order_id = $model->id;
-				$ship->content = json_encode($ship_info);
-				$ship->send_date = $post_param['Order']['done_date'];
-				$ship->ship_type = $model->ship_type;
-				$ship->warehouse = $model->warehouse;
-				$ship->shipping_fee = $ship_info['fee'];
-				$ship->extra_info = $model->extra_info;
-				$ship->insert();
-			}
-
 			if(isset($warning)){
 				$body = $this->renderPartial('warning', [
 							'warning' => $warning,
@@ -847,7 +833,7 @@ class OrderController extends \yii\web\Controller
 				continue;
 			}
 
-			$ship = $post_param[$ship_idx];
+			$ship = preg_replace('/\s(?=)/', '', $post_param[$ship_idx]);
 			$packing_cnt = $post_param[$packing_cnt_idx];
 			$packing_type = $post_param[$packing_type_idx];
 			$weight = $post_param[$weight_idx];
