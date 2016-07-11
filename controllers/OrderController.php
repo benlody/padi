@@ -778,7 +778,7 @@ class OrderController extends \yii\web\Controller
 				}
 
 				//FIXME
-				if(0 == strcmp($p_name, "50047") && $post_param['Order']['warehouse'] == 'tw'){
+				if(0 == strcmp($p_name, "50047")){
 					$detail['50055']['cnt'] = $crewpak->$p_name * $crewpak_cnt;
 					$detail['50055']['done'] = false;
 					$weight = get_weight($p_name);
