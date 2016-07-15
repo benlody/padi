@@ -37,7 +37,8 @@ class ShippingType
 			17 => '德揚國物',
 			18 => '全球快遞',
 			19 => '司機送貨',
-			20 => '客戶自取'
+			20 => '客戶自取',
+			21 => '兆太國際物流'
 		);
 
 	protected static $type_enu = array(
@@ -55,7 +56,8 @@ class ShippingType
 			17 => '德揚國物',
 			18 => '全球快遞',
 			19 => 'By Trunk',
-			20 => 'Pick up'
+			20 => 'Pick up',
+			21 => '兆太國際物流'
 		);
 
 	public function getType(){
