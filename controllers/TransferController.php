@@ -529,7 +529,7 @@ class TransferController extends \yii\web\Controller
 		echo '<p style="text-align: center;"><span style="color: #808080; line-height:3pt;">'.chineseToUnicode('光隆印刷廠股份有限公司').'<br>';
 		echo 'Kuang Lung Printing Factory Co., Ltd.<br>';
 		echo chineseToUnicode('包裝打捆紀錄單').'<br><span style="font-size: small;">'.chineseToUnicode('日期').':'.$model->send_date.'</span></span></p>';
-		echo '<p style="text-align: left;">'.chineseToUnicode('公司地址：台北市漢口街一段61號2F TEL:02-23314526 FAX:02-23832251').'<br>';
+		echo '<p style="text-align: left;">'.chineseToUnicode('公司地址：新北市三重區光復路一段83巷8號2F TEL:02-2999-9099 FAX:02-2999-1967').'<br>';
 		echo chineseToUnicode('送貨方式：■'.\ShippingType::getTransferShippingType($model->ship_type)).'</p>';
 
 		echo '<style type="text/css">';
