@@ -72,7 +72,13 @@ $this->registerJsFile(Yii::$app->request->getBaseUrl().'/js/order_edit.js',['dep
 		<?= $form->field($model, 'extra_info', ['labelOptions' => ['label' => '備註']])->textArea(['rows' => 6]) ?>
 
 		<?= Html::checkbox('send_padi', true) ?>
-		<label>自動寄發通知信給PADI</label>
+		<label>寄給Azure</label><br>
+		<?= Html::checkbox('send_kitty', false) ?>
+		<label>寄給Kitty</label><br>
+		<?= Html::checkbox('send_gina', false) ?>
+		<label>寄給Gina</label><br>
+		<?= Html::checkbox('send_kim', false) ?>
+		<label>寄給Kim</label><br>
 
 		<div class="form-group">
 			<?= Html::submitButton(Yii::t('app', '出貨'), ['class' => 'btn btn-primary', 'name' => 'done', 'onclick' => 'return check_missing()']) ?>

@@ -453,11 +453,7 @@ class OrderController extends \yii\web\Controller
 						'region' => $post_param['Order']['region'],
 						]);
 			$subject = YII_ENV_DEV ? 'Freight Info (Test) - '.$post_param['Order']['id'] : 'Freight Info - '.$post_param['Order']['id'];
-			if($post_param['send_padi']){
-				$this->sendMail($body, $subject, true);
-			} else {
-				$this->sendMail($body, $subject, false);
-			}
+			$this->sendMail($body, $subject, $post_param['send_padi'], $post_param['send_kitty'], $post_param['send_gina'], $post_param['send_kim']);
 
 			$log = new Log();
 			$log->username = Yii::$app->user->identity->username;
@@ -657,7 +653,7 @@ class OrderController extends \yii\web\Controller
 		return $req_fee;
 	}
 
-	protected function sendMail($body, $subject, $external = false){
+	protected function sendMail($body, $subject, $azure = false, $kitty = false, $gina = false, $kim = false){
 		$mail = new \PHPMailer;
 
 		$mail->isSMTP();
@@ -673,9 +669,17 @@ class OrderController extends \yii\web\Controller
 		$mail->addAddress('yiyin.chen@lang-win.com.tw');
 //		$mail->addAddress('susan@lang-win.com.tw');
 //		$mail->addAddress('langchen@lang-win.com.tw');
-		if(!YII_ENV_DEV && $external){
+		if(!YII_ENV_DEV && $azure){
 			$mail->addAddress('Azure.Ruan@padi.com.au');
-//			$mail->addAddress('Kitty.Hu@padi.com.au');
+		}
+		if(!YII_ENV_DEV && $kitty){
+			$mail->addAddress('Kitty.Hu@padi.com.au');
+		}
+		if(!YII_ENV_DEV && $gina){
+			$mail->addAddress('Gina.Park@padi.com.au');
+		}
+		if(!YII_ENV_DEV && $kim){
+			$mail->addAddress('Kim.Ngan@padi.com.au');
 		}
 		$mail->isHTML(true);
 		$mail->Subject = $subject;
