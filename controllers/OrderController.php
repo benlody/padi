@@ -59,13 +59,22 @@ class OrderController extends \yii\web\Controller
 
 		if(isset($post_param['add'])){
 
-			$post_param['Order']['content'] = json_encode($this->get_content($post_param), JSON_FORCE_OBJECT);
+			$content = $this->get_content($post_param);
+			$post_param['Order']['content'] = json_encode($content, JSON_FORCE_OBJECT);
 			$post_param['Order']['date'] = date("Y-m-d", strtotime($post_param['Order']['date']));
+
+			//get ship type by estimate weight (XM)
+			if(isset($content['estimate_w']) && (0 == strcmp($post_param['Order']['warehouse'], 'xm'))){
+				$post_param['Order']['ship_type'] = get_ship_type_xm($post_param['Order']['region'], $content['estimate_w']);
+			}
+
 
 			foreach ($post_param['Order'] as $key => $value) {
 				$model->$key = $value;
 			}
 			$model->status = Order::STATUS_NEW;
+
+
 
 			//FIXME error handle
 			$model->insert();
@@ -809,6 +818,7 @@ class OrderController extends \yii\web\Controller
 		$content['crewpak'] = $crewpak_content;
 		if($save){
 			$content['estimate'] = ($estimate/1000).' kg';
+			$content['estimate_w'] = $estimate/1000;
 		}
 
 		return $content;

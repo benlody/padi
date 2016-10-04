@@ -717,6 +717,115 @@ function orders_to_statistics_table($orders, $from, $to){
 	return $table_out;
 }
 
+function get_ship_type_xm($region, $weight){
+
+	switch($region){
+		case 'Beijing':
+		case 'Hebei':
+		case 'Tianjin':
+		case 'Shandong':
+		case 'Qingdao':
+		case 'Zibo':
+		case 'Jinan':
+		case 'Tangshan':
+		case 'Qinhuangdao':
+			if($weight>27){
+				$type = ShippingType::T_SF_NORMAL;
+			} else {
+				$type = ShippingType::T_SF_SP;
+			}
+			break;
+		case 'Shanghai':
+			if($weight>27){
+				$type = ShippingType::T_SF_NORMAL;
+			} else {
+				$type = ShippingType::T_SF_SP;
+			}
+			break;
+		case 'Shenzhen':
+		case 'Guangdong':
+		case 'Guangzhou':
+		case 'Zhuhai':
+		case 'Zhanjiang':
+		case 'Huizhou':
+			if($weight>17){
+				$type = ShippingType::T_SF_NORMAL;
+			} else {
+				$type = ShippingType::T_STD_EXPR;
+			}
+			break;
+		case 'Sanya':
+		case 'Hainan':
+		case 'Guangxi':
+		case 'Nanning':
+		case 'Wenchang':
+		case 'Wanning':
+			if($weight>27){
+				$type = ShippingType::T_SF_NORMAL;
+			} else {
+				$type = ShippingType::T_SF_SP;
+			}
+			break;
+		case 'Kunming':
+			if($weight>23){
+				$type = ShippingType::T_SF_NORMAL;
+			} else {
+				$type = ShippingType::T_SF_SP;
+			}
+			break;
+		case 'Dalian':
+		case 'Liaoning':
+		case 'Shenyang':
+			if($weight>23){
+				$type = ShippingType::T_SF_NORMAL;
+			} else {
+				$type = ShippingType::T_SF_SP;
+			}
+			break;
+		case 'Fuzhou':
+			if($weight>54){
+				$type = ShippingType::T_SF_NORMAL;
+			} else {
+				$type = ShippingType::T_STD_EXPR;
+			}
+			break;
+		case 'Xiamen':
+			if($weight>109){
+				$type = ShippingType::T_SF_NORMAL;
+			} else {
+				$type = ShippingType::T_STD_EXPR;
+			}
+			break;
+		case 'Sichuan':
+		case 'Chengdu':
+		case 'Shaanxi':
+		case 'Yunnan':
+		case 'Guiyang':
+		case 'Xian':
+		case 'Chongqing':
+			if($weight>23){
+				$type = ShippingType::T_SF_NORMAL;
+			} else {
+				$type = ShippingType::T_SF_SP;
+			}
+			break;
+		case 'Suzhou':
+		case 'Xuzhou':
+		case 'Nanjing':
+		case 'Hangzhou':
+			if($weight>23){
+				$type = ShippingType::T_SF_NORMAL;
+			} else {
+				$type = ShippingType::T_SF_SP;
+			}
+			break;
+		default:
+			$type = ShippingType::T_SF_SP;
+			break;
+
+	}
+	return $type;
+}
 
 function chineseToUnicode($str){
 	//split word
