@@ -23,6 +23,8 @@ use yii\widgets\ActiveForm;
     <?= $form->field($model, 'warning_cnt_tw', ['labelOptions' => ['label' => '台灣安全庫存量']])->textInput() ?>
 
     <?= $form->field($model, 'weight', ['labelOptions' => ['label' => '重量(克)']])->textInput() ?>
+
+    <?= $form->field($model, 'inv_price', ['labelOptions' => ['label' => '發票價格']])->textInput() ?>
    
     <?= $form->field($model, 'extra_info', ['labelOptions' => ['label' => '備註']])->textArea(['rows' => 6]) ?>
 

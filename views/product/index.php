@@ -33,6 +33,7 @@ $this->params['breadcrumbs'][] = $this->title;
 				'warning_cnt_tw:text',
 				'warning_cnt_xm:text',
 				'weight:text',
+				'inv_price:text',
 				'extra_info:ntext',
 				[
 					'class' => 'yii\grid\ActionColumn',

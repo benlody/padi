@@ -33,7 +33,7 @@ class Product extends \yii\db\ActiveRecord
 		return [
 			[['id'], 'required'],
 			[['chinese_name', 'english_name', 'extra_info'], 'string'],
-			[['warning_cnt_tw', 'warning_cnt_xm', 'weight'], 'integer'],
+			[['warning_cnt_tw', 'warning_cnt_xm', 'weight', 'inv_price'], 'integer'],
 			[['id'], 'string', 'max' => 64]
 		];
 	}
@@ -50,6 +50,7 @@ class Product extends \yii\db\ActiveRecord
 			'warning_cnt_tw' => Yii::t('app', 'Safety Stock Tw'),
 			'warning_cnt_xm' => Yii::t('app', 'Safety Stock Xm'),
 			'weight' => Yii::t('app', 'Weight (g)'),
+			'inv_price' => Yii::t('app', 'Invoice Price'),
 			'extra_info' => Yii::t('app', 'Remark'),
 		];
 	}
