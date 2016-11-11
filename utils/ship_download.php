@@ -474,13 +474,13 @@ function invoice_download_korea($invoice, $content){
 
 	$objPHPExcel->getActiveSheet()->getColumnDimension('A')->setWidth(15);
 	$objPHPExcel->getActiveSheet()->getColumnDimension('B')->setWidth(0.5);
-	$objPHPExcel->getActiveSheet()->getColumnDimension('C')->setWidth(38);
+	$objPHPExcel->getActiveSheet()->getColumnDimension('C')->setWidth(35);
 	$objPHPExcel->getActiveSheet()->getColumnDimension('D')->setWidth(0.5);
 	$objPHPExcel->getActiveSheet()->getColumnDimension('E')->setWidth(7);
 	$objPHPExcel->getActiveSheet()->getColumnDimension('F')->setWidth(0.5);
-	$objPHPExcel->getActiveSheet()->getColumnDimension('G')->setWidth(11);
+	$objPHPExcel->getActiveSheet()->getColumnDimension('G')->setWidth(12.5);
 	$objPHPExcel->getActiveSheet()->getColumnDimension('H')->setWidth(0.5);
-	$objPHPExcel->getActiveSheet()->getColumnDimension('I')->setWidth(12);
+	$objPHPExcel->getActiveSheet()->getColumnDimension('I')->setWidth(13.5);
 
 	$objPHPExcel->getActiveSheet()->getRowDimension('1')->setRowHeight(40);
 	$objPHPExcel->getActiveSheet()->getRowDimension('2')->setRowHeight(26);
