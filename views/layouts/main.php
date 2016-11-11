@@ -61,6 +61,8 @@ AppAsset::register($this);
 							 '<li class="dropdown-header" align="center"><font color="green">內部訂單/轉移</font></li>',
 							 ['label' => '新增內部訂單', 'url' => ['/transfer/add']],
 							 ['label' => '內部訂單列表', 'url' => ['/transfer/list', 'sort' => '-send_date']],
+							 '<li class="dropdown-header" align="center"><font color="green">發票</font></li>',
+							 ['label' => '發票產生器', 'url' => ['/order/invoice']],
 						],
 					],
 					[
@@ -247,6 +249,8 @@ AppAsset::register($this);
 							 '<li class="dropdown-header" align="center"><font color="green">內部訂單/轉移</font></li>',
 							 ['label' => '新增內部訂單', 'url' => ['/transfer/add']],
 							 ['label' => '內部訂單列表', 'url' => ['/transfer/list', 'sort' => '-send_date']],
+							 '<li class="dropdown-header" align="center"><font color="green">發票</font></li>',
+							 ['label' => '發票產生器', 'url' => ['/order/invoice']],
 						],
 					],
 					[
