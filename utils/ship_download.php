@@ -459,4 +459,142 @@ function stat_download($orders, $from, $to){
 
 }
 
+function invoice_download_korea($invoice, $content){
+
+	$objPHPExcel = new \PHPExcel();
+
+
+	// Set document properties
+	$objPHPExcel->getProperties()->setCreator("Kuang Lung")
+								 ->setLastModifiedBy("Kuang Lung")
+								 ->setTitle('PADI Inovice - '.$invoice['id'])
+								 ->setSubject('PADI Inovice - '.$invoice['id'])
+								 ->setDescription('PADI Inovice - '.$invoice['id']);
+
+
+	$objPHPExcel->getActiveSheet()->getColumnDimension('A')->setWidth(15);
+	$objPHPExcel->getActiveSheet()->getColumnDimension('B')->setWidth(0.5);
+	$objPHPExcel->getActiveSheet()->getColumnDimension('C')->setWidth(38);
+	$objPHPExcel->getActiveSheet()->getColumnDimension('D')->setWidth(0.5);
+	$objPHPExcel->getActiveSheet()->getColumnDimension('E')->setWidth(7);
+	$objPHPExcel->getActiveSheet()->getColumnDimension('F')->setWidth(0.5);
+	$objPHPExcel->getActiveSheet()->getColumnDimension('G')->setWidth(11);
+	$objPHPExcel->getActiveSheet()->getColumnDimension('H')->setWidth(0.5);
+	$objPHPExcel->getActiveSheet()->getColumnDimension('I')->setWidth(12);
+
+	$objPHPExcel->getActiveSheet()->getRowDimension('1')->setRowHeight(40);
+	$objPHPExcel->getActiveSheet()->getRowDimension('2')->setRowHeight(26);
+
+	$objPHPExcel->setActiveSheetIndex(0)->mergeCells('A1:I1');
+	$objPHPExcel->setActiveSheetIndex(0)->mergeCells('A2:I2');
+	$objPHPExcel->getActiveSheet()->getStyle('A1:A2')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+	$objPHPExcel->getActiveSheet()->getStyle('A1:A2')->getAlignment()->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER);
+	$objPHPExcel->setActiveSheetIndex(0)->setCellValue('A1','光隆印刷廠股份有限公司');
+	$objPHPExcel->getActiveSheet()->getStyle('A1')->getFont()->setName('標楷體');
+	$objPHPExcel->setActiveSheetIndex(0)->setCellValue('A2','KUANG LUNG PRINTING FACTORY CO., LTD.');
+	$objPHPExcel->getActiveSheet()->getStyle('A2')->getFont()->setName('Arial');
+	$objPHPExcel->getActiveSheet()->getStyle('A1')->getFont()->setSize(26);
+	$objPHPExcel->getActiveSheet()->getStyle('A2')->getFont()->setSize(16);
+	$objPHPExcel->getActiveSheet()->getStyle('A1:A2')->getFont()->setBold(true);
+
+	$objPHPExcel->setActiveSheetIndex(0)->setCellValue('A4','2F., No.8, Ln. 83, Sec. 1, Guangfu Rd., Sanchong Dist.,');
+	$objPHPExcel->setActiveSheetIndex(0)->setCellValue('A5','New Taipei City 241, Taiwan');
+	$objPHPExcel->setActiveSheetIndex(0)->setCellValue('A6','TEL: 886 2 29999099');
+	$objPHPExcel->setActiveSheetIndex(0)->setCellValue('C6','FAX: 886 2 29991967');
+
+	$objPHPExcel->setActiveSheetIndex(0)->setCellValue('G4','Date: '.$invoice['date']);
+	$objPHPExcel->setActiveSheetIndex(0)->setCellValue('G5','Order No.: '.$invoice['id']);
+	$objPHPExcel->setActiveSheetIndex(0)->setCellValue('G6','Tracking No.: '.$invoice['tracking']);
+
+	$objPHPExcel->setActiveSheetIndex(0)->setCellValue('A8','SHIPPING ADDRESS');
+	$objPHPExcel->getActiveSheet()->getStyle('A8')->getFont()->setBold(true);
+	$objPHPExcel->getActiveSheet()->getStyle('A8')->getFont()->setUnderline(true);
+	$objPHPExcel->setActiveSheetIndex(0)->setCellValue('A9',$invoice['customer_name']);
+	$objPHPExcel->setActiveSheetIndex(0)->mergeCells('A10:C11');
+	$objPHPExcel->getActiveSheet()->getStyle('A10')->getAlignment()->setWrapText(true);
+	$objPHPExcel->setActiveSheetIndex(0)->setCellValue('A10',$invoice['addr']);
+
+	$objPHPExcel->setActiveSheetIndex(0)->mergeCells('A13:I13');
+	$objPHPExcel->getActiveSheet()->getStyle('A13')->getFont()->setName('Arial');
+	$objPHPExcel->getActiveSheet()->getStyle('A13')->getFont()->setSize(14);
+	$objPHPExcel->getActiveSheet()->getStyle('A13')->getFont()->setBold(true);
+	$objPHPExcel->getActiveSheet()->getStyle('A13')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+	$objPHPExcel->getActiveSheet()->getStyle('A13')->getAlignment()->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER);
+	$objPHPExcel->setActiveSheetIndex(0)->setCellValue('A13','INVOICE');
+
+	$objPHPExcel->setActiveSheetIndex(0)->setCellValue('A15','Product Code');
+	$objPHPExcel->setActiveSheetIndex(0)->setCellValue('C15','Description');
+	$objPHPExcel->setActiveSheetIndex(0)->setCellValue('E15','Quantity');
+	$objPHPExcel->setActiveSheetIndex(0)->setCellValue('G15','Unite Price');
+	$objPHPExcel->setActiveSheetIndex(0)->setCellValue('I15','Total Value');
+	$objPHPExcel->getActiveSheet()->getStyle('A15:I15')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+	$objPHPExcel->getActiveSheet()->getStyle('A15')->getBorders()->getBottom()->setBorderStyle(PHPExcel_Style_Border::BORDER_THICK);
+	$objPHPExcel->getActiveSheet()->getStyle('C15')->getBorders()->getBottom()->setBorderStyle(PHPExcel_Style_Border::BORDER_THICK);
+	$objPHPExcel->getActiveSheet()->getStyle('E15')->getBorders()->getBottom()->setBorderStyle(PHPExcel_Style_Border::BORDER_THICK);
+	$objPHPExcel->getActiveSheet()->getStyle('G15')->getBorders()->getBottom()->setBorderStyle(PHPExcel_Style_Border::BORDER_THICK);
+	$objPHPExcel->getActiveSheet()->getStyle('I15')->getBorders()->getBottom()->setBorderStyle(PHPExcel_Style_Border::BORDER_THICK);
+
+	$idx = 16;
+
+	foreach ($content as $product) {
+		if($product !== null){
+			$objPHPExcel->getActiveSheet()->getStyle('A'.$idx)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+			$objPHPExcel->setActiveSheetIndex(0)
+						->setCellValue('A'.$idx, $product['id'])
+						->setCellValue('C'.$idx, $product['name'])
+						->setCellValue('E'.$idx, $product['cnt'])
+						->setCellValue('G'.$idx, $product['inv_price'])
+						->setCellValue('I'.$idx, $product['cnt'] * $product['inv_price']);
+			$objPHPExcel->getActiveSheet()->getStyle('G'.$idx)->getNumberFormat()->setFormatCode('_-* #,##0.00\ [$TWD-415]_-');
+			$objPHPExcel->getActiveSheet()->getStyle('I'.$idx)->getNumberFormat()->setFormatCode('_-* #,##0.00\ [$TWD-415]_-');
+
+			$idx++;
+
+		}
+	}
+
+	$tot = $idx-1;
+	$objPHPExcel->getActiveSheet()->getStyle('A'.$idx.':I'.$idx)->getBorders()->getTop()->setBorderStyle(PHPExcel_Style_Border::BORDER_THICK);
+	$objPHPExcel->setActiveSheetIndex(0)->setCellValue('G'.$idx,'Total');
+	$objPHPExcel->getActiveSheet()->getStyle('I'.$idx)->getNumberFormat()->setFormatCode('_-* #,##0.00\ [$TWD-415]_-');
+	$objPHPExcel->getActiveSheet()->setCellValue('I'.$idx,'=SUM(I16:I'.$tot.')');
+
+	$idx = $idx + 6;
+
+	$objPHPExcel->getActiveSheet()->getStyle('E'.$idx.':I'.$idx)->getBorders()->getBottom()->setBorderStyle(PHPExcel_Style_Border::BORDER_THICK);
+	$idx++;
+	$objPHPExcel->setActiveSheetIndex(0)->setCellValue('E'.$idx,'Ching-Lang Chen');
+	$objPHPExcel->setActiveSheetIndex(0)->mergeCells('E'.$idx.':I'.$idx);
+	$idx++;
+	$objPHPExcel->setActiveSheetIndex(0)->setCellValue('E'.$idx,'Managin Director');
+	$objPHPExcel->setActiveSheetIndex(0)->mergeCells('E'.$idx.':I'.$idx);
+	$idx++;
+	$objPHPExcel->setActiveSheetIndex(0)->setCellValue('E'.$idx,'Kuang Lung Printing Factory Co., Ltd.');
+	$objPHPExcel->setActiveSheetIndex(0)->mergeCells('E'.$idx.':I'.$idx);
+
+
+
+	$objPHPExcel->setActiveSheetIndex(0);
+
+	// Redirect output to a client’s web browser (Excel5)
+	header('Content-Type: application/vnd.ms-excel');
+	header('Content-Disposition: attachment;filename="invoice '.$invoice['date'].'['.$invoice['id'].']'.$invoice['tracking'].'.xls"');
+	header('Cache-Control: max-age=0');
+	// If you're serving to IE 9, then the following may be needed
+	header('Cache-Control: max-age=1');
+
+	// If you're serving to IE over SSL, then the following may be needed
+	header ('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
+	header ('Last-Modified: '.gmdate('D, d M Y H:i:s').' GMT'); // always modified
+	header ('Cache-Control: cache, must-revalidate'); // HTTP/1.1
+	header ('Pragma: public'); // HTTP/1.0
+
+	$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
+	ob_end_clean(); 
+
+	$objWriter->save('php://output');
+
+}
+
+
 ?>

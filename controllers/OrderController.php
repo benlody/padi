@@ -516,6 +516,39 @@ class OrderController extends \yii\web\Controller
 		}
 	}
 
+	public function actionInvoice()
+	{
+		
+		if(Yii::$app->user->identity->group > User::GROUP_KL){
+			throw new NotFoundHttpException('The requested page does not exist.');
+		}
+
+		$customer = new Customer();
+		$crewpak = new CrewPak();
+		$product = new Product();
+
+		$post_param = Yii::$app->request->post();
+
+		if(isset($post_param['invoice'])){
+
+			$inv_content = $this->get_inv_content($post_param);
+			print_r($inv_content);
+
+			if(0 == strcmp($post_param['Order']['region'], 'Korea')){
+				invoice_download_korea($post_param['Order'], $inv_content);
+			} else {
+				invoice_download($post_param['Order'], $inv_content);
+			}
+
+		} else {
+			return $this->render('invoice', [
+				'customer' => $customer->find()->column(),
+				'crewpak' =>  $crewpak->find()->column(),
+				'product' =>  $product->find()->column()
+			]);
+		}
+	}
+
 	public function actionShip_overview($warehouse='xm', $from='', $to='')
 	{
 		if(Yii::$app->user->identity->group > User::GROUP_KL){
@@ -882,6 +915,112 @@ class OrderController extends \yii\web\Controller
 
 		return $ship_array;
 	}
+
+	protected function get_inv_content($post_param){
+
+		$product_content = array();
+
+		$en = (0 == strcmp('Korea', $post_param['Order']['region']));
+
+		$x = 0;
+		while(1){
+
+			$product_idx = "product_".$x;
+			$product_cnt_idx = "product_cnt_".$x;
+
+			if(!isset($post_param[$product_idx])){
+				break;
+			}
+
+			if(0 == strcmp($post_param[$product_idx], "")){
+				$x++;
+				continue;
+			}
+
+			$product_cnt = $post_param[$product_cnt_idx];
+
+			if(0 >= $product_cnt){
+				$x++;
+				continue;
+			}
+
+			$product_id =  $post_param[$product_idx];
+			$product_content[$product_id]['cnt'] += $product_cnt;
+			$product_content[$product_id]['inv_price'] = get_inv_price($product_id);
+			$product_content[$product_id]['id'] = $product_id;
+			if($en){
+				$product_content[$product_id]['name'] = get_product_name_en($product_id);
+			} else {
+				$product_content[$product_id]['name'] = get_product_name($product_id);
+			}
+
+			$x++;
+		}
+
+		$x = 0;
+
+		while(1){
+
+			$crewpak_idx = "crew_pak_".$x;
+			$crewpak_cnt_idx = "crew_pak_cnt_".$x;
+
+			if(!isset($post_param[$crewpak_idx])){
+				break;
+			}
+
+			if(0 == strcmp($post_param[$crewpak_idx], "")){
+				$x++;
+				continue;
+			}
+
+			$crewpak_cnt = $post_param[$crewpak_cnt_idx];
+
+			if(0 >= $crewpak_cnt){
+				$x++;
+				continue;
+			}
+
+			$crewpak_id =  $post_param[$crewpak_idx];
+			$crewpak = CrewPak::find()
+				->where(['id' => $crewpak_id])
+				->one();
+
+
+			foreach ($crewpak->attributes() as $key => $p_name) {
+				if($key < 4 || $crewpak->$p_name == 0){
+					continue;
+				}
+
+				//FIXME
+				if(0 == strcmp($p_name, "50047")){
+					$product_content['50055']['cnt'] += $crewpak->$p_name * $crewpak_cnt;
+					$product_content['50055']['inv_price'] = get_inv_price('50055');
+					$product_content['50055']['id'] = '50055';
+					if($en){
+						$product_content['50055']['name'] = get_product_name_en('50055');
+					} else {
+						$product_content['50055']['name'] = get_product_name('50055');
+					}
+				} else {
+					$product_content[$p_name]['cnt'] += $crewpak->$p_name * $crewpak_cnt;
+					$product_content[$p_name]['inv_price'] = get_inv_price($p_name);
+					$product_content[$p_name]['id'] = $p_name;
+					if($en){
+						$product_content[$p_name]['name'] = get_product_name_en($p_name);
+					} else {
+						$product_content[$p_name]['name'] = get_product_name($p_name);
+					}
+				}
+
+
+			}
+
+			$x++;
+		}
+
+		return $product_content;
+	}
+
 
 	protected function download_xm($model){
 
