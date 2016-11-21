@@ -47,13 +47,22 @@ class Fee
 		return $fee;
 	}
 
-	static public function getProductServiceFee($qty, $warehouse){
+	static public function getProductServiceFee($qty, $warehouse, $product){
 
-		if(0 == strcmp('xm', $warehouse)){
-			$fee = 2 * $qty;
+		if($product == '70150K'){
+			if(0 == strcmp('xm', $warehouse)){
+				$fee = 7 * $qty;
+			} else {
+				$fee = round((30 * $qty) * 100 / 22) / 100;
+			}
 		} else {
-			$fee = round((5 * $qty) * 100 / 22) / 100;
+			if(0 == strcmp('xm', $warehouse)){
+				$fee = 2 * $qty;
+			} else {
+				$fee = round((5 * $qty) * 100 / 22) / 100;
+			}
 		}
+
 		return $fee;
 	}
 

@@ -75,7 +75,7 @@ function ship_download($orders, $warehouse, $from, $to){
 			}
 
 			foreach ($content['product'] as $product => $info) {
-				$service_fee = Fee::getProductServiceFee($info['cnt'], $warehouse);
+				$service_fee = Fee::getProductServiceFee($info['cnt'], $warehouse, $product);
 				$subtotal_service_fee += $service_fee;
 
 				$objPHPExcel->setActiveSheetIndex(0)
@@ -102,7 +102,7 @@ function ship_download($orders, $warehouse, $from, $to){
 
 			if(isset($info['complement_cnt'])){
 				foreach ($info['complement_cnt'] as $product => $cnt) {
-					$service_fee = Fee::getProductServiceFee($cnt, $warehouse);
+					$service_fee = Fee::getProductServiceFee($cnt, $warehouse, $product);
 					$subtotal_service_fee += $service_fee;
 					$objPHPExcel->setActiveSheetIndex(0)
 								->setCellValue('A'.$idx, $order['id'])
@@ -286,34 +286,6 @@ function ship_download_service($orders, $warehouse, $from, $to){
 			$idx++;
 		}
 
-/*
-		foreach ($ship_info as $info) {
-			if(!isset($info['date']) || $info['date'] < $from || $info['date'] > $to){
-				continue;
-			}
-
-			if(isset($info['complement_cnt'])){
-				foreach ($info['complement_cnt'] as $product => $cnt) {
-					$service_fee = Fee::getProductServiceFee($cnt, $warehouse);
-					$subtotal_service_fee += $service_fee;
-					$objPHPExcel->setActiveSheetIndex(0)
-								->setCellValue('A'.$idx, $order['id'])
-								->setCellValue('B'.$idx, $order['customer_id'])
-								->setCellValue('C'.$idx, $order['customer_name'])
-								->setCellValue('D'.$idx, $product.' - 補寄')
-								->setCellValue('E'.$idx, $info['cnt'])
-								->setCellValue('F'.$idx, $order['date'])
-								->setCellValue('G'.$idx, $order['english_addr'])
-								->setCellValue('H'.$idx, ' ')
-								->setCellValue('I'.$idx, $service_fee)
-								->setCellValue('J'.$idx, ' ')
-								->setCellValue('K'.$idx, ' ')
-								->setCellValue('L'.$idx, $order['done_date']);
-					$idx++;
-				}
-			}
-		}
-*/
 		$objPHPExcel->setActiveSheetIndex(0)
 					->setCellValue('A'.$idx, $order['id'].' Subtotal')
 					->setCellValue('B'.$idx, $order['id'].' Subtotal')

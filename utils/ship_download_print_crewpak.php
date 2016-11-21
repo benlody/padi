@@ -76,120 +76,11 @@ function ship_download($orders, $warehouse, $from, $to){
 							->setCellValue('L'.$idx, $order['done_date']);
 				$idx++;
 			}
-/*
-			foreach ($content['product'] as $product => $info) {
-				$service_fee = Fee::getProductServiceFee($info['cnt'], $warehouse);
-				$subtotal_service_fee += $service_fee;
-
-				$objPHPExcel->setActiveSheetIndex(0)
-							->setCellValue('A'.$idx, $order['id'])
-							->setCellValue('B'.$idx, $order['customer_id'])
-							->setCellValue('C'.$idx, $order['customer_name'])
-							->setCellValue('D'.$idx, $product)
-							->setCellValue('E'.$idx, $info['cnt'])
-							->setCellValue('F'.$idx, $order['date'])
-							->setCellValue('G'.$idx, $order['english_addr'])
-							->setCellValue('H'.$idx, ' ')
-							->setCellValue('I'.$idx, $service_fee)
-							->setCellValue('J'.$idx, ' ')
-							->setCellValue('K'.$idx, ' ')
-							->setCellValue('L'.$idx, $order['done_date']);
-				$idx++;
-			}
-			*/
-		}
-/*
-		foreach ($ship_info as $info) {
-			if(!isset($info['date']) || $info['date'] < $from || $info['date'] > $to){
-				continue;
-			}
-
-			if(isset($info['complement_cnt'])){
-				foreach ($info['complement_cnt'] as $product => $cnt) {
-					$service_fee = Fee::getProductServiceFee($cnt, $warehouse);
-					$subtotal_service_fee += $service_fee;
-					$objPHPExcel->setActiveSheetIndex(0)
-								->setCellValue('A'.$idx, $order['id'])
-								->setCellValue('B'.$idx, $order['customer_id'])
-								->setCellValue('C'.$idx, $order['customer_name'])
-								->setCellValue('D'.$idx, $product.' - 補寄')
-								->setCellValue('E'.$idx, $info['cnt'])
-								->setCellValue('F'.$idx, $order['date'])
-								->setCellValue('G'.$idx, $order['english_addr'])
-								->setCellValue('H'.$idx, ' ')
-								->setCellValue('I'.$idx, $service_fee)
-								->setCellValue('J'.$idx, ' ')
-								->setCellValue('K'.$idx, ' ')
-								->setCellValue('L'.$idx, $order['done_date']);
-					$idx++;
-				}
-			}
-
-			$ship_fee = isset($info['req_fee']) ? $info['req_fee'] : Fee::getShipFreightFee($info['fee'], $region, $warehouse, $info['type'], $info['weight'], $info['box']);
-			$subtotal_ship_fee += $ship_fee;
-
-			$objPHPExcel->setActiveSheetIndex(0)
-						->setCellValue('A'.$idx, $order['id'])
-						->setCellValue('B'.$idx, $order['customer_id'])
-						->setCellValue('C'.$idx, $order['customer_name'])
-						->setCellValue('D'.$idx, ' ')
-						->setCellValue('E'.$idx, ' ')
-						->setCellValue('F'.$idx, $order['date'])
-						->setCellValue('G'.$idx, $order['english_addr'])
-						->setCellValue('H'.$idx, ShippingType::getShippingType($order['ship_type'], 'enu'))
-						->setCellValue('I'.$idx, ' ')
-						->setCellValue('J'.$idx, $ship_fee)
-						->setCellValue('K'.$idx, '#'.substr($info['id'], 0, strpos($info['id'], '_')))
-						->setCellValue('L'.$idx, $order['done_date']);
-
-			$idx++;
 
 		}
 
-		$objPHPExcel->setActiveSheetIndex(0)
-					->setCellValue('A'.$idx, $order['id'].' Subtotal')
-					->setCellValue('B'.$idx, $order['id'].' Subtotal')
-					->setCellValue('C'.$idx, ' ')
-					->setCellValue('D'.$idx, ' ')
-					->setCellValue('E'.$idx, ' ')
-					->setCellValue('F'.$idx, ' ')
-					->setCellValue('G'.$idx, ' ')
-					->setCellValue('H'.$idx, ' ')
-					->setCellValue('I'.$idx, $subtotal_service_fee)
-					->setCellValue('J'.$idx, $subtotal_ship_fee)
-					->setCellValue('K'.$idx, ' ')
-					->setCellValue('L'.$idx, ' ');
-
-		$objPHPExcel->setActiveSheetIndex(0)->mergeCells('A'.$idx.':B'.$idx);
-
-		$objPHPExcel->getActiveSheet()->getStyle('A'.$idx.':L'.$idx)->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID);
-		$objPHPExcel->getActiveSheet()->getStyle('A'.$idx.':L'.$idx)->getFill()->getStartColor()->setRGB('F0E68C');
-
-		$idx++;
-
-		$total_service_fee += $subtotal_service_fee;
-		$total_ship_fee += $subtotal_ship_fee;
-*/
 	}
-/*
-	$objPHPExcel->setActiveSheetIndex(0)
-				->setCellValue('A'.$idx, 'Total')
-				->setCellValue('B'.$idx, 'Total')
-				->setCellValue('C'.$idx, ' ')
-				->setCellValue('D'.$idx, ' ')
-				->setCellValue('E'.$idx, ' ')
-				->setCellValue('F'.$idx, ' ')
-				->setCellValue('G'.$idx, ' ')
-				->setCellValue('H'.$idx, ' ')
-				->setCellValue('I'.$idx, $total_service_fee)
-				->setCellValue('J'.$idx, $total_ship_fee)
-				->setCellValue('K'.$idx, ' ')
-				->setCellValue('L'.$idx, ' ');
 
-	$objPHPExcel->setActiveSheetIndex(0)->mergeCells('A'.$idx.':E'.$idx);
-	$objPHPExcel->getActiveSheet()->getStyle('A'.$idx.':L'.$idx)->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID);
-	$objPHPExcel->getActiveSheet()->getStyle('A'.$idx.':L'.$idx)->getFill()->getStartColor()->setRGB('FFA500');
-*/
 	// Rename worksheet
 	$objPHPExcel->getActiveSheet()->setTitle('Freight and Service Fee');
 	$objPHPExcel->getActiveSheet()->getStyle('D2:D'.$idx)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
@@ -290,34 +181,7 @@ function ship_download_service($orders, $warehouse, $from, $to){
 			$idx++;
 		}
 
-/*
-		foreach ($ship_info as $info) {
-			if(!isset($info['date']) || $info['date'] < $from || $info['date'] > $to){
-				continue;
-			}
 
-			if(isset($info['complement_cnt'])){
-				foreach ($info['complement_cnt'] as $product => $cnt) {
-					$service_fee = Fee::getProductServiceFee($cnt, $warehouse);
-					$subtotal_service_fee += $service_fee;
-					$objPHPExcel->setActiveSheetIndex(0)
-								->setCellValue('A'.$idx, $order['id'])
-								->setCellValue('B'.$idx, $order['customer_id'])
-								->setCellValue('C'.$idx, $order['customer_name'])
-								->setCellValue('D'.$idx, $product.' - 補寄')
-								->setCellValue('E'.$idx, $info['cnt'])
-								->setCellValue('F'.$idx, $order['date'])
-								->setCellValue('G'.$idx, $order['english_addr'])
-								->setCellValue('H'.$idx, ' ')
-								->setCellValue('I'.$idx, $service_fee)
-								->setCellValue('J'.$idx, ' ')
-								->setCellValue('K'.$idx, ' ')
-								->setCellValue('L'.$idx, $order['done_date']);
-					$idx++;
-				}
-			}
-		}
-*/
 		$objPHPExcel->setActiveSheetIndex(0)
 					->setCellValue('A'.$idx, $order['id'].' Subtotal')
 					->setCellValue('B'.$idx, $order['id'].' Subtotal')

@@ -577,7 +577,7 @@ function orders_to_shipment_table($orders, $warehouse, $from, $to){
 			}
 
 			foreach ($content['product'] as $product => $info) {
-				$service_fee = Fee::getProductServiceFee($info['cnt'], $warehouse);
+				$service_fee = Fee::getProductServiceFee($info['cnt'], $warehouse, $product);
 				$subtotal_service_fee += $service_fee;
 				$subtotal_p_qty += $info['cnt'];
 				$row = '<tr><td>'.$order['id'].'</td>'.
@@ -603,7 +603,7 @@ function orders_to_shipment_table($orders, $warehouse, $from, $to){
 
 			if(isset($info['complement_cnt'])){
 				foreach ($info['complement_cnt'] as $product => $cnt) {
-					$service_fee = Fee::getProductServiceFee($cnt, $warehouse);
+					$service_fee = Fee::getProductServiceFee($cnt, $warehouse, $product);
 					$subtotal_service_fee += $service_fee;
 					$subtotal_p_qty += $cnt;
 					$row = '<tr><td>'.$order['id'].'</td>'.
