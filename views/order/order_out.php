@@ -71,6 +71,7 @@ use yii\helpers\Url;
 <p>DC#: <b><?= $customer_id ?>&nbsp;&nbsp;<?= $customer_name ?></b></p>
 <p>Total Freight Fee: <b><?= $total_fee ?><? echo (0 == strcmp('xm', $warehouse)) ? 'RMB' : 'AUD'; ?></b></p>
 <p>shipping info:</p>
+<p>shipping type: <b><?= $ship_type ?></b></p>
 <? echo $ship_out; ?>
 <? echo $missing; ?>
 

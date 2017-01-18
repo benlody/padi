@@ -48,16 +48,16 @@ class ShippingType
 			2 => 'Land',
 			10 => 'Post Office',
 			11 => 'SF Express',
-			12 => 'Normal Express',
-			13 => '韻達快遞',
-			14 => '郵局航空包裹',
-			15 => '郵局EMS快遞',
+			12 => 'Hiyes Express',
+			13 => 'Yunda Express',
+			14 => 'Post Office Air',
+			15 => 'EMS',
 			16 => 'DHL',
-			17 => '德揚國物',
-			18 => '全球快遞',
+			17 => 'Deyang LOGISTICS',
+			18 => 'GB Express',
 			19 => 'By Trunk',
 			20 => 'Pick up',
-			21 => '兆太國際物流'
+			21 => 'JSD LOGISTICS'
 		);
 
 	public function getType(){
