@@ -828,16 +828,9 @@ class OrderController extends \yii\web\Controller
 					continue;
 				}
 
-				//FIXME
-				if(0 == strcmp($p_name, "50047") && $post_param['Order']['warehouse'] == 'tw'){
-					$detail['50055']['cnt'] = $crewpak->$p_name * $crewpak_cnt;
-					$detail['50055']['done'] = false;
-					$weight = get_weight($p_name);
-				} else {
-					$detail[$p_name]['cnt'] = $crewpak->$p_name * $crewpak_cnt;
-					$detail[$p_name]['done'] = false;
-					$weight = get_weight($p_name);
-				}
+				$detail[$p_name]['cnt'] = $crewpak->$p_name * $crewpak_cnt;
+				$detail[$p_name]['done'] = false;
+				$weight = get_weight($p_name);
 
 				if(0 == $weight){
 					$save = false;
@@ -996,27 +989,14 @@ class OrderController extends \yii\web\Controller
 					continue;
 				}
 
-				//FIXME
-				if(0 == strcmp($p_name, "50047") && $post_param['Order']['warehouse'] == 'tw'){
-					$product_content['50055']['cnt'] += $crewpak->$p_name * $crewpak_cnt;
-					$product_content['50055']['inv_price'] = get_inv_price('50055');
-					$product_content['50055']['id'] = '50055';
-					if($en){
-						$product_content['50055']['name'] = get_product_name_en('50055');
-					} else {
-						$product_content['50055']['name'] = get_product_name('50055');
-					}
+				$product_content[$p_name]['cnt'] += $crewpak->$p_name * $crewpak_cnt;
+				$product_content[$p_name]['inv_price'] = get_inv_price($p_name);
+				$product_content[$p_name]['id'] = $p_name;
+				if($en){
+					$product_content[$p_name]['name'] = get_product_name_en($p_name);
 				} else {
-					$product_content[$p_name]['cnt'] += $crewpak->$p_name * $crewpak_cnt;
-					$product_content[$p_name]['inv_price'] = get_inv_price($p_name);
-					$product_content[$p_name]['id'] = $p_name;
-					if($en){
-						$product_content[$p_name]['name'] = get_product_name_en($p_name);
-					} else {
-						$product_content[$p_name]['name'] = get_product_name($p_name);
-					}
+					$product_content[$p_name]['name'] = get_product_name($p_name);
 				}
-
 
 			}
 
