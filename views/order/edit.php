@@ -83,7 +83,7 @@ $this->registerJsFile(Yii::$app->request->getBaseUrl().'/js/order_edit.js',['dep
 		<label>寄給Young</label><br>
 
 		<div class="form-group">
-			<?= Html::submitButton(Yii::t('app', '出貨'), ['class' => 'btn btn-primary', 'name' => 'done', 'onclick' => 'return check_missing()']) ?>
+			<?= Html::submitButton(Yii::t('app', '出貨'), ['class' => 'btn btn-primary', 'id' => 'btn_submit', 'name' => 'done', 'onclick' => 'return check_missing()']) ?>
 		</div>
 	<?php ActiveForm::end(); ?>
 

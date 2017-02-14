@@ -87,6 +87,9 @@ $(document).ready(function() {
 });
 
 function check_missing(){
+
+	document.getElementById('btn_submit').innerText='按過了唷';
+
 	var check_array = document.getElementsByClassName('product'), idx = 0, missing = {}, ret;
 	for(idx = 0; idx < check_array.length; idx++){
 		if(!check_array[idx].checked){
@@ -135,3 +138,4 @@ function count_fee(idx){
 		}
 	});
 }
+
