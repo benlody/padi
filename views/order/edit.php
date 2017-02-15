@@ -72,7 +72,7 @@ $this->registerJsFile(Yii::$app->request->getBaseUrl().'/js/order_edit.js',['dep
 		<?= $form->field($model, 'extra_info', ['labelOptions' => ['label' => '備註']])->textArea(['rows' => 6]) ?>
 
 		<?= Html::checkbox('send_padi', true) ?>
-		<label>寄給Azure</label><br>
+		<label>寄給Julie</label><br>
 		<?= Html::checkbox('send_kitty', false) ?>
 		<label>寄給Kitty</label><br>
 		<?= Html::checkbox('send_gina', false) ?>
