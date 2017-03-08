@@ -603,12 +603,12 @@ function orders_to_shipment_table($orders, $warehouse, $from, $to){
 
 			if(isset($info['complement_cnt'])){
 				foreach ($info['complement_cnt'] as $product => $cnt) {
-					$service_fee = Fee::getProductServiceFee($cnt, $warehouse, $product);
+					$service_fee = 0;
 					$subtotal_service_fee += $service_fee;
 					$subtotal_p_qty += $cnt;
 					$row = '<tr><td>'.$order['id'].'</td>'.
 								'<td>'.$order['customer_id'].'</td>'.
-								'<td>'.$product.' - 補寄</td>'.
+								'<td>'.$product.' - back order</td>'.
 								'<td></td>'.
 								'<td>'.$cnt.'</td>'.
 								'<td>'.$order['date'].'</td>'.

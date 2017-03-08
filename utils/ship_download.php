@@ -102,13 +102,13 @@ function ship_download($orders, $warehouse, $from, $to){
 
 			if(isset($info['complement_cnt'])){
 				foreach ($info['complement_cnt'] as $product => $cnt) {
-					$service_fee = Fee::getProductServiceFee($cnt, $warehouse, $product);
+					$service_fee = 0;
 					$subtotal_service_fee += $service_fee;
 					$objPHPExcel->setActiveSheetIndex(0)
 								->setCellValue('A'.$idx, $order['id'])
 								->setCellValue('B'.$idx, $order['customer_id'])
 								->setCellValue('C'.$idx, $order['customer_name'])
-								->setCellValue('D'.$idx, $product.' - 補寄')
+								->setCellValue('D'.$idx, $product.' - back order')
 								->setCellValue('E'.$idx, $info['cnt'])
 								->setCellValue('F'.$idx, $order['date'])
 								->setCellValue('G'.$idx, $order['english_addr'])
