@@ -20,6 +20,7 @@ $this->registerJsFile(Yii::$app->request->getBaseUrl().'/js/inventory_overview.j
 		$config = [
 			'dataProvider' => $provider,
 			'columns' => [
+				'warehouse:text:'.Yii::t('app', 'warehouse'),
 				'id:text:'.Yii::t('app', 'Product No.'),
 				[
 					'attribute' => 'padi',
@@ -40,6 +41,7 @@ $this->registerJsFile(Yii::$app->request->getBaseUrl().'/js/inventory_overview.j
 		$config = [
 			'dataProvider' => $provider,
 			'columns' => [
+				'warehouse:text:'.Yii::t('app', 'warehouse'),
 				'id:text:'.Yii::t('app', 'Product No.'),
 				[
 					'attribute' => 'padi',

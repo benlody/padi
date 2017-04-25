@@ -150,6 +150,7 @@ class InventoryController extends \yii\web\Controller
 
 		foreach ($product_aray as $p) {
 			if($padi_balance[$p] || $self_balance[$p]){
+				$overview[$p]['warehouse'] = $warehouse;
 				$overview[$p]['id'] = $p;
 				$overview[$p]['padi'] = $padi_balance[$p] ? $padi_balance[$p] : 0;
 				$overview[$p]['self'] = $self_balance[$p] ? $self_balance[$p] : 0;
