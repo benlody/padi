@@ -14,47 +14,58 @@ function paditransfer_download($id, $content, $src_warehouse, $dst_warehouse, $d
 								 ->setSubject('Packing List ('.$id.')')
 								 ->setDescription('Packing List ('.$id.')');
 
+
 	$objPHPExcel->setActiveSheetIndex(0)->getColumnDimension('A')->setWidth(9);
 	$objPHPExcel->setActiveSheetIndex(0)->getColumnDimension('B')->setWidth(12);
 	$objPHPExcel->setActiveSheetIndex(0)->getColumnDimension('C')->setWidth(55);
 	$objPHPExcel->setActiveSheetIndex(0)->getColumnDimension('D')->setWidth(11);
-	$objPHPExcel->setActiveSheetIndex(0)->getColumnDimension('E')->setWidth(8);
-	$objPHPExcel->setActiveSheetIndex(0)->getColumnDimension('F')->setWidth(8);
-	$objPHPExcel->setActiveSheetIndex(0)->getColumnDimension('G')->setWidth(15);
+	$objPHPExcel->setActiveSheetIndex(0)->getColumnDimension('E')->setWidth(11);
+	$objPHPExcel->setActiveSheetIndex(0)->getColumnDimension('F')->setWidth(11);
+	$objPHPExcel->setActiveSheetIndex(0)->getColumnDimension('G')->setWidth(8);
+	$objPHPExcel->setActiveSheetIndex(0)->getColumnDimension('H')->setWidth(8);
+	$objPHPExcel->setActiveSheetIndex(0)->getColumnDimension('I')->setWidth(15);
 
 	$objPHPExcel->setActiveSheetIndex(0)->getRowDimension('1')->setRowHeight(30);
 	$objPHPExcel->setActiveSheetIndex(0)->getRowDimension('2')->setRowHeight(30);
 	$objPHPExcel->setActiveSheetIndex(0)->getRowDimension('4')->setRowHeight(30);
 	$objPHPExcel->setActiveSheetIndex(0)->getRowDimension('7')->setRowHeight(10);
-	$objPHPExcel->setActiveSheetIndex(0)->getRowDimension('8')->setRowHeight(56);
+	$objPHPExcel->setActiveSheetIndex(0)->getRowDimension('8')->setRowHeight(70);
 
-	$objPHPExcel->setActiveSheetIndex(0)->mergeCells('A1:G1');
-	$objPHPExcel->setActiveSheetIndex(0)->setCellValue('A1','PADI Asia Pacific (Shenzhen) Counsulting Limited');
+	$objPHPExcel->setActiveSheetIndex(0)->mergeCells('A1:I1');
+	if($src_warehouse == 'tw_padi'){
+		$objPHPExcel->setActiveSheetIndex(0)->setCellValue('A1','KUANG LUNG PRINTING FACTORY CO., LTD.');
+	} else {
+		$objPHPExcel->setActiveSheetIndex(0)->setCellValue('A1','PADI Asia Pacific (Shenzhen) Counsulting Limited');
+	}
 	$objPHPExcel->getActiveSheet()->getStyle('A1')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
 	$objPHPExcel->getActiveSheet()->getStyle('A1')->getAlignment()->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER);
 	$objPHPExcel->getActiveSheet()->getStyle('A1')->getFont()->setBold(true);
 	$objPHPExcel->getActiveSheet()->getStyle('A1')->getFont()->setSize(18);
 
-	$objPHPExcel->setActiveSheetIndex(0)->mergeCells('A2:G2');
-	$objPHPExcel->setActiveSheetIndex(0)->setCellValue('A2','派迪管理咨询(深圳)有限公司');
+	$objPHPExcel->setActiveSheetIndex(0)->mergeCells('A2:I2');
+	if($src_warehouse == 'tw_padi'){
+		$objPHPExcel->setActiveSheetIndex(0)->setCellValue('A2','光隆印刷廠股份有限公司');
+	} else {
+		$objPHPExcel->setActiveSheetIndex(0)->setCellValue('A2','派迪管理咨询(深圳)有限公司');
+	}
 	$objPHPExcel->getActiveSheet()->getStyle('A2')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
 	$objPHPExcel->getActiveSheet()->getStyle('A2')->getAlignment()->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER);
 	$objPHPExcel->getActiveSheet()->getStyle('A2')->getFont()->setBold(true);
 	$objPHPExcel->getActiveSheet()->getStyle('A2')->getFont()->setSize(18);
 
-	$objPHPExcel->setActiveSheetIndex(0)->mergeCells('A4:G4');
+	$objPHPExcel->setActiveSheetIndex(0)->mergeCells('A4:I4');
 	$objPHPExcel->setActiveSheetIndex(0)->setCellValue('A4','Packing List');
 	$objPHPExcel->getActiveSheet()->getStyle('A4')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
 	$objPHPExcel->getActiveSheet()->getStyle('A4')->getAlignment()->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER);
 	$objPHPExcel->getActiveSheet()->getStyle('A4')->getFont()->setBold(true);
 	$objPHPExcel->getActiveSheet()->getStyle('A4')->getFont()->setSize(18);
 
-	$objPHPExcel->setActiveSheetIndex(0)->mergeCells('E5:G5');
-	$objPHPExcel->setActiveSheetIndex(0)->mergeCells('E6:G6');
+	$objPHPExcel->setActiveSheetIndex(0)->mergeCells('E5:I5');
+	$objPHPExcel->setActiveSheetIndex(0)->mergeCells('E6:I6');
 	$objPHPExcel->getActiveSheet()->getStyle('C5')->getBorders()->getBottom()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
 	$objPHPExcel->getActiveSheet()->getStyle('C6')->getBorders()->getBottom()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
-	$objPHPExcel->getActiveSheet()->getStyle('E5:G5')->getBorders()->getBottom()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
-	$objPHPExcel->getActiveSheet()->getStyle('E6:G6')->getBorders()->getBottom()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
+	$objPHPExcel->getActiveSheet()->getStyle('E5:I5')->getBorders()->getBottom()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
+	$objPHPExcel->getActiveSheet()->getStyle('E6:I6')->getBorders()->getBottom()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
 	$objPHPExcel->setActiveSheetIndex(0)->setCellValue('B5','Invoice No.:');
 	$objPHPExcel->setActiveSheetIndex(0)->setCellValue('C5',$id);
 	$objPHPExcel->setActiveSheetIndex(0)->setCellValue('D5','DATE:');
@@ -68,18 +79,20 @@ function paditransfer_download($id, $content, $src_warehouse, $dst_warehouse, $d
 	$objPHPExcel->getActiveSheet()->getStyle('B5:E6')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
 	$objPHPExcel->getActiveSheet()->getStyle('B5:E6')->getAlignment()->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER);
 
-	$objPHPExcel->getActiveSheet()->getStyle('A8:G8')->getFont()->setBold(true);
-	$objPHPExcel->getActiveSheet()->getStyle('A8:G8')->getFont()->setSize(12);
-	$objPHPExcel->getActiveSheet()->getStyle('A8:G8')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
-	$objPHPExcel->getActiveSheet()->getStyle('A8:G8')->getAlignment()->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER);
-	$objPHPExcel->getActiveSheet()->getStyle('A8:G8')->getAlignment()->setWrapText(true);
-	$objPHPExcel->setActiveSheetIndex(0)->setCellValue('A8',"Pallet\n托盘");
-	$objPHPExcel->setActiveSheetIndex(0)->setCellValue('B8',"Package\n(CTNS)");
+	$objPHPExcel->getActiveSheet()->getStyle('A8:I8')->getFont()->setBold(true);
+	$objPHPExcel->getActiveSheet()->getStyle('A8:I8')->getFont()->setSize(12);
+	$objPHPExcel->getActiveSheet()->getStyle('A8:I8')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+	$objPHPExcel->getActiveSheet()->getStyle('A8:I8')->getAlignment()->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER);
+	$objPHPExcel->getActiveSheet()->getStyle('A8:I8')->getAlignment()->setWrapText(true);
+	$objPHPExcel->setActiveSheetIndex(0)->setCellValue('A8',"Pallet\n托盤");
+	$objPHPExcel->setActiveSheetIndex(0)->setCellValue('B8',"No.\n箱號");
 	$objPHPExcel->setActiveSheetIndex(0)->setCellValue('C8',"Description of Goods");
-	$objPHPExcel->setActiveSheetIndex(0)->setCellValue('D8',"Quantity\n(set)\n数量");
-	$objPHPExcel->setActiveSheetIndex(0)->setCellValue('E8',"Net Weight\n净重");
-	$objPHPExcel->setActiveSheetIndex(0)->setCellValue('F8',"Gross Weight\n毛重");
-	$objPHPExcel->setActiveSheetIndex(0)->setCellValue('G8',"Measurement\n规格");
+	$objPHPExcel->setActiveSheetIndex(0)->setCellValue('D8',"Quantity per Carton\n每箱數量");
+	$objPHPExcel->setActiveSheetIndex(0)->setCellValue('E8',"Cartons\n箱數");
+	$objPHPExcel->setActiveSheetIndex(0)->setCellValue('F8',"Quantity\n總數");
+	$objPHPExcel->setActiveSheetIndex(0)->setCellValue('G8',"Net Weight\n淨重");
+	$objPHPExcel->setActiveSheetIndex(0)->setCellValue('H8',"Gross Weight\n毛重");
+	$objPHPExcel->setActiveSheetIndex(0)->setCellValue('I8',"Measurement\n規格");
 
 
 	$content_array = json_decode($content, true);
@@ -94,10 +107,12 @@ function paditransfer_download($id, $content, $src_warehouse, $dst_warehouse, $d
 		$objPHPExcel->setActiveSheetIndex(0)->setCellValue('A'.$idx, "");
 		$objPHPExcel->setActiveSheetIndex(0)->setCellValue('B'.$idx, strval($box_cnt)."-".strval($box_cnt + $packing['cnt'] - 1));
 		$objPHPExcel->setActiveSheetIndex(0)->setCellValue('C'.$idx, $packing['id'].' '.$packing['chinese_name']."\n".$packing['english_name']);
-		$objPHPExcel->setActiveSheetIndex(0)->setCellValue('D'.$idx, $packing['cnt']*$packing['qty']);
-		$objPHPExcel->setActiveSheetIndex(0)->setCellValue('E'.$idx, strval($packing['cnt'] * $packing['net_weight']));
-		$objPHPExcel->setActiveSheetIndex(0)->setCellValue('F'.$idx, strval($packing['cnt'] * $packing['net_weight'] + 0.5));
-		$objPHPExcel->setActiveSheetIndex(0)->setCellValue('G'.$idx, $packing['measurement']);
+		$objPHPExcel->setActiveSheetIndex(0)->setCellValue('D'.$idx, $packing['qty']);
+		$objPHPExcel->setActiveSheetIndex(0)->setCellValue('E'.$idx, $packing['cnt']);
+		$objPHPExcel->setActiveSheetIndex(0)->setCellValue('F'.$idx, $packing['cnt']*$packing['qty']);
+		$objPHPExcel->setActiveSheetIndex(0)->setCellValue('G'.$idx, strval($packing['cnt'] * $packing['net_weight']));
+		$objPHPExcel->setActiveSheetIndex(0)->setCellValue('H'.$idx, strval($packing['cnt'] * ($packing['net_weight'] + 0.5)));
+		$objPHPExcel->setActiveSheetIndex(0)->setCellValue('I'.$idx, $packing['measurement']);
 		$objPHPExcel->getActiveSheet()->getStyle('C'.$idx)->getAlignment()->setWrapText(true);
 
 		$idx++;
@@ -108,10 +123,12 @@ function paditransfer_download($id, $content, $src_warehouse, $dst_warehouse, $d
 		$objPHPExcel->setActiveSheetIndex(0)->setCellValue('A'.$idx, "");
 		$objPHPExcel->setActiveSheetIndex(0)->setCellValue('B'.$idx, "");
 		$objPHPExcel->setActiveSheetIndex(0)->setCellValue('C'.$idx, $mix['id'].' '.$mix['chinese_name']."\n".$mix['english_name']);
-		$objPHPExcel->setActiveSheetIndex(0)->setCellValue('D'.$idx, $mix['cnt']);
+		$objPHPExcel->setActiveSheetIndex(0)->setCellValue('D'.$idx, "");
 		$objPHPExcel->setActiveSheetIndex(0)->setCellValue('E'.$idx, "");
-		$objPHPExcel->setActiveSheetIndex(0)->setCellValue('F'.$idx, "");
+		$objPHPExcel->setActiveSheetIndex(0)->setCellValue('F'.$idx, $mix['cnt']);
 		$objPHPExcel->setActiveSheetIndex(0)->setCellValue('G'.$idx, "");
+		$objPHPExcel->setActiveSheetIndex(0)->setCellValue('H'.$idx, "");
+		$objPHPExcel->setActiveSheetIndex(0)->setCellValue('I'.$idx, "");
 		$objPHPExcel->getActiveSheet()->getStyle('C'.$idx)->getAlignment()->setWrapText(true);
 
 		$idx++;
@@ -127,7 +144,9 @@ function paditransfer_download($id, $content, $src_warehouse, $dst_warehouse, $d
 			),
 		),
 	);
-	$objPHPExcel->getActiveSheet(0)->getStyle('A8:G'.$idx)->applyFromArray($styleArray);
+	$objPHPExcel->getActiveSheet(0)->getStyle('A8:I'.$idx)->applyFromArray($styleArray);
+	$objPHPExcel->getActiveSheet()->getStyle('A8:I'.$idx)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+	$objPHPExcel->getActiveSheet()->getStyle('A8:I'.$idx)->getAlignment()->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER);
 
 
 	// Redirect output to a client’s web browser (Excel5)

@@ -63,6 +63,8 @@ AppAsset::register($this);
 							 ['label' => '內部訂單列表', 'url' => ['/transfer/list', 'sort' => '-send_date']],
 							 '<li class="dropdown-header" align="center"><font color="green">發票</font></li>',
 							 ['label' => '發票產生器', 'url' => ['/order/invoice']],
+							 ['label' => 'Packing產生器-1', 'url' => ['/padi-transfer/add']],
+							 ['label' => 'Packing產生器-2', 'url' => ['/padi-transfer/list', 'sort' => '-date']],
 						],
 					],
 					[
@@ -82,6 +84,9 @@ AppAsset::register($this);
 							 '<li class="dropdown-header" align="center"><font color="green">套裝</font></li>',
 							 ['label' => '套裝列表', 'url' => ['/crew-pak/index']],
 							 ['label' => '新增套裝', 'url' => ['/crew-pak/add']],
+							 '<li class="divider"></li>',
+							 '<li class="dropdown-header" align="center"><font color="green">'.Yii::t('app', 'Packing').'</font></li>',
+							 ['label' => Yii::t('app', 'Packing Info'), 'url' => ['/packing/index']],
 						],
 					],
 					[
