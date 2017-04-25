@@ -52,7 +52,12 @@ function paditransfer_download($id, $content, $src_warehouse, $dst_warehouse, $d
 	$objPHPExcel->getActiveSheet()->getStyle('A2')->getAlignment()->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER);
 	$objPHPExcel->getActiveSheet()->getStyle('A2')->getFont()->setBold(true);
 	$objPHPExcel->getActiveSheet()->getStyle('A2')->getFont()->setSize(18);
-
+	if($src_warehouse == 'tw_padi'){
+		$objPHPExcel->setActiveSheetIndex(0)->getRowDimension('3')->setRowHeight(70);
+		$objPHPExcel->setActiveSheetIndex(0)->mergeCells('A3:I3');
+		$objPHPExcel->getActiveSheet()->getStyle('A3')->getAlignment()->setWrapText(true);
+		$objPHPExcel->setActiveSheetIndex(0)->setCellValue('A3',"Merchandise List\nSender: KUANG LUNG PRINTING FACTORY CO., LTD.\nAddress: 2F., No.8, Ln. 83, Sec. 1, Guangfu Rd., Sanchong Dist., New Taipei City 241, Taiwan\n Tel: +886 2 2999 9099");
+	}
 	$objPHPExcel->setActiveSheetIndex(0)->mergeCells('A4:I4');
 	$objPHPExcel->setActiveSheetIndex(0)->setCellValue('A4','Packing List');
 	$objPHPExcel->getActiveSheet()->getStyle('A4')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
@@ -105,7 +110,11 @@ function paditransfer_download($id, $content, $src_warehouse, $dst_warehouse, $d
 
 	foreach ($packings as $packing) {
 		$objPHPExcel->setActiveSheetIndex(0)->setCellValue('A'.$idx, "");
-		$objPHPExcel->setActiveSheetIndex(0)->setCellValue('B'.$idx, strval($box_cnt)."-".strval($box_cnt + $packing['cnt'] - 1));
+		if(1 == $packing['cnt']){
+			$objPHPExcel->setActiveSheetIndex(0)->setCellValue('B'.$idx, strval($box_cnt));
+		} else {
+			$objPHPExcel->setActiveSheetIndex(0)->setCellValue('B'.$idx, strval($box_cnt)."-".strval($box_cnt + $packing['cnt'] - 1));
+		}
 		$objPHPExcel->setActiveSheetIndex(0)->setCellValue('C'.$idx, $packing['id'].' '.$packing['chinese_name']."\n".$packing['english_name']);
 		$objPHPExcel->setActiveSheetIndex(0)->setCellValue('D'.$idx, $packing['qty']);
 		$objPHPExcel->setActiveSheetIndex(0)->setCellValue('E'.$idx, $packing['cnt']);
@@ -147,6 +156,14 @@ function paditransfer_download($id, $content, $src_warehouse, $dst_warehouse, $d
 	$objPHPExcel->getActiveSheet(0)->getStyle('A8:I'.$idx)->applyFromArray($styleArray);
 	$objPHPExcel->getActiveSheet()->getStyle('A8:I'.$idx)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
 	$objPHPExcel->getActiveSheet()->getStyle('A8:I'.$idx)->getAlignment()->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER);
+
+	$idx++;
+	$idx++;
+	$idx++;
+	$objPHPExcel->getActiveSheet()->getStyle('A'.$idx)->getAlignment()->setWrapText(true);
+	$objPHPExcel->setActiveSheetIndex(0)->setCellValue('A'.$idx,
+		"Mark:\n\nC/No.:\nProduct No.:\n\nQty:");
+
 
 
 	// Redirect output to a client’s web browser (Excel5)
