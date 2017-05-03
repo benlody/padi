@@ -658,7 +658,7 @@ function invoice_download($invoice, $content){
 						->setCellValue('E'.$idx, $product['cnt'])
 						->setCellValue('G'.$idx, $price)
 						->setCellValue('I'.$idx, $product['cnt'] * $price);
-			$objPHPExcel->getActiveSheet()->getStyle('G'.$idx)->getNumberFormat()->setFormatCode('_-* #,##0.00\ [$USD-415]_-');
+			$objPHPExcel->getActiveSheet()->getStyle('G'.$idx)->getNumberFormat()->setFormatCode('_-* #,##0.000\ [$USD-415]_-');
 			$objPHPExcel->getActiveSheet()->getStyle('I'.$idx)->getNumberFormat()->setFormatCode('_-* #,##0.00\ [$USD-415]_-');
 
 			$idx++;
