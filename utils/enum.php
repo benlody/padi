@@ -38,7 +38,8 @@ class ShippingType
 			18 => '全球快遞',
 			19 => '司機送貨',
 			20 => '客戶自取',
-			21 => '兆太國際物流'
+			21 => '兆太國際物流',
+			22 => '順豐快遞貨到付款'
 		);
 
 	protected static $type_enu = array(
@@ -57,7 +58,8 @@ class ShippingType
 			18 => 'GB Express',
 			19 => 'By Trunk',
 			20 => 'Pick up',
-			21 => 'JSD LOGISTICS'
+			21 => 'JSD LOGISTICS',
+			22 => 'SF Express (COD)',
 		);
 
 	public function getType(){
