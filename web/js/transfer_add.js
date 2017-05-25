@@ -42,19 +42,19 @@ function onchange_dst() {
 	var src = document.getElementById("src_warehouse").value;
 
 	if(dst.substring(0, 2) == 'xm'){
-		document.getElementById("transfer-chinese_addr").value = '厦门市火炬东路28号';
-		document.getElementById("transfer-english_addr").value = 'No.28, Huoju East Road, Huli, Xiamen, Fujian, China';
-		document.getElementById("transfer-contact").value = '李美紅';
-		document.getElementById("transfer-tel").value = '0592-2087596/15396270698';
+		document.getElementById("transfer-chinese_addr").value = '廈門市同安區西柯鎮美溪道湖里園71號  郵編361100';
+		document.getElementById("transfer-english_addr").value = 'No.71, Meixi Road, TongAn District, Xiamen City, Fu Jian Province, 361100';
+		document.getElementById("transfer-contact").value = '林冠鳳Lin Guan Feng';
+		document.getElementById("transfer-tel").value = '17750667326';
 	} else if(dst.substring(0, 2) == 'tw'){
 		document.getElementById("transfer-chinese_addr").value = '新北市三重區光復路一段83巷8號';
 		document.getElementById("transfer-english_addr").value = ' ';
-		document.getElementById("transfer-contact").value = '陳學輝';
-		document.getElementById("transfer-tel").value = '+886-2331-4526';
+		document.getElementById("transfer-contact").value = '李偉誠';
+		document.getElementById("transfer-tel").value = '+886-2999-9099';
 	} else if(dst == 'padi_sydney') {
 		document.getElementById("transfer-chinese_addr").value = ' ';
 		document.getElementById("transfer-english_addr").value = 'PADI Asia Pacific---UNIT 3, 4 SKYLINE PLACE FRENCHS FOREST NSW 2086 AUSTRALIA';
-		document.getElementById("transfer-contact").value = 'Norman';
+		document.getElementById("transfer-contact").value = 'Vivian';
 		document.getElementById("transfer-tel").value = '61 2 9454 2923';
 	}
 
