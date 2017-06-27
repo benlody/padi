@@ -1167,6 +1167,12 @@ class OrderController extends \yii\web\Controller
 		echo '<div class=WordSection1> ';
 
 
+		$this->download_tw_header($model);
+		order_content_to_download_table($model->content);
+		echo '</table>';
+
+/*
+
 		$content_array = json_decode($model->content, true);
 		$has_product = is_array($content_array['product']) && (count($content_array['product']) > 0);
 		$page = count($content_array['crewpak']);
@@ -1198,7 +1204,7 @@ class OrderController extends \yii\web\Controller
 			}
 			echo '</table>';
 		}
-
+*/
 		echo '<p>'.chineseToUnicode('執行者簽名：').'</p>';
 		echo '<p>'.chineseToUnicode('覆核： □已確認語文版本皆正確 □已確認產品數量皆正確    簽名:').'</p>';
 		$content = json_decode($model->content, true);
