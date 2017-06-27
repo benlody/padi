@@ -39,7 +39,8 @@ class ShippingType
 			19 => '司機送貨',
 			20 => '客戶自取',
 			21 => '兆太國際物流',
-			22 => '順豐快遞貨到付款'
+			22 => '順豐快遞貨到付款',
+			23 => '黑貓到付'
 		);
 
 	protected static $type_enu = array(
@@ -60,6 +61,7 @@ class ShippingType
 			20 => 'Pick up',
 			21 => 'JSD LOGISTICS',
 			22 => 'SF Express (COD)',
+			23 => 'Black Cat (COD)'
 		);
 
 	public function getType(){
@@ -93,7 +95,11 @@ class ShippingType
 			16 => 'DHL',
 			17 => '德揚國物',
 			18 => '全球快遞',
-			20 => '客戶自取'
+			19 => '司機送貨',
+			20 => '客戶自取',
+			21 => '兆太國際物流',
+			22 => '順豐快遞貨到付款',
+			23 => '黑貓到付'
 		);
 	}
 
