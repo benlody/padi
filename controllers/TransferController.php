@@ -467,7 +467,7 @@ class TransferController extends \yii\web\Controller
 		echo '<p style="text-align: center;"><span style="color: #808080; line-height:3pt;">'.chineseToUnicode('廈門卡樂兒商貿公司').'<br>';
 		echo 'XIAMEN COLOR TRADE LIMITED<br>';
 		echo chineseToUnicode('包裝打捆紀錄單').'<br><span style="font-size: small;">'.chineseToUnicode('日期').':'.$model->send_date.'</span></span></p>';
-		echo '<p style="text-align: left;">'.chineseToUnicode('取货地点：厦门市火炬东路28号').'<br>';
+		echo '<p style="text-align: left;">';
 		echo chineseToUnicode('送貨方式：■'.\ShippingType::getTransferShippingType($model->ship_type)).'</p>';
 
 		echo '<style type="text/css">';

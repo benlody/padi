@@ -1015,17 +1015,17 @@ class OrderController extends \yii\web\Controller
 		echo '<p style="text-align: center;"><span style="color: #808080; line-height:3pt;">'.chineseToUnicode('廈門卡樂兒商貿公司').'<br>';
 		echo 'XIAMEN COLOR TRADE LIMITED<br>';
 		echo chineseToUnicode('包裝打捆紀錄單').'<br><span style="font-size: small;">'.chineseToUnicode('日期').':'.$model->date.'</span></span></p>';
-		echo '<p style="text-align: left;">'.chineseToUnicode('取货地点：厦门市火炬东路28号').'<br>';
+		echo '<p style="text-align: left;">';
 		if($model->ship_type == \ShippingType::T_STD_EXPR){
-			echo chineseToUnicode('送货单位：■顺丰次日 □顺丰隔日 □顺丰物流普运').'</p>';
+			echo chineseToUnicode('送货方式：■顺丰次日 □顺丰隔日 □顺丰物流普运').'</p>';
 		} else if ($model->ship_type == \ShippingType::T_SF_SP){
-			echo chineseToUnicode('送货单位：□顺丰次日 ■顺丰隔日 □顺丰物流普运').'</p>';
+			echo chineseToUnicode('送货方式：□顺丰次日 ■顺丰隔日 □顺丰物流普运').'</p>';
 		} else if ($model->ship_type == \ShippingType::T_SF_NORMAL){
-			echo chineseToUnicode('送货单位：□顺丰次日 □顺丰隔日 ■顺丰物流普运').'</p>';
+			echo chineseToUnicode('送货方式：□顺丰次日 □顺丰隔日 ■顺丰物流普运').'</p>';
 		} else if ($model->ship_type == \ShippingType::T_SELFPICK){
-			echo chineseToUnicode('送货单位：□顺丰次日 □顺丰隔日 □顺丰物流普运 ■客戶自取').'</p>';
+			echo chineseToUnicode('送货方式：□顺丰次日 □顺丰隔日 □顺丰物流普运 ■客戶自取').'</p>';
 		} else {
-			echo chineseToUnicode('送货单位：□顺丰次日 □顺丰隔日 □顺丰物流普运').'</p>';
+			echo chineseToUnicode('送货方式：□顺丰次日 □顺丰隔日 □顺丰物流普运').'</p>';
 		}
 
 		echo '<style type="text/css">';
