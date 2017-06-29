@@ -52,7 +52,6 @@ $this->registerJsFile(Yii::$app->request->getBaseUrl().'/js/order_list.js',['dep
 			'columns' => [
 				'id:text:Order編號',
 				'customer_id:text:會員編號',
-				'customer_name:text:會員名稱',
 				'date:text:日期',
 				'done_date:text:出貨日期',
 				[
@@ -82,8 +81,9 @@ $this->registerJsFile(Yii::$app->request->getBaseUrl().'/js/order_list.js',['dep
 				],
 
 
-				'chinese_addr:text:中文地址',
-				'english_addr:text:英文地址',
+				'extra_info:text:備註',
+//				'chinese_addr:text:中文地址',
+//				'english_addr:text:英文地址',
 				[
 					'class' => 'yii\grid\ActionColumn', 'template' => '{view}'
 				],
