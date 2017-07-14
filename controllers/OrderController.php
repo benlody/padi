@@ -759,7 +759,6 @@ class OrderController extends \yii\web\Controller
 		$product_content = array();
 		$crewpak_content = array();
 		$estimate = 0;
-		$save = true;
 
 		$x = 0;
 		while(1){
@@ -787,11 +786,7 @@ class OrderController extends \yii\web\Controller
 			$product_content[$product_id]['cnt'] = $product_cnt;
 			$product_content[$product_id]['done'] = false;
 			$weight = get_weight($product_id);
-			if(0 == $weight){
-				$save = false;
-			} else {
-				$estimate += $product_cnt * $weight;
-			}
+			$estimate += $product_cnt * $weight;
 
 			$x++;
 		}
@@ -835,11 +830,7 @@ class OrderController extends \yii\web\Controller
 				$detail[$p_name]['done'] = false;
 				$weight = get_weight($p_name);
 
-				if(0 == $weight){
-					$save = false;
-				} else {
-					$estimate += $detail[$p_name]['cnt'] * $weight;
-				}
+				$estimate += $detail[$p_name]['cnt'] * $weight;
 
 			}
 			$crewpak_content[$crewpak_id]['detail'] = $detail;
@@ -850,10 +841,8 @@ class OrderController extends \yii\web\Controller
 
 		$content['product'] = $product_content;
 		$content['crewpak'] = $crewpak_content;
-		if($save){
-			$content['estimate'] = ($estimate/1000).' kg';
-			$content['estimate_w'] = $estimate/1000;
-		}
+		$content['estimate'] = ($estimate/1000).' kg';
+		$content['estimate_w'] = $estimate/1000;
 
 		return $content;
 	}
