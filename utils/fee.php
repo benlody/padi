@@ -8,12 +8,13 @@ class Fee
 
 	static public function getCrewpackServiceFee($qty, $warehouse, $crewpak){
 
-		if($crewpak == '70015KL' || 
+		if($crewpak == '70092KL' || 
 			$crewpak == 'P60032KSP' || 
 			$crewpak == 'P70014CL' || 
 			$crewpak == 'P70014KL' || 
-			$crewpak == 'P70015CL' || 
-			$crewpak == 'P70015KL' || 
+			$crewpak == 'P70092CL' || 
+			$crewpak == '70092CL' || 
+			$crewpak == 'P70092KL' || 
 			$crewpak == 'P70080KL' || 
 			$crewpak == 'P70179CSP' || 
 			$crewpak == 'P71142CL' || 
