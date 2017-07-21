@@ -156,6 +156,26 @@ class OrderController extends \yii\web\Controller
 		return $this->redirect(['list', 'sort' => '-date']);
 	}
 
+	public function actionForce($id)
+	{
+		if(Yii::$app->user->identity->group > User::GROUP_MGR){
+			throw new NotFoundHttpException('The requested page does not exist.');
+		}
+
+		$model = $this->findModel($id);
+
+		$model->status = Order::STATUS_DONE;
+		$model->update();
+
+		$log = new Log();
+		$log->username = Yii::$app->user->identity->username;
+		$log->action = 'Force Done order ['.$model->id.']';
+		$log->insert();
+
+		return $this->redirect(['list', 'sort' => '-date']);
+	}
+
+
 	public function actionList($status='', $detail = true, $sort='-date')
 	{
 
