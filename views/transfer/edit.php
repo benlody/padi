@@ -78,6 +78,7 @@ $this->registerJsFile(Yii::$app->request->getBaseUrl().'/js/transfer_edit.js',['
 		</div>
 
 		<?php
+		/*
 			if($model->status == Transfer::STATUS_NEW){
 				echo '<div class="input_fields_wrap_ship">';
 					echo '<label class="control-label">貨運</label>';
@@ -95,7 +96,7 @@ $this->registerJsFile(Yii::$app->request->getBaseUrl().'/js/transfer_edit.js',['
 					echo '</div>';
 				echo '</div>';
 			}
-
+		*/
 		?>
 
 		<?= $form->field($model, 'extra_info', ['labelOptions' => ['label' => '備註']])->textArea(['rows' => 6]) ?>

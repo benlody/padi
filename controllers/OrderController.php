@@ -729,6 +729,7 @@ class OrderController extends \yii\web\Controller
 		$mail->setFrom('notify@lang-win.com.tw', 'Notification');
 		$mail->addAddress('jack@lang-win.com.tw');
 		$mail->addAddress('pc-mippi@lang-win.com.tw');
+		$mail->addAddress('jenny@lang-win.com.tw');
 		$mail->addAddress('yiyin.chen@lang-win.com.tw');
 		$mail->addAddress('Vivian.Li@padi.com.au');
 		$mail->addAddress('Stuart.Terrell@padi.com.au');
