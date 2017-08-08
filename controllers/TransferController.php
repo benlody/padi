@@ -207,7 +207,7 @@ class TransferController extends \yii\web\Controller
 			$content = $this->get_content($post_param);
 //			$ship_array = $this->get_ship($post_param, $now);
 
-			$post_param['Transfer']['shipping_info'] = 0;
+			$post_param['Transfer']['shipping_info'] = '';
 			$post_param['Transfer']['content'] = json_encode($content, JSON_FORCE_OBJECT);
 			$post_param['Transfer']['send_date'] = date("Y-m-d", strtotime($post_param['date']));
 
