@@ -22,9 +22,33 @@ return [
 
     'Inventory' => '庫存',
     'Inventory Overview' => '庫存總覽',
+    'Inventory Overview - T' => '庫存總覽 - T',
+    'Inventory Overview - XDC' => '庫存總覽 - XDC',
     'Inventory Transaction' => '庫存明細',
+    'Inventory Transaction - T' => '庫存明細 - T',
+    'Inventory Transaction - XDC' => '庫存明細 - XDC',
     'Low Stock Items' => '低庫存項目',
     'Low Stock Content' => '低庫存內容',
+    'Inventory Adjust' => '庫存調整',
+    'Working Items' => '工作項目統計',
+    'Statistics' => '統計',
+
+    'Order' => '訂單',
+    'Member Order' => '會員訂單',
+    'Add Order' => '新增會員訂單',
+    'Order List' => '會員訂單列表',
+    'Search Order' => '訂單搜尋',
+    'Bill' => '出貨明細',
+    'Order Statistics' => '訂單統計',
+
+    'Tools' => '小工具',
+    'Invoice Generator' => '發票產生器',
+    'Packing Generator - 1' => 'Packing產生器 - 1',
+    'Packing Generator - 2' => 'Packing產生器 - 2',
+
+    'Internal Transfer' => '內部轉移',
+    'Add Transfer' => '新增內部轉移',
+    'Order List' => '內部轉移列表',
 
     'Product & Crew-Pak' => '產品與套裝',
     'Product' => '產品',
@@ -41,6 +65,15 @@ return [
     'Crew-Pak No.' => '套裝編號',
     'Crew-Pak List' => '套裝列表',
     'Crew-Pak Content' => '套裝內容',
+
+    'Add Product' => '新增產品',
+    'Add Crew-Pak' => '新增套裝',
+
+    'Production' => '生產',
+    'Add Production' => '新增生產',
+    'Production List' => '生產列表',
+
+
 
 
     'Member' => '會員',
