@@ -48,7 +48,7 @@ return [
 
     'Internal Transfer' => '內部轉移',
     'Add Transfer' => '新增內部轉移',
-    'Order List' => '內部轉移列表',
+    'Transfer List' => '內部轉移列表',
 
     'Product & Crew-Pak' => '產品與套裝',
     'Product' => '產品',
