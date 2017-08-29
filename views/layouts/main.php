@@ -72,8 +72,13 @@ AppAsset::register($this);
 					[
 						'label' => Yii::t('app', 'Production'),
 						'items' => [
+							 '<li class="dropdown-header" align="center"><font color="green">'.Yii::t('app', 'Production').'</font></li>',
 							 ['label' => Yii::t('app', 'Add Production'), 'url' => ['/purchase-order/add']],
 							 ['label' => Yii::t('app', 'Production List'), 'url' => ['/purchase-order/list', 'sort' => '-date']],
+							 '<li class="divider"></li>',
+							 '<li class="dropdown-header" align="center"><font color="green">'.Yii::t('app', 'Assemble').'</font></li>',
+							 ['label' => Yii::t('app', 'Add Assemble'), 'url' => ['/assemble/add']],
+							 ['label' => Yii::t('app', 'Assemble List'), 'url' => ['/assemble/list', 'sort' => '-date']],
 						],
 					],
 					[
@@ -86,6 +91,10 @@ AppAsset::register($this);
 							 '<li class="dropdown-header" align="center"><font color="green">'.Yii::t('app', 'Crew-Pak').'</font></li>',
 							 ['label' => Yii::t('app', 'Crew-Pak List'), 'url' => ['/crew-pak/index']],
 							 ['label' => Yii::t('app', 'Add Crew-Pak'), 'url' => ['/crew-pak/add']],
+							 '<li class="divider"></li>',
+							 '<li class="dropdown-header" align="center"><font color="green">'.Yii::t('app', 'Assemble').'</font></li>',
+							 ['label' => Yii::t('app', 'Assemble Content List'), 'url' => ['/assemble/content-list']],
+							 ['label' => Yii::t('app', 'Add Assemble Content'), 'url' => ['/assemble/content-add']],
 							 '<li class="divider"></li>',
 							 '<li class="dropdown-header" align="center"><font color="green">'.Yii::t('app', 'Packing').'</font></li>',
 							 ['label' => Yii::t('app', 'Packing Info'), 'url' => ['/packing/index']],
@@ -256,6 +265,7 @@ AppAsset::register($this);
 							 ['label' => '會員訂單列表', 'url' => ['/order/list', 'sort' => '-date']],
 							 ['label' => '訂單搜尋', 'url' => ['/order/search']],
 							 ['label' => '出貨明細', 'url' => ['/order/ship_overview']],
+							 ['label' => Yii::t('app', 'Order Statistics'), 'url' => ['/order/statistics']],
 							 '<li class="divider"></li>',
 							 '<li class="dropdown-header" align="center"><font color="green">內部訂單/轉移</font></li>',
 							 ['label' => '新增內部訂單', 'url' => ['/transfer/add']],

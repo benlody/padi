@@ -121,6 +121,43 @@ function order_content_to_table($content, $id){
 	return $table_out;
 }
 
+function assemble_content_to_table($content, $id){
+	$table_out = '<a href="#" onclick=" return false;"><span class="glyphicon glyphicon glyphicon-eye-open" data-toggle="#'.$id.'"></span></a><div id="'.$id.'" class="grid-view" style="display: none;"><table class="table table-striped table-bordered table-tooltip"><thead><tr><th>產品編號</th><th>產品名稱</th><th>數量</th></tr></thead><tbody>';
+
+	$content_array = json_decode($content);
+
+	foreach ($content_array as $product_name => $qty) {
+		$table_out = $table_out.'<tr><td>'.$product_name.'</td><td>'.get_product_name($product_name).'</td><td>'.$qty.'</td></tr>';
+	}
+	$table_out = $table_out.'</tbody></table></div>';
+
+
+	return $table_out;
+}
+
+function assemble_content_to_download_table($id, $content, $qty){
+
+	$product_array = json_decode($content, true);
+	echo '<tr><td valign="top" align="center">'.$id.'</td><td>';
+		echo '<table class="tg" style="undefined;table-layout: fixed; width: 360px">';
+		echo '<colgroup>';
+		echo '<col style="width: 100px">';
+		echo '<col style="width: 200px">';
+		echo '<col style="width: 80px">';
+		echo '</colgroup>';
+
+		foreach ($product_array as $product_name => $product_cnt) {
+			echo '<tr><td>'.$product_name.'</td><td>'.chineseToUnicode(get_product_name($product_name)).'</td><td>'.$product_cnt.'</td></tr>';
+		}
+	echo '</table>';
+
+	echo '</td><td valign="top" align="center">'.$qty.'</td></tr>';
+
+	return;
+
+}
+
+
 function paditransfer_content_to_table($content, $id){
 	$content_array = json_decode($content);
 

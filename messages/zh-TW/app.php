@@ -73,7 +73,11 @@ return [
     'Add Production' => '新增生產',
     'Production List' => '生產列表',
 
-
+    'Assemble' => '組裝',
+    'Add Assemble' => '新增組裝工作',
+    'Assemble List' => '組裝工作列表',
+    'Add Assemble Content' => '新增組裝內容',
+    'Assemble Content List' => '組裝內容清單',
 
 
     'Member' => '會員',
