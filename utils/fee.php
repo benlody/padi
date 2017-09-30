@@ -67,6 +67,17 @@ class Fee
 		return $fee;
 	}
 
+	static public function getAssembleServiceFee($qty, $warehouse, $product){
+
+		if(0 == strcmp('xm', $warehouse)){
+			$fee = 7 * $qty;
+		} else {
+			$fee = round((30 * $qty) * 100 / 22) / 100;
+		}
+
+		return $fee;
+	}
+
 	static public function getShipFreightFee($org_fee, $region, $warehouse, $type, $weight, $box){
 
 		if(ShippingType::T_SELFPICK == $type){

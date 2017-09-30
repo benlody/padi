@@ -78,6 +78,7 @@ return [
     'Assemble List' => '組裝工作列表',
     'Add Assemble Content' => '新增組裝內容',
     'Assemble Content List' => '組裝內容清單',
+    'Assemble Bill' => '組裝明細',
 
 
     'Member' => '會員',

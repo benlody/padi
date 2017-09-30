@@ -892,4 +892,44 @@ function chineseToUnicode($str){
 	return $c;
 }
 
+function assemble_to_bill_table($assemble_orders, $warehouse, $from, $to){
+
+	$total_service_fee = 0;
+	$total_p_qty = 0;
+	$table_out = '<div><table class="overflow-y"><thead><tr>'.
+					'<th>Assemble Order#</th>'.
+					'<th>Item#</th>'.
+					'<th>Qty</th>'.
+					'<th>Req Date</th>'.
+					'<th>Done Date</th>'.
+					'<th>Service Fee</th></tr></thead><tbody>';
+
+	foreach ($assemble_orders as $order) {
+
+		$service_fee = Fee::getAssembleServiceFee($order['qty'], $warehouse, $order['assemble']);
+		$total_service_fee += $service_fee;
+
+		$row = '<tr><td>'.$order['id'].'</td>'.
+		'<td>'.$order['assemble'].'</td>'.
+		'<td>'.$order['qty'].'</td>'.
+		'<td>'.$order['date'].'</td>'.
+		'<td>'.$order['done_date'].'</td>'.
+		'<td>'.$service_fee.'</td></tr>';
+
+		$table_out = $table_out.$row;
+
+	}
+
+	$row = '<tr><td bgcolor="#FFA500" colspan="2"><b>Total</b></td>'.
+				'<td bgcolor="#FFA500"></td>'.
+				'<td bgcolor="#FFA500"></td>'.
+				'<td bgcolor="#FFA500"></td>'.
+				'<td bgcolor="#FFA500">'.$total_service_fee.'</td></tr>';
+	$table_out = $table_out.$row;
+
+	$table_out = $table_out.'</tbody></table></div>';
+
+	return $table_out;
+}
+
 ?>

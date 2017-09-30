@@ -710,4 +710,110 @@ function invoice_download($invoice, $content){
 }
 
 
+function assemble_bill_download($orders, $warehouse, $from, $to){
+
+	$objPHPExcel = new \PHPExcel();
+
+	// Set document properties
+	$objPHPExcel->getProperties()->setCreator("Kuang Lung")
+								 ->setLastModifiedBy("Kuang Lung")
+								 ->setTitle('Freight and Service Fee ('.$warehouse.') '.date("Y-m", strtotime($to)))
+								 ->setSubject('Freight and Service Fee ('.$warehouse.') '.date("Y-m", strtotime($to)))
+								 ->setDescription('Freight and Service Fee ('.$warehouse.') '.date("Y-m", strtotime($to)));
+
+	$idx = 1;
+	$total_service_fee = 0;
+
+
+	$objPHPExcel->getActiveSheet()->getColumnDimension('A')->setWidth(30);
+	$objPHPExcel->getActiveSheet()->getColumnDimension('B')->setWidth(15);
+	$objPHPExcel->getActiveSheet()->getColumnDimension('C')->setWidth(15);
+	$objPHPExcel->getActiveSheet()->getColumnDimension('D')->setWidth(15);
+	$objPHPExcel->getActiveSheet()->getColumnDimension('E')->setWidth(15);
+	$objPHPExcel->getActiveSheet()->getColumnDimension('F')->setWidth(15);
+
+	$objPHPExcel->setActiveSheetIndex(0)
+				->setCellValue('A'.$idx, 'Assemble Order#')
+				->setCellValue('B'.$idx, 'Item#')
+				->setCellValue('C'.$idx, 'Qty')
+				->setCellValue('D'.$idx, 'Req Date')
+				->setCellValue('E'.$idx, 'Done Date')
+				->setCellValue('F'.$idx, 'Service Fee');
+	$objPHPExcel->getActiveSheet()->getStyle('A'.$idx.':F'.$idx)->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID);
+	$objPHPExcel->getActiveSheet()->getStyle('A'.$idx.':F'.$idx)->getFill()->getStartColor()->setRGB('6ea9ec');
+
+
+	$idx++;
+
+	foreach ($orders as $order) {
+
+		$service_fee = Fee::getAssembleServiceFee($order['qty'], $warehouse, $order['assemble']);
+		$total_service_fee += $service_fee;
+
+		$row = '<tr><td>'.$order['id'].'</td>'.
+		'<td>'.$order['assemble'].'</td>'.
+		'<td>'.$order['qty'].'</td>'.
+		'<td>'.$order['date'].'</td>'.
+		'<td>'.$order['done_date'].'</td>'.
+		'<td>'.$service_fee.'</td></tr>';
+
+		$objPHPExcel->setActiveSheetIndex(0)
+					->setCellValue('A'.$idx, $order['id'])
+					->setCellValue('B'.$idx, $order['assemble'])
+					->setCellValue('C'.$idx, $order['qty'])
+					->setCellValue('D'.$idx, $order['date'])
+					->setCellValue('E'.$idx, $order['done_date'])
+					->setCellValue('F'.$idx, $service_fee);
+		$idx++;
+
+	}
+
+	$objPHPExcel->setActiveSheetIndex(0)
+				->setCellValue('A'.$idx, 'Total')
+				->setCellValue('B'.$idx, 'Total')
+				->setCellValue('C'.$idx, ' ')
+				->setCellValue('D'.$idx, ' ')
+				->setCellValue('E'.$idx, ' ')
+				->setCellValue('F'.$idx, $total_service_fee);
+
+	$objPHPExcel->setActiveSheetIndex(0)->mergeCells('A'.$idx.':E'.$idx);
+	$objPHPExcel->getActiveSheet()->getStyle('A'.$idx.':F'.$idx)->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID);
+	$objPHPExcel->getActiveSheet()->getStyle('A'.$idx.':F'.$idx)->getFill()->getStartColor()->setRGB('FFA500');
+
+	// Rename worksheet
+	$objPHPExcel->getActiveSheet()->setTitle('Freight and Service Fee');
+	$objPHPExcel->getActiveSheet()->getStyle('B2:B'.$idx)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+	$objPHPExcel->getActiveSheet()->getStyle('C2:C'.$idx)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+	$objPHPExcel->getActiveSheet()->getStyle('D2:D'.$idx)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+	$objPHPExcel->getActiveSheet()->getStyle('E2:E'.$idx)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+	$objPHPExcel->getActiveSheet()->getStyle('F2:F'.$idx)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+	$objPHPExcel->getActiveSheet()->getStyle('A2:A'.$idx)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
+	$objPHPExcel->getActiveSheet()->getStyle('A1:F1')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+	$objPHPExcel->getActiveSheet(0)->getStyle('A1:F'.$idx)->getBorders()->getAllborders()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
+
+	// Set active sheet index to the first sheet, so Excel opens this as the first sheet
+	$objPHPExcel->setActiveSheetIndex(0);
+
+	// Redirect output to a client’s web browser (Excel5)
+	header('Content-Type: application/vnd.ms-excel');
+	header('Content-Disposition: attachment;filename="'.'Assemble Service Fee ('.$warehouse.') '.date("Y-m", strtotime($to)).'.xls"');
+	header('Cache-Control: max-age=0');
+	// If you're serving to IE 9, then the following may be needed
+	header('Cache-Control: max-age=1');
+
+	// If you're serving to IE over SSL, then the following may be needed
+	header ('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
+	header ('Last-Modified: '.gmdate('D, d M Y H:i:s').' GMT'); // always modified
+	header ('Cache-Control: cache, must-revalidate'); // HTTP/1.1
+	header ('Pragma: public'); // HTTP/1.0
+
+	$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
+	ob_end_clean(); 
+
+	$objWriter->save('php://output');
+
+}
+
+
+
 ?>

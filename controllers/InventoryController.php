@@ -283,6 +283,11 @@ class InventoryController extends \yii\web\Controller
 			throw new NotFoundHttpException('The requested page does not exist.');
 		}
 
+/*
+		$date_tmp = date_create($from);
+		date_sub($date_tmp, date_interval_create_from_date_string("1 days"));
+		$from_one_day = date_format($date_tmp,"Y-m-d");
+*/
 		$start_balance = $query->select('*')
 						->from($warehouse.'_'.$type.'_balance')
 						->where('date < "'.$from.'"')

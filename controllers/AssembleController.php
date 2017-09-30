@@ -19,6 +19,7 @@ use yii\data\ActiveDataProvider;
 
 
 require_once __DIR__  . '/../utils/utils.php';
+require_once __DIR__  . '/../utils/ship_download.php';
 
 class AssembleController extends \yii\web\Controller
 {
@@ -310,19 +311,43 @@ class AssembleController extends \yii\web\Controller
 			$to = $post_param['chose_to'];
 		}
 
-		$orders = $query->select('*')
-						->from('order')
-						->where('warehouse = "'.$warehouse.'" AND status != 0 AND done_date IS NOT NULL AND (done_date BETWEEN  "'.$from.'" AND "'.$to.'" OR date BETWEEN  "'.$from.'" AND "'.$to.'")')
+		$assemble_orders = $query->select('*')
+						->from('assemble_order')
+						->where('warehouse = "'.$warehouse.'" AND status = 1 AND done_date IS NOT NULL AND (done_date BETWEEN  "'.$from.'" AND "'.$to.'")')
 						->orderBy('id ASC')
 						->all();
 
-		return $this->render('ship_overview' ,[
+		return $this->render('bill' ,[
 			'warehouse' => $warehouse,
 			'from' => $from,
 			'to' => $to,
-			'orders' => $orders,
+			'assemble_orders' => $assemble_orders,
 		]);
 	}
+
+	public function actionBill_download($warehouse='xm', $from='', $to='')
+	{
+		if(Yii::$app->user->identity->group > User::GROUP_KL){
+			throw new NotFoundHttpException('The requested page does not exist.');
+		}
+
+		$query = new Query;
+		if(!$from){
+			$from = date("Y-m-d", strtotime("first day of this month"));
+		}
+		if(!$to){
+			$to = date("Y-m-d", strtotime("last day of this month"));
+		}
+
+		$assemble_orders = $query->select('*')
+						->from('assemble_order')
+						->where('warehouse = "'.$warehouse.'" AND status = 1 AND done_date IS NOT NULL AND (done_date BETWEEN  "'.$from.'" AND "'.$to.'")')
+						->orderBy('id ASC')
+						->all();
+
+		assemble_bill_download($assemble_orders, $warehouse, $from, $to);
+	}
+
 
 	public function actionOrderDownload($id)
 	{
