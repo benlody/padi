@@ -932,4 +932,50 @@ function assemble_to_bill_table($assemble_orders, $warehouse, $from, $to){
 	return $table_out;
 }
 
+function market_to_bill_table($market_orders, $from, $to){
+
+	$total_service_fee = 0;
+	$total_req_fee = 0;
+	$total_orig_fee = 0;
+	$table_out = '<div><table class="overflow-y"><thead><tr>'.
+					'<th>Date</th>'.
+					'<th>Content</th>'.
+					'<th>Weight</th>'.
+					'<th>Tracking</th>'.
+					'<th>Orig Fee</th>'.
+					'<th>Req Fee</th>'.
+					'<th>Service Fee</th></tr></thead><tbody>';
+
+	foreach ($market_orders as $order) {
+
+		$service_fee = 80;
+		$total_service_fee += $service_fee;
+		$total_orig_fee += $order['orig_fee'];
+		$total_req_fee += $order['req_fee'];
+
+		$row = '<tr><td>'.$order['date'].'</td>'.
+		'<td>'.$order['content'].'</td>'.
+		'<td>'.$order['weight'].'</td>'.
+		'<td>'.$order['tracking'].'</td>'.
+		'<td>'.$order['orig_fee'].'</td>'.
+		'<td>'.$order['req_fee'].'</td>'.
+		'<td>'.$service_fee.'</td></tr>';
+
+		$table_out = $table_out.$row;
+
+	}
+
+	$row = '<tr><td bgcolor="#FFA500" colspan="2"><b>Total</b></td>'.
+				'<td bgcolor="#FFA500"></td>'.
+				'<td bgcolor="#FFA500"></td>'.
+				'<td bgcolor="#FFA500">'.$total_orig_fee.'</td>'.
+				'<td bgcolor="#FFA500">'.$total_req_fee.'</td>'.
+				'<td bgcolor="#FFA500">'.$total_service_fee.'</td></tr>';
+	$table_out = $table_out.$row;
+
+	$table_out = $table_out.'</tbody></table></div>';
+
+	return $table_out;
+}
+
 ?>

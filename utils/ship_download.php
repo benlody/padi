@@ -750,13 +750,6 @@ function assemble_bill_download($orders, $warehouse, $from, $to){
 		$service_fee = Fee::getAssembleServiceFee($order['qty'], $warehouse, $order['assemble']);
 		$total_service_fee += $service_fee;
 
-		$row = '<tr><td>'.$order['id'].'</td>'.
-		'<td>'.$order['assemble'].'</td>'.
-		'<td>'.$order['qty'].'</td>'.
-		'<td>'.$order['date'].'</td>'.
-		'<td>'.$order['done_date'].'</td>'.
-		'<td>'.$service_fee.'</td></tr>';
-
 		$objPHPExcel->setActiveSheetIndex(0)
 					->setCellValue('A'.$idx, $order['id'])
 					->setCellValue('B'.$idx, $order['assemble'])
@@ -814,6 +807,113 @@ function assemble_bill_download($orders, $warehouse, $from, $to){
 
 }
 
+
+function market_bill_download($orders, $from, $to){
+
+	$objPHPExcel = new \PHPExcel();
+
+	// Set document properties
+	$objPHPExcel->getProperties()->setCreator("Kuang Lung")
+								 ->setLastModifiedBy("Kuang Lung")
+								 ->setTitle('Freight and Service Fee (marketing) '.date("Y-m", strtotime($from)).' to '.date("Y-m", strtotime($to)))
+								 ->setSubject('Freight and Service Fee (marketing) '.date("Y-m", strtotime($from)).' to '.date("Y-m", strtotime($to)))
+								 ->setDescription('Freight and Service Fee (marketing) '.date("Y-m", strtotime($from)).' to '.date("Y-m", strtotime($to)));
+
+	$idx = 2;
+	$total_service_fee = 0;
+	$total_req_fee = 0;
+
+	$objPHPExcel->getActiveSheet()->getColumnDimension('A')->setWidth(10);
+	$objPHPExcel->getActiveSheet()->getColumnDimension('B')->setWidth(15);
+	$objPHPExcel->getActiveSheet()->getColumnDimension('C')->setWidth(35);
+	$objPHPExcel->getActiveSheet()->getColumnDimension('D')->setWidth(15);
+	$objPHPExcel->getActiveSheet()->getColumnDimension('E')->setWidth(15);
+	$objPHPExcel->getActiveSheet()->getColumnDimension('F')->setWidth(15);
+	$objPHPExcel->getActiveSheet()->getColumnDimension('G')->setWidth(15);
+
+	$objPHPExcel->setActiveSheetIndex(0)
+				->setCellValue('A1', 'PADI SZ 行銷宣傳品寄送明細'.date("Y-m", strtotime($from)).' to '.date("Y-m", strtotime($to)));
+	$objPHPExcel->setActiveSheetIndex(0)->mergeCells('A1:G1');
+	$objPHPExcel->getActiveSheet()->getStyle('A1')->getFont()->setSize(22);
+
+	$objPHPExcel->setActiveSheetIndex(0)
+				->setCellValue('A'.$idx, '項次')
+				->setCellValue('B'.$idx, '日期')
+				->setCellValue('C'.$idx, '寄送地點')
+				->setCellValue('D'.$idx, '運單編號')
+				->setCellValue('E'.$idx, '重量')
+				->setCellValue('F'.$idx, '運費(含稅)')
+				->setCellValue('G'.$idx, '處理費(含稅)');
+	$objPHPExcel->getActiveSheet()->getStyle('A'.$idx.':G'.$idx)->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID);
+	$objPHPExcel->getActiveSheet()->getStyle('A'.$idx.':G'.$idx)->getFill()->getStartColor()->setRGB('6ea9ec');
+
+
+	$idx++;
+
+	foreach ($orders as $order) {
+
+		$service_fee = 80;
+		$total_service_fee += $service_fee;
+		$total_req_fee += $order['req_fee'];
+
+		$objPHPExcel->setActiveSheetIndex(0)
+					->setCellValue('A'.$idx, $idx-2)
+					->setCellValue('B'.$idx, $order['date'])
+					->setCellValue('C'.$idx, $order['content'])
+					->setCellValue('D'.$idx, '#'.$order['tracking'])
+					->setCellValue('E'.$idx, $order['weight'])
+					->setCellValue('F'.$idx, $order['req_fee'])
+					->setCellValue('G'.$idx, $service_fee);
+		$idx++;
+	}
+
+	$objPHPExcel->setActiveSheetIndex(0)
+				->setCellValue('A'.$idx, '小計')
+				->setCellValue('B'.$idx, ' ')
+				->setCellValue('C'.$idx, ' ')
+				->setCellValue('D'.$idx, ' ')
+				->setCellValue('E'.$idx, ' ')
+				->setCellValue('F'.$idx, $total_req_fee)
+				->setCellValue('G'.$idx, $total_service_fee);
+
+	$objPHPExcel->setActiveSheetIndex(0)->mergeCells('A'.$idx.':D'.$idx);
+	$objPHPExcel->getActiveSheet()->getStyle('A'.$idx.':G'.$idx)->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID);
+	$objPHPExcel->getActiveSheet()->getStyle('A'.$idx.':G'.$idx)->getFill()->getStartColor()->setRGB('FFA500');
+
+	// Rename worksheet
+	$objPHPExcel->getActiveSheet()->setTitle('Freight and Service Fee');
+	$objPHPExcel->getActiveSheet()->getStyle('B2:B'.$idx)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+	$objPHPExcel->getActiveSheet()->getStyle('C2:C'.$idx)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+	$objPHPExcel->getActiveSheet()->getStyle('D2:D'.$idx)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+	$objPHPExcel->getActiveSheet()->getStyle('E2:E'.$idx)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+	$objPHPExcel->getActiveSheet()->getStyle('F2:F'.$idx)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+	$objPHPExcel->getActiveSheet()->getStyle('G2:G'.$idx)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+	$objPHPExcel->getActiveSheet()->getStyle('A2:A'.$idx)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
+	$objPHPExcel->getActiveSheet()->getStyle('A1:G1')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+	$objPHPExcel->getActiveSheet(0)->getStyle('A1:G'.$idx)->getBorders()->getAllborders()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
+
+	// Set active sheet index to the first sheet, so Excel opens this as the first sheet
+	$objPHPExcel->setActiveSheetIndex(0);
+
+	// Redirect output to a client’s web browser (Excel5)
+	header('Content-Type: application/vnd.ms-excel');
+	header('Content-Disposition: attachment;filename="'.'Freight and Service Fee (marketing) '.date("Y-m", strtotime($from)).' to '.date("Y-m", strtotime($to)).'.xls"');
+	header('Cache-Control: max-age=0');
+	// If you're serving to IE 9, then the following may be needed
+	header('Cache-Control: max-age=1');
+
+	// If you're serving to IE over SSL, then the following may be needed
+	header ('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
+	header ('Last-Modified: '.gmdate('D, d M Y H:i:s').' GMT'); // always modified
+	header ('Cache-Control: cache, must-revalidate'); // HTTP/1.1
+	header ('Pragma: public'); // HTTP/1.0
+
+	$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
+	ob_end_clean(); 
+
+	$objWriter->save('php://output');
+
+}
 
 
 ?>

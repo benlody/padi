@@ -83,6 +83,14 @@ AppAsset::register($this);
 						],
 					],
 					[
+						'label' => Yii::t('app', 'Service'),
+						'items' => [
+							 '<li class="dropdown-header" align="center"><font color="green">'.Yii::t('app', 'Market').'</font></li>',
+							 ['label' => '新增行銷物', 'url' => ['/market/create']],
+							 ['label' => '行銷物帳單', 'url' => ['/market/bill']],
+						],
+					],
+					[
 						'label' => Yii::t('app', 'Product & Crew-Pak'),
 						'items' => [
 							 '<li class="dropdown-header" align="center"><font color="green">'.Yii::t('app', 'Product').'</font></li>',

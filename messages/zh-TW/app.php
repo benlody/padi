@@ -109,4 +109,7 @@ return [
     'Date' => '日期',
     'Content' => '內容',
 
+    'Service' => '服務',
+    'Market' => '行銷物',
+
 ];

@@ -167,3 +167,15 @@ CREATE TABLE IF NOT EXISTS `log` (
   `action` TEXT DEFAULT '',
   `ts` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+CREATE TABLE `marketing` (
+  `id` INT(32) NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  `date` DATE  NOT NULL,
+  `content` TEXT DEFAULT '',
+  `tracking` TEXT DEFAULT '',
+  `weight` TEXT DEFAULT '',
+  `orig_fee` INT(8) NOT NULL,
+  `req_fee` INT(8) NOT NULL,
+  `extra_info` TEXT DEFAULT ''
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
