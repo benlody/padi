@@ -75,9 +75,58 @@ $this->registerJsFile(Yii::$app->request->getBaseUrl().'/js/order_invoice.js',['
 		<div class="help-block"></div>
 		</div>
 
-		<div class="form-group field-order-region required">
+
+		<div class="form-group field-order-region">
 		<label for="order-region">地區</label>
-		<input type="text" id="order-region" class="form-control" name="Order[region]">
+		<select id="order-region" class="form-control" name="Order[region]">
+		<option value=""></option>
+			<option value="Beijing">北京</option>
+			<option value="Hebei">河北</option>
+			<option value="Shanghai">上海</option>
+			<option value="Suzhou">蘇州</option>
+			<option value="Xuzhou">徐州</option>
+			<option value="Shaanxi">陝西</option>
+			<option value="Guangdong">廣東</option>
+			<option value="Shenzhen">深圳</option>
+			<option value="Guangzhou">廣州</option>
+			<option value="Hainan">海南</option>
+			<option value="Sanya">三亞</option>
+			<option value="Guangxi">廣西</option>
+			<option value="Nanning">南寧</option>
+			<option value="Yunnan">雲南</option>
+			<option value="Liaoning">遼寧</option>
+			<option value="Shandong">山東</option>
+			<option value="Qingdao">青島</option>
+			<option value="Fuzhou">福州</option>
+			<option value="Xiamen">廈門</option>
+			<option value="Sichuan">四川</option>
+			<option value="Chengdu">成都</option>
+			<option value="HongKong">香港/澳門</option>
+			<option value="Korea">韓國</option>
+			<option value="Taiwan">台灣</option>
+			<option value="Jinan">濟南</option>
+			<option value="Zhuhai">珠海</option>
+			<option value="Kunming">昆明</option>
+			<option value="Zhanjiang">湛江</option>
+			<option value="Shenyang">瀋陽</option>
+			<option value="Zibo">淄博</option>
+			<option value="Dalian">大連</option>
+			<option value="Huizhou">惠州</option>
+			<option value="Guiyang">貴陽</option>
+			<option value="Nanjing">南京</option>
+			<option value="Xian">西安</option>
+			<option value="Tianjin">天津</option>
+			<option value="Qinhuangdao">秦皇島</option>
+			<option value="Tangshan">唐山</option>
+			<option value="Wenchang ">海南文昌</option>
+			<option value="Hangzhou">杭州</option>
+			<option value="Chongqing">重慶</option>
+			<option value="Wanning">海南萬寧</option>
+			<option value="Philippines">菲律賓</option>
+			<option value="Malaysia">馬來西亞</option>
+			<option value="Else">其他</option>
+		</select>
+
 		<div class="help-block"></div>
 		</div>
 
