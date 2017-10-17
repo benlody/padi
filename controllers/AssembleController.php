@@ -20,6 +20,7 @@ use yii\data\ActiveDataProvider;
 
 require_once __DIR__  . '/../utils/utils.php';
 require_once __DIR__  . '/../utils/ship_download.php';
+require '../../mail/PHPMailer/PHPMailerAutoload.php';
 
 class AssembleController extends \yii\web\Controller
 {
@@ -271,9 +272,19 @@ class AssembleController extends \yii\web\Controller
 			$padi_transaction_model->insert();
 			$padi_balance_model->insert();
 
+
+			$body = $this->renderPartial('done_mail', [
+						'id' => $post_param['AssembleOrder']['id'],
+						'warehouse' => $warehouse,
+						'product' => $assemble,
+						'qty' => $qty,
+						]);
+			$subject = YII_ENV_DEV ? 'Assemble Work Finished (Test) - '.$post_param['AssembleOrder']['id'] : 'Assemble Work Finished - '.$post_param['AssembleOrder']['id'];
+			$this->sendMail($body, $subject);
+
 			$log = new Log();
 			$log->username = Yii::$app->user->identity->username;
-			$log->action = 'Finish Assemble ['.$model->id.']';
+			$log->action = 'Finish Assemble ['.$post_param['AssembleOrder']['id'].']';
 			$log->insert();
 
 			return $this->redirect(['list', 'status' => 'done']);
@@ -417,6 +428,30 @@ class AssembleController extends \yii\web\Controller
 		echo '<p>'.chineseToUnicode('备注：').chineseToUnicode($model->extra_info).'</p>';
 	}
 
+	protected function sendMail($body, $subject){
+		$mail = new \PHPMailer;
+
+		$mail->isSMTP();
+		$mail->Host = 'smtp.gmail.com';
+		$mail->SMTPAuth = true;
+		$mail->Username = 'notify@lang-win.com.tw';
+		$mail->Password = '23314526';
+		$mail->SMTPSecure = 'tls';
+		$mail->Port = 587;
+		$mail->setFrom('notify@lang-win.com.tw', 'Notification');
+		$mail->addAddress('jack@lang-win.com.tw');
+		$mail->addAddress('yiyin.chen@lang-win.com.tw');
+		$mail->addAddress('Vivian.Li@padi.com.au');
+		$mail->addAddress('Stuart.Terrell@padi.com.au');
+		$mail->addAddress('mostafa.said@padi.com.au');
+		$mail->addAddress('Nicole.Forster@padi.com.au');
+		$mail->isHTML(true);
+		$mail->Subject = $subject;
+		$mail->Body = $body;
+		if(!YII_ENV_DEV){
+			$mail->send();
+		}
+	}
 	protected function get_content($post_param){
 
 		$x = 0;
