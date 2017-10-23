@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use yii\grid\GridView;
 use app\models\Order;
+use app\models\User;
 
 require_once __DIR__  . '/../../utils/utils.php';
 
@@ -107,17 +108,27 @@ $this->registerJsFile(Yii::$app->request->getBaseUrl().'/js/order_list.js',['dep
 						'attribute' => '',
 						'format' => 'raw',
 						'value' => function ($model) {
-							if(Order::STATUS_NEW == $model->status){
-								$opt = '<a href="'.Yii::$app->request->getBaseUrl().'?r=order%2Fmodify&amp;id='.urlencode($model->id).'" title="修改" data-pjax="0"><span class="glyphicon glyphicon glyphicon-pencil"></span></a>'.
-									'<a href="'.Yii::$app->request->getBaseUrl().'?r=order%2Fdelete&amp;id='.urlencode($model->id).'" title="刪除" data-confirm="確定要刪除'.$model->id.'嗎?"><span class="glyphicon glyphicon glyphicon-trash"></span></a>'.
-									'<a href="'.Yii::$app->request->getBaseUrl().'?r=order%2Fdownload&amp;id='.urlencode($model->id).'" title="下載出貨單" data-pjax="0"><span class="glyphicon glyphicon glyphicon-download"></span></a>'.
-									'<a href="'.Yii::$app->request->getBaseUrl().'?r=order%2Freview&amp;id='.urlencode($model->id).'" title="覆核" data-pjax="0"><span class="glyphicon glyphicon glyphicon-eye-open"></span></a>';
-							} else if (Order::STATUS_PROCESSING == $model->status){
-								$opt = '<a href="'.Yii::$app->request->getBaseUrl().'?r=order%2Fedit&amp;id='.urlencode($model->id).'" title="出貨" data-pjax="0"><span class="glyphicon glyphicon glyphicon-ok"></span></a>'.
-									'<a href="'.Yii::$app->request->getBaseUrl().'?r=order%2Fedit_only&amp;id='.urlencode($model->id).'" title="修改" data-pjax="0"><span class="glyphicon glyphicon glyphicon-pencil"></span></a>'.
-									'<a href="'.Yii::$app->request->getBaseUrl().'?r=order%2Fdownload&amp;id='.urlencode($model->id).'" title="下載出貨單" data-pjax="0"><span class="glyphicon glyphicon glyphicon-download"></span></a>'.
-									'<a href="'.Yii::$app->request->getBaseUrl().'?r=order%2Fforce&amp;id='.urlencode($model->id).'" title="強制完工" data-confirm="確定要強制完工'.$model->id.'嗎?"><span class="glyphicon glyphicon glyphicon-star"></span></a>'.
-									'<a href="'.Yii::$app->request->getBaseUrl().'?r=order%2Fview&amp;id='.urlencode($model->id).'" title="檢視" data-pjax="0"><span class="glyphicon glyphicon glyphicon-eye-open"></span></a>';
+							if(Yii::$app->user->identity->group == User::GROUP_XM){
+								if(Order::STATUS_NEW == $model->status){
+									$opt = '<a href="'.Yii::$app->request->getBaseUrl().'?r=order%2Fdownload&amp;id='.urlencode($model->id).'" title="下載出貨單" data-pjax="0"><span class="glyphicon glyphicon glyphicon-download"></span></a>';
+								} else if (Order::STATUS_PROCESSING == $model->status){
+									$opt = '<a href="'.Yii::$app->request->getBaseUrl().'?r=order%2Fedit&amp;id='.urlencode($model->id).'" title="出貨" data-pjax="0"><span class="glyphicon glyphicon glyphicon-ok"></span></a>'.
+										'<a href="'.Yii::$app->request->getBaseUrl().'?r=order%2Fdownload&amp;id='.urlencode($model->id).'" title="下載出貨單" data-pjax="0"><span class="glyphicon glyphicon glyphicon-download"></span></a>'.
+										'<a href="'.Yii::$app->request->getBaseUrl().'?r=order%2Fview&amp;id='.urlencode($model->id).'" title="檢視" data-pjax="0"><span class="glyphicon glyphicon glyphicon-eye-open"></span></a>';
+								}
+							} else {
+								if(Order::STATUS_NEW == $model->status){
+									$opt = '<a href="'.Yii::$app->request->getBaseUrl().'?r=order%2Fmodify&amp;id='.urlencode($model->id).'" title="修改" data-pjax="0"><span class="glyphicon glyphicon glyphicon-pencil"></span></a>'.
+										'<a href="'.Yii::$app->request->getBaseUrl().'?r=order%2Fdelete&amp;id='.urlencode($model->id).'" title="刪除" data-confirm="確定要刪除'.$model->id.'嗎?"><span class="glyphicon glyphicon glyphicon-trash"></span></a>'.
+										'<a href="'.Yii::$app->request->getBaseUrl().'?r=order%2Fdownload&amp;id='.urlencode($model->id).'" title="下載出貨單" data-pjax="0"><span class="glyphicon glyphicon glyphicon-download"></span></a>'.
+										'<a href="'.Yii::$app->request->getBaseUrl().'?r=order%2Freview&amp;id='.urlencode($model->id).'" title="覆核" data-pjax="0"><span class="glyphicon glyphicon glyphicon-eye-open"></span></a>';
+								} else if (Order::STATUS_PROCESSING == $model->status){
+									$opt = '<a href="'.Yii::$app->request->getBaseUrl().'?r=order%2Fedit&amp;id='.urlencode($model->id).'" title="出貨" data-pjax="0"><span class="glyphicon glyphicon glyphicon-ok"></span></a>'.
+										'<a href="'.Yii::$app->request->getBaseUrl().'?r=order%2Fedit_only&amp;id='.urlencode($model->id).'" title="修改" data-pjax="0"><span class="glyphicon glyphicon glyphicon-pencil"></span></a>'.
+										'<a href="'.Yii::$app->request->getBaseUrl().'?r=order%2Fdownload&amp;id='.urlencode($model->id).'" title="下載出貨單" data-pjax="0"><span class="glyphicon glyphicon glyphicon-download"></span></a>'.
+										'<a href="'.Yii::$app->request->getBaseUrl().'?r=order%2Fforce&amp;id='.urlencode($model->id).'" title="強制完工" data-confirm="確定要強制完工'.$model->id.'嗎?"><span class="glyphicon glyphicon glyphicon-star"></span></a>'.
+										'<a href="'.Yii::$app->request->getBaseUrl().'?r=order%2Fview&amp;id='.urlencode($model->id).'" title="檢視" data-pjax="0"><span class="glyphicon glyphicon glyphicon-eye-open"></span></a>';
+								}
 							}
 							return $opt;
 						}
@@ -138,7 +149,7 @@ $this->registerJsFile(Yii::$app->request->getBaseUrl().'/js/order_list.js',['dep
 	?>
 	<h1><?= Html::encode($this->title.$subtitle) ?></h1>
 	<?= Html::a($btn_lable, $btn_cfg, ['class' => 'btn btn-primary']) ?>
-	<?= Html::a($detail_btn_lable, $detail_btn_cfg, ['class' => 'btn btn-primary']) ?>
+	<?//= Html::a($detail_btn_lable, $detail_btn_cfg, ['class' => 'btn btn-primary']) ?>
 	<?= GridView::widget($config); ?>
 
 </div>

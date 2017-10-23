@@ -179,18 +179,23 @@ class OrderController extends \yii\web\Controller
 	public function actionList($status='', $detail = true, $sort='-date')
 	{
 
-		if(Yii::$app->user->identity->group > User::GROUP_KL){
-			throw new NotFoundHttpException('The requested page does not exist.');
-		}
+//		if(Yii::$app->user->identity->group > User::GROUP_KL){
+//			throw new NotFoundHttpException('The requested page does not exist.');
+//		}
 
 		$searchModel = new OrderSearch();
 		if(0 == strcmp($status, 'done')){
 			$search_param['OrderSearch'] = array('status' => Order::STATUS_DONE);
+			if(Yii::$app->user->identity->group == User::GROUP_XM){
+				$search_param['OrderSearch']['warehouse'] = 'xm';
+			}
 			$dataProvider = $searchModel->search($search_param);
 		} else {
 			$query = Order::find();
 			$query->Where('status != '.Order::STATUS_DONE);
-
+			if(Yii::$app->user->identity->group == User::GROUP_XM){
+				$query->andWhere('warehouse = "xm"');
+			}
 			$dataProvider = new ActiveDataProvider([
 				'query' => $query,
 			]);
@@ -263,9 +268,9 @@ class OrderController extends \yii\web\Controller
 	public function actionView($id)
 	{
 
-		if(Yii::$app->user->identity->group > User::GROUP_KL){
-			throw new NotFoundHttpException('The requested page does not exist.');
-		}
+//		if(Yii::$app->user->identity->group > User::GROUP_KL){
+//			throw new NotFoundHttpException('The requested page does not exist.');
+//		}
 
 		$model = $this->findModel($id);
 
@@ -276,9 +281,9 @@ class OrderController extends \yii\web\Controller
 
 	public function actionDownload($id)
 	{
-		if(Yii::$app->user->identity->group > User::GROUP_KL){
-			throw new NotFoundHttpException('The requested page does not exist.');
-		}
+//		if(Yii::$app->user->identity->group > User::GROUP_KL){
+//			throw new NotFoundHttpException('The requested page does not exist.');
+//		}
 
 		$model = $this->findModel($id);
 		header("Content-type: text/html; charset=utf-8");
@@ -301,9 +306,9 @@ class OrderController extends \yii\web\Controller
 
 	public function actionEdit($id)
 	{
-		if(Yii::$app->user->identity->group > User::GROUP_KL){
-			throw new NotFoundHttpException('The requested page does not exist.');
-		}
+//		if(Yii::$app->user->identity->group > User::GROUP_KL){
+//			throw new NotFoundHttpException('The requested page does not exist.');
+//		}
 
 		$model = $this->findModel($id);
 		$post_param = Yii::$app->request->post();

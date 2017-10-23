@@ -143,18 +143,14 @@ AppAsset::register($this);
 							 ['label' => '工作項目統計', 'url' => ['/inventory/summary']],
 						],
 					],
-/*
 					[
 						'label' => '訂單',
 						'items' => [
 							 '<li class="dropdown-header" align="center"><font color="green">會員訂單</font></li>',
 							 ['label' => '會員訂單列表', 'url' => ['/order/list', 'sort' => '-date']],
-							 ['label' => '出貨明細', 'url' => ['/order/ship_overview']],
-							 '<li class="divider"></li>',
-							 '<li class="dropdown-header" align="center"><font color="green">內部訂單/轉移</font></li>',
-							 ['label' => '內部訂單列表', 'url' => ['/transfer/list', 'sort' => '-send_date']],
 						],
 					],
+/*					
 					[
 						'label' => '生產',
 						'items' => [
