@@ -285,28 +285,26 @@ class InventoryController extends \yii\web\Controller
 			throw new NotFoundHttpException('The requested page does not exist.');
 		}
 
-/*
-		$date_tmp = date_create($from);
-		date_sub($date_tmp, date_interval_create_from_date_string("1 days"));
-		$from_one_day = date_format($date_tmp,"Y-m-d");
-*/
+		$transaction = $query->select('*')
+						->from($warehouse.'_'.$type.'_transaction')
+						->where('date BETWEEN  "'.$from.'" AND "'.$to.'"')
+						->orderBy('ts DESC')
+						->all();
+
 		$start_balance = $query->select('*')
 						->from($warehouse.'_'.$type.'_balance')
 						->where('date < "'.$from.'"')
 						->orderBy('ts DESC')
+						->limit(1)
 						->one();
 
 		$end_balance = $query->select('*')
 						->from($warehouse.'_'.$type.'_balance')
 						->where('date <= "'.$to.'"')
 						->orderBy('ts DESC')
+						->limit(1)
 						->one();
 
-		$transaction = $query->select('*')
-						->from($warehouse.'_'.$type.'_transaction')
-						->where('date BETWEEN  "'.$from.'" AND "'.$to.'"')
-						->orderBy('ts DESC')
-						->all();
 
 		foreach ($transaction as $key => $t) {
 			$pos1 = strpos($t['serial'], '_');
