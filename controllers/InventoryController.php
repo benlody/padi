@@ -133,11 +133,13 @@ class InventoryController extends \yii\web\Controller
 		$padi_balance = $query->select('*')
 						->from($warehouse.'_padi_balance')
 						->orderBy('ts DESC')
+						->limit(1)
 						->one();
 
 		$self_balance = $query->select('*')
 						->from($warehouse.'_self_balance')
 						->orderBy('ts DESC')
+						->limit(1)
 						->one();
 
 		$safety = $query2->select('id, warning_cnt_'.$warehouse)
