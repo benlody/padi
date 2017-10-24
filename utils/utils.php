@@ -503,6 +503,7 @@ function get_balance(&$balance_model, $warehouse, $warehouse_type){
 	$balance = $query->select('*')
 					->from($warehouse.'_'.$warehouse_type.'_balance')
 					->orderBy('ts DESC')
+					->limit(1)
 					->one();
 
 	foreach ($balance_model->attributes() as $key => $p_name) {

@@ -318,8 +318,17 @@ class OrderController extends \yii\web\Controller
 		$query = new Query;
 
 		if(isset($post_param['done'])){
-
 			$warehouse = $post_param['Order']['warehouse'];
+			$warning_cnt_wh = 'warning_cnt_'.$warehouse;
+
+			$warning_cntxxx = $query->select('id,'.$warning_cnt_wh)
+					->from('product')
+					->all();
+			$warning_cnt_array = array();
+			foreach ($warning_cntxxx as $value) {
+				$warning_cnt_array[$value['id']] = $value[$warning_cnt_wh];
+			}
+
 			$padi_balance_model = new Balance1($warehouse, 'padi');
 			$padi_transaction_model = new Transaction1($warehouse, 'padi');
 			get_balance($padi_balance_model, $warehouse, 'padi');
@@ -331,13 +340,8 @@ class OrderController extends \yii\web\Controller
 					$padi_transaction_model->$product -= ($content->product->$product->cnt - $old_cnt);
 					$padi_balance_model->$product -= ($content->product->$product->cnt - $old_cnt);
 
-					$warning_cnt = $query->select('*')
-										->from('product')
-										->where('id = "'.$product.'"')
-										->one();
-					$warning_cnt_wh = 'warning_cnt_'.$warehouse;
-					if($warning_cnt[$warning_cnt_wh] > 0 && $warning_cnt[$warning_cnt_wh] > $padi_balance_model->$product){
-						$warning[$product]['warning_cnt'] = $warning_cnt[$warning_cnt_wh];
+					if($warning_cnt_array[$product] > 0 && $warning_cnt_array[$product] > $padi_balance_model->$product){
+						$warning[$product]['warning_cnt'] = $warning_cnt_array[$product];
 						$warning[$product]['balance'] = $padi_balance_model->$product;
 					}
 				}
@@ -358,13 +362,8 @@ class OrderController extends \yii\web\Controller
 						$padi_balance_model->$product -= ($content->crewpak->$crewpak->detail->$product->cnt - $old_cnt);
 						$complement_cnt[$product] += ($content->crewpak->$crewpak->detail->$product->cnt - $old_cnt);
 
-						$warning_cnt = $query->select('*')
-											->from('product')
-											->where('id = "'.$product.'"')
-											->one();
-						$warning_cnt_wh = 'warning_cnt_'.$warehouse;
-						if($warning_cnt[$warning_cnt_wh] > 0 && $warning_cnt[$warning_cnt_wh] > $padi_balance_model->$product){
-							$warning[$product]['warning_cnt'] = $warning_cnt[$warning_cnt_wh];
+						if($warning_cnt_array[$product] > 0 && $warning_cnt_array[$product] > $padi_balance_model->$product){
+							$warning[$product]['warning_cnt'] = $warning_cnt_array[$product];
 							$warning[$product]['balance'] = $padi_balance_model->$product;
 						}
 					}
@@ -384,13 +383,8 @@ class OrderController extends \yii\web\Controller
 					$padi_transaction_model->$product -= ($cnt - $old_cnt);
 					$padi_balance_model->$product -= ($cnt - $old_cnt);
 
-					$warning_cnt = $query->select('*')
-										->from('product')
-										->where('id = "'.$product.'"')
-										->one();
-					$warning_cnt_wh = 'warning_cnt_'.$warehouse;
-					if($warning_cnt[$warning_cnt_wh] > 0 && $warning_cnt[$warning_cnt_wh] > $padi_balance_model->$product){
-						$warning[$product]['warning_cnt'] = $warning_cnt[$warning_cnt_wh];
+					if($warning_cnt_array[$product] > 0 && $warning_cnt_array[$product] > $padi_balance_model->$product){
+						$warning[$product]['warning_cnt'] = $warning_cnt_array[$product];
 						$warning[$product]['balance'] = $padi_balance_model->$product;
 					}
 				}
@@ -415,13 +409,8 @@ class OrderController extends \yii\web\Controller
 						$padi_balance_model->$product -= ($cnt - $old_cnt);
 						$complement_cnt[$product] += ($cnt - $old_cnt);
 
-						$warning_cnt = $query->select('*')
-											->from('product')
-											->where('id = "'.$product.'"')
-											->one();
-						$warning_cnt_wh = 'warning_cnt_'.$warehouse;
-						if($warning_cnt[$warning_cnt_wh] > 0 && $warning_cnt[$warning_cnt_wh] > $padi_balance_model->$product){
-							$warning[$product]['warning_cnt'] = $warning_cnt[$warning_cnt_wh];
+						if($warning_cnt_array[$product] > 0 && $warning_cnt_array[$product] > $padi_balance_model->$product){
+							$warning[$product]['warning_cnt'] = $warning_cnt_array[$product];
 							$warning[$product]['balance'] = $padi_balance_model->$product;
 						}
 					}

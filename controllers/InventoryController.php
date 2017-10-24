@@ -191,6 +191,7 @@ class InventoryController extends \yii\web\Controller
 		$padi_balance = $query->select('*')
 						->from($warehouse.'_padi_balance')
 						->orderBy('ts DESC')
+						->limit(1)
 						->one();
 
 		$safety = $query2->select('id, warning_cnt_'.$warehouse)
@@ -378,6 +379,7 @@ class InventoryController extends \yii\web\Controller
 		$balance = $query->select($post_param["id"])
 						->from($post_param["balance"])
 						->orderBy('ts DESC')
+						->limit(1)
 						->one();
 
 		return json_encode($balance,JSON_FORCE_OBJECT);
@@ -463,11 +465,12 @@ class InventoryController extends \yii\web\Controller
 		}
 
 
+		$balance = $balance_query->select('*')
+							->from($wh.'_padi_balance')
+							->orderBy('ts DESC')
+							->limit(1)
+							->one();
 		foreach ($summary as $p => $cnt) {
-			$balance = $balance_query->select($p)
-								->from($wh.'_padi_balance')
-								->orderBy('ts DESC')
-								->one();
 			$summary[$p]['balance'] = $balance[$p] ? $balance[$p] : 0;
 			$summary[$p]['id'] = $p;
 			$summary[$p]['order_cnt'] = $summary[$p]['order_cnt'] ? $summary[$p]['order_cnt'] : '';
