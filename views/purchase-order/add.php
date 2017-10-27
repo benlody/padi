@@ -41,8 +41,8 @@ $this->registerJsFile(Yii::$app->request->getBaseUrl().'/js/purchase_order_add.j
 		<div class="input_fields_wrap_product">
 			<label class="control-label">產品名稱 / 原始訂單數量 / 預計生產數量</label>
 			<div>
-				<select class="form-group" name="product">
-					<option value='empty'></option>
+				<select required class="form-group" name="product">
+					<option value=''></option>
 					<script>
 					var product = <?php echo json_encode($product); ?>;
 					var idx;

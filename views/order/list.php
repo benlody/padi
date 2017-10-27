@@ -148,6 +148,12 @@ $this->registerJsFile(Yii::$app->request->getBaseUrl().'/js/order_list.js',['dep
 
 	?>
 	<h1><?= Html::encode($this->title.$subtitle) ?></h1>
+	<?php
+		if(Yii::$app->user->identity->group <= User::GROUP_KL){
+			echo Html::a(Yii::t('app', 'Add Order'), ['add'], ['class' => 'btn btn-success']);
+		}
+	?>
+
 	<?= Html::a($btn_lable, $btn_cfg, ['class' => 'btn btn-primary']) ?>
 	<?//= Html::a($detail_btn_lable, $detail_btn_cfg, ['class' => 'btn btn-primary']) ?>
 	<?= GridView::widget($config); ?>
