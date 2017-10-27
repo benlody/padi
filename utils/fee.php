@@ -129,7 +129,7 @@ class Fee
 				case 'Zhuhai': //'珠海'
 				case 'Zhanjiang': //'湛江'
 				case 'Huizhou': //'惠州'
-					if(ShippingType::T_STD_EXPR== $type){
+					if(ShippingType::T_STD_EXPR== $type || ShippingType::T_SF_SP== $type){
 						$fee = ceil(1.1 * (12 + 8 * $weight));
 					} else if (ShippingType::T_SF_NORMAL== $type) {
 						$fee = ceil(1.1 * (($weight < 38) ? (150) : (($weight <= 50) ? (4 * $weight) : (3.5 * $weight))));
@@ -197,7 +197,7 @@ class Fee
 					break;
 
 				case 'Fuzhou': //'福州'
-					if(ShippingType::T_STD_EXPR== $type){
+					if(ShippingType::T_STD_EXPR== $type || ShippingType::T_SF_SP== $type){
 						$fee = ceil(1.1 * (11 + 2 * $weight));
 					} else if (ShippingType::T_SF_NORMAL== $type) {
 						$fee = ceil(1.1 * (($weight < 120) ? (120) : ($weight)));
@@ -207,7 +207,7 @@ class Fee
 					break;
 
 				case 'Xiamen': //'廈門'
-					if(ShippingType::T_STD_EXPR== $type){
+					if(ShippingType::T_STD_EXPR== $type || ShippingType::T_SF_SP== $type){
 						$fee = ceil(1.1 * (11 + $weight));
 					} else if (ShippingType::T_SF_NORMAL== $type) {
 						$fee = ceil(1.1 * (($weight < 120) ? (120) : ($weight)));
@@ -222,10 +222,12 @@ class Fee
 				case 'Hangzhou': //'杭州'
 					if(ShippingType::T_STD_EXPR== $type){
 						$fee = ceil(1.1 * (12 + 10 * $weight));
-					} else if (ShippingType::T_SF_NORMAL== $type) {
+					} else if (ShippingType::T_SF_SP== $type) {
 						$fee = ceil(1.1 * (12 + 6 * $weight));
-					} else {
+					} else if (ShippingType::T_SF_NORMAL== $type) {
 						$fee = ceil(1.1 * (($weight < 38) ? (150) : (($weight <= 50) ? (4 * $weight) : (3.5 * $weight))));
+					} else {
+						$fee = 1.1 * $org_fee;
 					}
 					break;
 
