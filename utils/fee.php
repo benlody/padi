@@ -92,8 +92,6 @@ class Fee
 				case 'Shandong': //'山東'
 				case 'Beijing': //'北京'
 				case 'Hebei': //'河北'
-				case 'Yunnan': //'雲南'
-				case 'Kunming': //'昆明'
 				case 'Qingdao': //'青島'
 				case 'Jinan': //'濟南'
 				case 'Zibo': //'淄博'
@@ -104,6 +102,19 @@ class Fee
 						$fee = ceil(1.1 * (12 + 10 * $weight));
 					} else if (ShippingType::T_SF_SP== $type) {
 						$fee = ceil(1.1 * (13 + 5 * $weight));
+					} else if (ShippingType::T_SF_NORMAL== $type) {
+						$fee = ceil(1.1 * (($weight < 30) ? (150) : (($weight <= 50) ? (5 * $weight) : (4.5 * $weight))));
+					} else {
+						$fee = 1.1 * $org_fee;
+					}
+					break;
+
+				case 'Yunnan': //'雲南'
+				case 'Kunming': //'昆明'
+					if(ShippingType::T_STD_EXPR== $type){
+						$fee = ceil(1.1 * (10 + 13 * $weight));
+					} else if (ShippingType::T_SF_SP== $type) {
+						$fee = ceil(1.1 * (12 + 6 * $weight));
 					} else if (ShippingType::T_SF_NORMAL== $type) {
 						$fee = ceil(1.1 * (($weight < 30) ? (150) : (($weight <= 50) ? (5 * $weight) : (4.5 * $weight))));
 					} else {
