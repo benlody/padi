@@ -199,11 +199,11 @@ function ship_download($orders, $warehouse, $from, $to, $certcards){
 						->setCellValue('F'.$idx, $certcard['t_send_date'])
 						->setCellValue('G'.$idx, ' ')
 						->setCellValue('H'.$idx, 'SF Express')
-						->setCellValue('I'.$idx, '2')
+						->setCellValue('I'.$idx, '9')
 						->setCellValue('J'.$idx, $certcard['req_fee'])
 						->setCellValue('K'.$idx, '#'.$certcard['tracking'])
 						->setCellValue('L'.$idx, ' ');
-			$subtotal_service_fee += 2;
+			$subtotal_service_fee += 9;
 			$subtotal_ship_fee += $certcard['req_fee'];
 			$idx++;
 		}
