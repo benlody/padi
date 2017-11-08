@@ -88,6 +88,10 @@ AppAsset::register($this);
 							 '<li class="dropdown-header" align="center"><font color="green">'.Yii::t('app', 'Market').'</font></li>',
 							 ['label' => '新增行銷物', 'url' => ['/market/create']],
 							 ['label' => '行銷物帳單', 'url' => ['/market/bill']],
+							 '<li class="dropdown-header" align="center"><font color="green">'.Yii::t('app', 'Cert Card').'</font></li>',
+							 ['label' => '新增認證卡', 'url' => ['/certcard/create']],
+							 ['label' => '認證卡列表', 'url' => ['/certcard/list', 'sort' => '-t_send_date']],
+//							 ['label' => '認證卡帳單', 'url' => ['/market/bill']],
 						],
 					],
 					[
@@ -221,6 +225,14 @@ AppAsset::register($this);
 						],
 					],
 					[
+						'label' => Yii::t('app', 'Service'),
+						'items' => [
+							 '<li class="dropdown-header" align="center"><font color="green">'.Yii::t('app', 'Cert Card').'</font></li>',
+							 ['label' => '新增認證卡', 'url' => ['/certcard/create']],
+							 ['label' => '認證卡列表', 'url' => ['/certcard/list', 'sort' => '-t_send_date']],
+						],
+					],
+					[
 						'label' => Yii::t('app', 'Product & Crew-Pak'),
 						'items' => [
 							 '<li class="dropdown-header" align="center"><font color="green">'.Yii::t('app', 'Product').'</font></li>',
@@ -291,6 +303,18 @@ AppAsset::register($this);
 							 ['label' => Yii::t('app', 'Add Assemble'), 'url' => ['/assemble/add']],
 							 ['label' => Yii::t('app', 'Assemble List'), 'url' => ['/assemble/list', 'sort' => '-date']],
 							 ['label' => Yii::t('app', 'Assemble Bill'), 'url' => ['/assemble/bill']],
+						],
+					],
+					[
+						'label' => Yii::t('app', 'Service'),
+						'items' => [
+							 '<li class="dropdown-header" align="center"><font color="green">'.Yii::t('app', 'Market').'</font></li>',
+							 ['label' => '新增行銷物', 'url' => ['/market/create']],
+							 ['label' => '行銷物帳單', 'url' => ['/market/bill']],
+							 '<li class="dropdown-header" align="center"><font color="green">'.Yii::t('app', 'Cert Card').'</font></li>',
+							 ['label' => '新增認證卡', 'url' => ['/certcard/create']],
+							 ['label' => '認證卡列表', 'url' => ['/certcard/list', 'sort' => '-t_send_date']],
+//							 ['label' => '認證卡帳單', 'url' => ['/market/bill']],
 						],
 					],
 					[

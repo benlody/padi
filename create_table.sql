@@ -179,3 +179,18 @@ CREATE TABLE `marketing` (
   `req_fee` INT(8) NOT NULL,
   `extra_info` TEXT DEFAULT ''
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+CREATE TABLE `certcard` (
+  `id` INT(32) NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  `t_send_date` DATE  NOT NULL,
+  `DHL` TEXT DEFAULT '',
+  `tracking` TEXT DEFAULT '',
+  `small_box` INT(8),
+  `s_recv_date` DATE ,
+  `orig_fee` INT(8),
+  `req_fee` INT(8),
+  `extra_info` TEXT DEFAULT ''
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+

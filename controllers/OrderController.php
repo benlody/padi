@@ -637,6 +637,8 @@ class OrderController extends \yii\web\Controller
 		}
 
 		$query = new Query;
+		$query2 = new Query;
+
 		if(!$from){
 			$from = date("Y-m-d", strtotime("first day of this month"));
 		}
@@ -650,7 +652,15 @@ class OrderController extends \yii\web\Controller
 						->orderBy('id ASC')
 						->all();
 
-		ship_download($orders, $warehouse, $from, $to);
+		if($warehouse == 'tw'){
+			$certcards = $query2->select('*')
+								->from('certcard')
+								->where(' t_send_date BETWEEN  "'.$from.'" AND "'.$to.'"')
+								->orderBy('id ASC')
+								->all();
+		}
+
+		ship_download($orders, $warehouse, $from, $to, $certcards);
 	}
 
 

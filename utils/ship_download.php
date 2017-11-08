@@ -3,7 +3,7 @@
 
 require_once __DIR__  . '/utils.php';
 
-function ship_download($orders, $warehouse, $from, $to){
+function ship_download($orders, $warehouse, $from, $to, $certcards){
 
 	$objPHPExcel = new \PHPExcel();
 
@@ -167,6 +167,73 @@ function ship_download($orders, $warehouse, $from, $to){
 		$total_ship_fee += $subtotal_ship_fee;
 
 	}
+
+	if($warehouse == 'tw'){
+		$objPHPExcel->setActiveSheetIndex(0)
+			->setCellValue('A'.$idx, 'DHL#')
+			->setCellValue('B'.$idx, ' ')
+			->setCellValue('C'.$idx, 'NAME')
+			->setCellValue('D'.$idx, 'ITEM')
+			->setCellValue('E'.$idx, 'QTY')
+			->setCellValue('F'.$idx, 'T Send Date')
+			->setCellValue('G'.$idx, ' ')
+			->setCellValue('H'.$idx, 'SHIPPING TYPE')
+			->setCellValue('I'.$idx, 'Service Fee')
+			->setCellValue('J'.$idx, 'FREIGTH')
+			->setCellValue('K'.$idx, 'Tracking#')
+			->setCellValue('L'.$idx, ' ');
+		$objPHPExcel->getActiveSheet()->getStyle('A'.$idx.':L'.$idx)->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID);
+		$objPHPExcel->getActiveSheet()->getStyle('A'.$idx.':L'.$idx)->getFill()->getStartColor()->setRGB('6ea9ec');
+				$idx++;
+
+		$subtotal_service_fee = 0;
+		$subtotal_ship_fee = 0;
+
+		foreach ($certcards as $certcard) {
+			$objPHPExcel->setActiveSheetIndex(0)
+						->setCellValue('A'.$idx, '#'.$certcard['DHL'])
+						->setCellValue('B'.$idx, ' ')
+						->setCellValue('C'.$idx, 'PADI Shenzhen')
+						->setCellValue('D'.$idx, 'ID Cards')
+						->setCellValue('E'.$idx, '1 carton')
+						->setCellValue('F'.$idx, $certcard['t_send_date'])
+						->setCellValue('G'.$idx, ' ')
+						->setCellValue('H'.$idx, 'SF Express')
+						->setCellValue('I'.$idx, '2')
+						->setCellValue('J'.$idx, $certcard['req_fee'])
+						->setCellValue('K'.$idx, '#'.$certcard['tracking'])
+						->setCellValue('L'.$idx, ' ');
+			$subtotal_service_fee += 2;
+			$subtotal_ship_fee += $certcard['req_fee'];
+			$idx++;
+		}
+
+		$objPHPExcel->setActiveSheetIndex(0)
+					->setCellValue('A'.$idx, $order['id'].' Subtotal')
+					->setCellValue('B'.$idx, $order['id'].' Subtotal')
+					->setCellValue('C'.$idx, ' ')
+					->setCellValue('D'.$idx, ' ')
+					->setCellValue('E'.$idx, ' ')
+					->setCellValue('F'.$idx, ' ')
+					->setCellValue('G'.$idx, ' ')
+					->setCellValue('H'.$idx, ' ')
+					->setCellValue('I'.$idx, $subtotal_service_fee)
+					->setCellValue('J'.$idx, $subtotal_ship_fee)
+					->setCellValue('K'.$idx, ' ')
+					->setCellValue('L'.$idx, ' ');
+
+		$objPHPExcel->setActiveSheetIndex(0)->mergeCells('A'.$idx.':B'.$idx);
+
+		$objPHPExcel->getActiveSheet()->getStyle('A'.$idx.':L'.$idx)->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID);
+		$objPHPExcel->getActiveSheet()->getStyle('A'.$idx.':L'.$idx)->getFill()->getStartColor()->setRGB('F0E68C');
+
+		$idx++;
+
+		$total_service_fee += $subtotal_service_fee;
+		$total_ship_fee += $subtotal_ship_fee;
+
+	}
+
 
 	$objPHPExcel->setActiveSheetIndex(0)
 				->setCellValue('A'.$idx, 'Total')

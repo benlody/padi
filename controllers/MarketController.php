@@ -107,10 +107,10 @@ class MarketController extends Controller
 
 			$log = new Log();
 			$log->username = Yii::$app->user->identity->username;
-			$log->action = 'Add market ['.$model->id.']';
+			$log->action = 'Add market ['.$model->tracking.']';
 			$log->insert();
 
-			return $this->redirect(['index']);
+			return $this->redirect(['bill']);
 
 		} else {
 			return $this->render('create', [
