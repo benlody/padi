@@ -47,7 +47,7 @@ $this->registerJsFile(Yii::$app->request->getBaseUrl().'/js/transfer_add.js',['d
 
 		<label class="control-label">運送方式</label>
 		<?= Html::dropDownList('Transfer[ship_type]', '', 
-				ShippingType::getTransferType(), ['class' => 'form-control', 'id' => 'ship_type'])
+				ShippingType::getTransferType(), ['class' => 'form-control required', 'id' => 'ship_type'])
 		?>
 		<div class="help-block"></div>
 

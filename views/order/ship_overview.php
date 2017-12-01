@@ -80,7 +80,15 @@ $this->registerCssFile(Yii::$app->request->getBaseUrl().'/css/transaction_table_
 					'warehouse' => $warehouse,
 				], ['class' => 'btn btn-success']).'&nbsp;&nbsp;';
 		}
-
+/*
+		if($warehouse == 'tw'){
+			echo Html::a('下載光隆運費對帳單', ['match',
+					'from' => $from,
+					'to' => $to,
+					'warehouse' => $warehouse,
+				], ['class' => 'btn btn-success']).'&nbsp;&nbsp;';
+		}
+*/
 		foreach (['xm', 'tw'] as $w) {
 			echo Html::a(get_warehouse_name($w), ['ship_overview',
 					'from' => $from,

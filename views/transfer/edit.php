@@ -78,25 +78,49 @@ $this->registerJsFile(Yii::$app->request->getBaseUrl().'/js/transfer_edit.js',['
 		</div>
 
 		<?php
-		/*
-			if($model->status == Transfer::STATUS_NEW){
+		
+			if($model->status == Transfer::STATUS_NEW && 
+				($model->src_warehouse == 'tw_padi' || $model->src_warehouse == 'tw_self') &&
+				($model->dst_warehouse == 'xm_padi' || $model->dst_warehouse == 'xm_self') &&
+				$model->ship_type == 'sf'
+				){
 				echo '<div class="input_fields_wrap_ship">';
 					echo '<label class="control-label">貨運</label>';
 					echo '<button class="add_field_button_ship">+</button>';
 					echo '<div>';
 					echo '<p><b>';
-						echo 'Tracking Number:&nbsp;<input name="shipping_0" type="text" required/>';
-						echo '&nbsp;&nbsp;&nbsp;包裝:&nbsp;<input name="packing_cnt_0" type="number" style="width:60px;" required/>';
-						echo '<select name="packing_type_0">';
-							echo '<option value="box">箱</option>';
-							echo '<option value="pack">包</option>';
+						echo '順豐Tracking Number:&nbsp;<input name="shipping_0" type="text" required/>';
 						echo '</select>&nbsp;&nbsp;&nbsp;重量:&nbsp;<input name="weight_0" type="number" style="width:100px;" required/>KG';
-						echo '</select>&nbsp;&nbsp;&nbsp;運費:&nbsp;<input name="shipping_fee_0" type="number" style="width:100px;" required/>';
+						echo '</select>&nbsp;&nbsp;&nbsp;運費:&nbsp;<input name="shipping_fee_0" type="number" style="width:100px;" onchange="count_fee(0)" required/>';
+		                echo '</select>&nbsp;&nbsp;&nbsp;請款運費:&nbsp;<input name="req_fee_0" type="number" step="0.01" style="width:60px;" required/>';
 					echo '</b></p>';
 					echo '</div>';
 				echo '</div>';
-			}
-		*/
+			} else if($model->status == Transfer::STATUS_NEW && 
+				($model->src_warehouse == 'tw_padi') &&
+				$model->ship_type == 'dhl'
+				){
+				echo '<div class="input_fields_wrap_ship">';
+					echo '<label class="control-label">貨運</label>';
+					echo '<div>';
+					echo '<p><b>';
+						echo 'DHL Tracking Number:&nbsp;<input name="shipping_0" type="text" required/>';
+					echo '</b></p>';
+					echo '</div>';
+				echo '</div>';
+			} else if($model->status == Transfer::STATUS_ONTHEWAY && 
+				($model->dst_warehouse == 'tw_padi') &&
+				$model->ship_type == 'dhl'
+				){
+				echo '<div class="input_fields_wrap_ship">';
+					echo '<label class="control-label">貨運</label>';
+					echo '<div>';
+					echo '<p><b>';
+						echo 'DHL Tracking Number:&nbsp;<input name="shipping_0" type="text" required/>';
+					echo '</b></p>';
+					echo '</div>';
+				echo '</div>';
+			}		
 		?>
 
 		<?= $form->field($model, 'extra_info', ['labelOptions' => ['label' => '備註']])->textArea(['rows' => 6]) ?>

@@ -25,3 +25,29 @@ $(document).ready(function() {
 		}
 	});
 });
+
+function count_fee(idx){
+	jQuery.ajax({
+		// The url must be appropriate for your configuration;
+		// this works with the default config of 1.1.11
+		url: 'index.php?r=order/ajax-fee',
+		type: "POST",
+
+		data: {
+			org_fee: document.getElementsByName("shipping_fee_" + idx)[0].value,
+			region: '',
+			warehouse: 'tw',
+			weight: '',
+			box: '',
+			type: '',
+		},
+
+		error: function(xhr,tStatus,e){
+			console.log(arguments);
+		},
+		success: function(resp){
+			var req_fee = JSON.parse(resp);
+			document.getElementsByName("req_fee_" + idx)[0].value = req_fee;
+		}
+	});
+}

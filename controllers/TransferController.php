@@ -205,9 +205,10 @@ class TransferController extends \yii\web\Controller
 
 		if(isset($post_param['send_done'])){
 			$content = $this->get_content($post_param);
-//			$ship_array = $this->get_ship($post_param, $now);
-
-			$post_param['Transfer']['shipping_info'] = '';
+			if(isset($post_param['shipping_0'])){
+				$ship_array = $this->get_ship($post_param, $now);
+				$post_param['Transfer']['shipping_info'] = json_encode($ship_array);
+			}
 			$post_param['Transfer']['content'] = json_encode($content, JSON_FORCE_OBJECT);
 			$post_param['Transfer']['send_date'] = date("Y-m-d", strtotime($post_param['date']));
 
@@ -258,6 +259,10 @@ class TransferController extends \yii\web\Controller
 
 		} else if(isset($post_param['recv_done'])){
 			$content = $this->get_content($post_param);
+			if(isset($post_param['shipping_0'])){
+				$ship_array = $this->get_ship($post_param, $now);
+				$post_param['Transfer']['shipping_info'] = json_encode($ship_array);
+			}
 			$post_param['Transfer']['content'] = json_encode($content, JSON_FORCE_OBJECT);
 			$post_param['Transfer']['recv_date'] = date("Y-m-d", strtotime($post_param['date']));
 
@@ -427,8 +432,6 @@ class TransferController extends \yii\web\Controller
 		while(1){
 
 			$ship_idx = "shipping_".$x;
-			$packing_cnt_idx = "packing_cnt_".$x;
-			$packing_type_idx = "packing_type_".$x;
 			$weight_idx = "weight_".$x;
 			$fee_idx = "shipping_fee_".$x;
 
@@ -442,14 +445,11 @@ class TransferController extends \yii\web\Controller
 			}
 
 			$ship = $post_param[$ship_idx];
-			$packing_cnt = $post_param[$packing_cnt_idx];
-			$packing_type = $post_param[$packing_type_idx];
 			$weight = $post_param[$weight_idx];
 			$fee = $post_param[$fee_idx];
 
 			$ship_content = array();
 			$ship_content['id'] = $ship.'_'.$now;
-			$ship_content[$packing_type] = $packing_cnt;
 			$ship_content['weight'] = $weight;
 			$ship_content['fee'] = $fee;
 			$ship_content['type'] = $post_param['Order']['ship_type'];

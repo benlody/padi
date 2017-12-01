@@ -58,11 +58,6 @@ function onchange_dst() {
 		document.getElementById("transfer-tel").value = '61 2 9454 2923';
 	}
 
-	if(dst.substring(0, 2) == src.substring(0, 2)){
-		document.getElementById("ship_type").value = 'internal';
-	} else {
-		document.getElementById("ship_type").value = '';
-	}
 }
 
 function onchange_src() {

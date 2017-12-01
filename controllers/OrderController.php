@@ -710,6 +710,117 @@ class OrderController extends \yii\web\Controller
 		ship_download_service($orders, $warehouse, $from, $to);
 	}
 
+	public function actionMatch($warehouse='tw', $from='', $to='')
+	{
+		if(Yii::$app->user->identity->group > User::GROUP_KL){
+			throw new NotFoundHttpException('The requested page does not exist.');
+		}
+
+		if(!$from){
+			$from = date("Y-m-d", strtotime("first day of this month"));
+		}
+		if(!$to){
+			$to = date("Y-m-d", strtotime("last day of this month"));
+		}
+
+		$query = new Query;
+		$orders = $query->select('id, chinese_addr, contact, ship_type, done_date, shipping_info')
+						->from('order')
+						->where('warehouse = "tw" AND done_date BETWEEN  "'.$from.'" AND "'.$to.'"')
+						->orderBy('id ASC')
+						->all();
+
+		$query = new Query;
+		$cert_cards = $query->select('t_send_date, tracking, orig_fee')
+						->from('certcard')
+						->where('t_send_date BETWEEN  "'.$from.'" AND "'.$to.'"')
+						->orderBy('id ASC')
+						->all();
+
+		$query = new Query;
+		$transfers_sf = $query->select('*')
+						->from('transfer')
+						->where('status != 0 AND ship_type = "sf" AND src_warehouse like "tw%" AND dst_warehouse like "xm%" AND send_date BETWEEN  "'.$from.'" AND "'.$to.'"')
+						->orderBy('id ASC')
+						->all();
+
+		print_r($transfers_sf);
+//		ship_download_service($orders, $warehouse, $from, $to);
+	}
+
+	public function actionDownload_customs($from='', $to='')
+	{
+		if(Yii::$app->user->identity->group > User::GROUP_KL){
+			throw new NotFoundHttpException('The requested page does not exist.');
+		}
+
+		if(!$from){
+			$from = date("Y-m-d", strtotime("first day of this month"));
+		}
+		if(!$to){
+			$to = date("Y-m-d", strtotime("last day of this month"));
+		}
+
+		$query = new Query;
+		$orders_export = $query->select('id, done_date, customer_id, customer_name')
+						->from('order')
+						->where('warehouse = "tw" AND ship_type = 24 AND (done_date BETWEEN  "'.$from.'" AND "'.$to.'")')
+						->orderBy('id ASC')
+						->all();
+
+		$query = new Query;
+		$orders_dhl = $query->select('id, done_date, customer_id, customer_name')
+						->from('order')
+						->where('warehouse = "tw" AND ship_type = 16 AND (done_date BETWEEN  "'.$from.'" AND "'.$to.'")')
+						->orderBy('id ASC')
+						->all();
+
+		$query = new Query;
+		$transfer_dhl_send = $query->select('id, send_date, dst_warehouse, content')
+						->from('transfer')
+						->where('src_warehouse like "tw%" AND ship_type = "dhl" AND (send_date BETWEEN  "'.$from.'" AND "'.$to.'")')
+						->orderBy('id ASC')
+						->all();
+
+		$query = new Query;
+		$transfer_dhl_recv = $query->select('id, send_date, dst_warehouse, content')
+						->from('transfer')
+						->where('dst_warehouse like "tw%" AND ship_type = "dhl" AND (recv_date BETWEEN  "'.$from.'" AND "'.$to.'")')
+						->orderBy('id ASC')
+						->all();
+
+		$query = new Query;
+		$transfer_seaair_send = $query->select('id, send_date, dst_warehouse, content')
+						->from('transfer')
+						->where('src_warehouse like "tw%" AND (ship_type = "sea" OR ship_type = "air") AND (send_date BETWEEN  "'.$from.'" AND "'.$to.'")')
+						->orderBy('id ASC')
+						->all();
+
+		$query = new Query;
+		$transfer_seaair_recv = $query->select('id, send_date, dst_warehouse, content')
+						->from('transfer')
+						->where('dst_warehouse like "tw%" AND (ship_type = "sea" OR ship_type = "air") AND (recv_date BETWEEN  "'.$from.'" AND "'.$to.'")')
+						->orderBy('id ASC')
+						->all();
+
+		$query = new Query;
+		$certcard_dhl_recv = $query->select('DHL, t_send_date')
+						->from('certcard')
+						->where('t_send_date BETWEEN  "'.$from.'" AND "'.$to.'"')
+						->orderBy('id ASC')
+						->all();
+
+
+		print_r($query);
+
+	//	print_r($orders_export);
+		print_r($orders_dhl);
+		print_r($transfer_dhl_send);
+		print_r($certcard_dhl_recv);
+
+//		ship_download_service($orders, $warehouse, $from, $to);
+	}
+
 
 	public function actionAjaxFee()
 	{
