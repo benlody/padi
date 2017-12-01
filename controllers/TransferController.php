@@ -206,7 +206,7 @@ class TransferController extends \yii\web\Controller
 		if(isset($post_param['send_done'])){
 			$content = $this->get_content($post_param);
 			if(isset($post_param['shipping_0'])){
-				$ship_array = $this->get_ship($post_param, $now);
+				$ship_array = $this->get_ship($post_param);
 				$post_param['Transfer']['shipping_info'] = json_encode($ship_array);
 			}
 			$post_param['Transfer']['content'] = json_encode($content, JSON_FORCE_OBJECT);
@@ -260,7 +260,7 @@ class TransferController extends \yii\web\Controller
 		} else if(isset($post_param['recv_done'])){
 			$content = $this->get_content($post_param);
 			if(isset($post_param['shipping_0'])){
-				$ship_array = $this->get_ship($post_param, $now);
+				$ship_array = $this->get_ship($post_param);
 				$post_param['Transfer']['shipping_info'] = json_encode($ship_array);
 			}
 			$post_param['Transfer']['content'] = json_encode($content, JSON_FORCE_OBJECT);
@@ -424,7 +424,7 @@ class TransferController extends \yii\web\Controller
 
 		return $content;
 	}
-	protected function get_ship($post_param, $now){
+	protected function get_ship($post_param){
 
 		$ship_array = array();
 
@@ -434,6 +434,7 @@ class TransferController extends \yii\web\Controller
 			$ship_idx = "shipping_".$x;
 			$weight_idx = "weight_".$x;
 			$fee_idx = "shipping_fee_".$x;
+			$req_fee_idx = "req_fee_".$x;
 
 			if(!isset($post_param[$ship_idx])){
 				break;
@@ -447,12 +448,14 @@ class TransferController extends \yii\web\Controller
 			$ship = $post_param[$ship_idx];
 			$weight = $post_param[$weight_idx];
 			$fee = $post_param[$fee_idx];
+			$req_fee = $post_param[$req_fee_idx];
 
 			$ship_content = array();
-			$ship_content['id'] = $ship.'_'.$now;
+			$ship_content['id'] = $ship;
 			$ship_content['weight'] = $weight;
 			$ship_content['fee'] = $fee;
-			$ship_content['type'] = $post_param['Order']['ship_type'];
+			$ship_content['req_fee'] = $req_fee;
+			$ship_content['type'] = $post_param['Transfer']['ship_type'];
 
 			array_push($ship_array, $ship_content);
 

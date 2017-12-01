@@ -12,13 +12,10 @@ $(document).ready(function() {
 
 			var newIn = '';
 			newIn += '<div><p><b>';
-			newIn += 'Tracking Number:&nbsp;<input name="shipping_' + ship_cnt +'" type="text" />';
-			newIn += '&nbsp;&nbsp;&nbsp;包裝:&nbsp;<input name="packing_cnt_' + ship_cnt +'" type="number" style="width:60px;"/>';
-			newIn += '<select name="packing_type_' + ship_cnt +'">';
-			newIn += '<option value="box">箱</option>';
-			newIn += '<option value="pack">包</option>';
-			newIn += '</select>&nbsp;&nbsp;&nbsp;重量:&nbsp;<input name="weight_' + ship_cnt +'" type="number" style="width:100px;"/>KG';
-			newIn += '</select>&nbsp;&nbsp;&nbsp;運費:&nbsp;<input name="shipping_fee_' + ship_cnt +'" type="number" style="width:100px;"/></b></p></div>';
+			newIn += '順豐Tracking Number:&nbsp;<input name="shipping_' + ship_cnt +'" type="text" required/>';
+			newIn += '</select>&nbsp;&nbsp;&nbsp;重量:&nbsp;<input name="weight_' + ship_cnt +'" type="number" style="width:100px;" required/>KG';
+			newIn += '</select>&nbsp;&nbsp;&nbsp;運費:&nbsp;<input name="shipping_fee_' + ship_cnt +'" type="number" style="width:100px;" onchange="count_fee(' + ship_cnt +')"  required/>';
+		    newIn += '</select>&nbsp;&nbsp;&nbsp;請款運費:&nbsp;<input name="req_fee_' + ship_cnt +'" type="number" step="0.01" style="width:60px;" required/></b></p></div>';
 
 			ship_cnt++; //text box increment
 			$(wrapper_ship).append(newIn); //add input box
