@@ -257,7 +257,7 @@ class Fee
 					$fee = ceil((floor($weight/20)*1780 + ($weight%20)*80 + 180)*1.1/21 - 0.0001);
 				break;
 				default:
-					$fee = 1.1 * $org_fee / 22;
+					$fee = 1.1 * $org_fee / 21;
 					break;
 			}
 		}
