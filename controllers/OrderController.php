@@ -738,13 +738,78 @@ class OrderController extends \yii\web\Controller
 						->all();
 
 		$query = new Query;
-		$transfers_sf = $query->select('*')
+		$transfers_sfs = $query->select('id, send_date, status, ship_type, shipping_info')
 						->from('transfer')
 						->where('status != 0 AND ship_type = "sf" AND src_warehouse like "tw%" AND dst_warehouse like "xm%" AND send_date BETWEEN  "'.$from.'" AND "'.$to.'"')
 						->orderBy('id ASC')
 						->all();
 
-		print_r($transfers_sf);
+		$hiyes = array();
+		$sf = array();
+		$globlas = array();
+		$post = array();
+		$other = array();
+
+		foreach ($orders as $order) {
+			$ship_info = json_decode($order['shipping_info'], true);
+			foreach ($ship_info as $info) {
+				$shipment['date'] = $info['date'];
+				$shipment['tracking'] = '#'.substr($info['id'], 0, strpos($info['id'], '_'));
+				$shipment['fee'] = $info['fee'];
+				$shipment['addr'] = $order['chinese_addr'];
+				$shipment['type'] = $info['type'];
+				if($shipment['type'] == 12){
+					array_push($hiyes, $shipment);
+				} else if ($shipment['type'] == 11){
+					array_push($sf, $shipment);
+				} else if ($shipment['type'] == 10){
+					array_push($post, $shipment);
+				} else if ($shipment['type'] == 18){
+					array_push($globlas, $shipment);
+				} else {
+					array_push($other, $shipment);
+				}
+			}
+		}
+
+		foreach ($cert_cards as $cert_card) {
+			$shipment['date'] = $cert_card['t_send_date'];
+			$shipment['tracking'] = '#'.preg_replace('/\s(?=)|-/', '', $cert_card['tracking']);
+			$shipment['fee'] = $cert_card['orig_fee'];
+			$shipment['addr'] = '深圳';
+			$shipment['type'] = 11;
+			array_push($sf, $shipment);
+		}		
+/*
+		foreach ($transfers_sfs as $transfers_sf) {
+			$ship_info = json_decode($order['shipping_info'], true);
+			foreach ($ship_info as $info) {
+				$shipment['date'] = $info['date'];
+				$shipment['tracking'] = '#'.substr($info['id'], 0, strpos($info['id'], '_'));
+				$shipment['fee'] = $info['fee'];
+				$shipment['addr'] = $order['chinese_addr'];
+				$shipment['type'] = $info['type'];
+				if($shipment['type'] == 12){
+					array_push($hiyes, $shipment);
+				} else if ($shipment['type'] == 11){
+					array_push($sf, $shipment);
+				} else if ($shipment['type'] == 10){
+					array_push($post, $shipment);
+				} else if ($shipment['type'] == 18){
+					array_push($globlas, $shipment);
+				} else {
+					array_push($other, $shipment);
+				}
+			}
+		}
+*/
+//		print_r($orders);
+//		print_r($cert_cards);
+//		print_r($hiyes);
+		print_r($sf);
+//		print_r($globlas);
+//		print_r($post);
+//		print_r($other);
 //		ship_download_service($orders, $warehouse, $from, $to);
 	}
 
