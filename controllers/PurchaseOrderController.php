@@ -91,7 +91,13 @@ class PurchaseOrderController extends \yii\web\Controller
 			$done_date = date("Y-m-d", strtotime($post_param['PurchaseOrder']['done_date']));
 			$warehouse = $post_param['PurchaseOrder']['warehouse'];
 
-			$post_param['PurchaseOrder']['content'] = json_encode($content, JSON_FORCE_OBJECT);
+			$old_content = json_decode($model->content, true);
+			$old_content[$post_param["product"]]['padi_cnt'] += $content[$post_param["product"]]['padi_cnt'];
+			$old_content[$post_param["product"]]['self_cnt'] += $content[$post_param["product"]]['self_cnt'];
+			$old_content[$post_param["product"]]['print_cnt'] = 0;
+			$old_content[$post_param["product"]]['order_cnt'] = $content[$post_param["product"]]['order_cnt'];
+
+			$post_param['PurchaseOrder']['content'] = json_encode($old_content, JSON_FORCE_OBJECT);
 			$post_param['PurchaseOrder']['done_date'] = $done_date;
 
 			foreach ($post_param['PurchaseOrder'] as $key => $value) {
@@ -194,7 +200,7 @@ class PurchaseOrderController extends \yii\web\Controller
 			$log->action = 'Partial Finish Produce ['.$model->id.']';
 			$log->insert();
 
-			return $this->redirect(['list']);
+			return $this->redirect(['list', 'sort' => '-date']]);
 
 		} else {
 
