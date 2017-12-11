@@ -920,6 +920,7 @@ class OrderController extends \yii\web\Controller
 //		$mail->addAddress('langchen@lang-win.com.tw');
 		if(!YII_ENV_DEV && $azure){
 			$mail->addAddress('julie.yuan@padi.com.au');
+			$mail->addAddress('kelly.liu@padi.com.au');
 		}
 		if(!YII_ENV_DEV && $kitty){
 			$mail->addAddress('Kitty.Hu@padi.com.au');

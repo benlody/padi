@@ -31,7 +31,6 @@
 
 			this._on( this.input, {
 				autocompleteselect: function( event, ui ) {
-					console.log(arguments);
 					ui.item.option.selected = true;
 					this._trigger( "select", event, {
 						item: ui.item.option
@@ -47,7 +46,6 @@
 						},
 						success: function(resp){
 							var cus_info = JSON.parse(resp);
-							console.log(cus_info);
 							document.getElementById("order-chinese_addr").value = cus_info.chinese_addr;
 							document.getElementById("order-english_addr").value = cus_info.english_addr;
 							document.getElementById("order-contact").value = cus_info.contact;

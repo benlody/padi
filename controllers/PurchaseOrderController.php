@@ -200,7 +200,7 @@ class PurchaseOrderController extends \yii\web\Controller
 			$log->action = 'Partial Finish Produce ['.$model->id.']';
 			$log->insert();
 
-			return $this->redirect(['list', 'sort' => '-date']]);
+			return $this->redirect(['list', 'sort' => '-date']);
 
 		} else {
 
