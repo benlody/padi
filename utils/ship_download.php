@@ -983,4 +983,269 @@ function market_bill_download($orders, $from, $to){
 }
 
 
+
+function match_download($hiyes, $sf, $globlas, $post, $other, $to, $from){
+
+	$objPHPExcel = new \PHPExcel();
+
+	$objPHPExcel->getActiveSheet()->getColumnDimension('A')->setWidth(13);
+	$objPHPExcel->getActiveSheet()->getColumnDimension('B')->setWidth(40);
+	$objPHPExcel->getActiveSheet()->getColumnDimension('C')->setWidth(13);
+	$objPHPExcel->getActiveSheet()->getColumnDimension('D')->setWidth(18);
+	$objPHPExcel->getActiveSheet()->getColumnDimension('E')->setWidth(10);
+
+	// Set document properties
+	$objPHPExcel->getProperties()->setCreator("Kuang Lung")
+								 ->setLastModifiedBy("Kuang Lung")
+								 ->setTitle('PADI運費對帳單 '.date("Y-m", strtotime($to)))
+								 ->setSubject('PADI運費對帳單 '.date("Y-m", strtotime($to)))
+								 ->setDescription('PADI運費對帳單 '.date("Y-m", strtotime($to)));
+
+	$idx = 1;
+	$total_ship_fee = 0;
+
+	$objPHPExcel->setActiveSheetIndex(0)
+				->setCellValue('A'.$idx, '日期')
+				->setCellValue('B'.$idx, '地址')
+				->setCellValue('C'.$idx, '快遞')
+				->setCellValue('D'.$idx, '單號')
+				->setCellValue('E'.$idx, '運費');
+	$objPHPExcel->getActiveSheet()->getStyle('A'.$idx.':E'.$idx)->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID);
+	$objPHPExcel->getActiveSheet()->getStyle('A'.$idx.':E'.$idx)->getFill()->getStartColor()->setRGB('6ea9ec');
+
+	$idx++;
+
+
+	$objPHPExcel->setActiveSheetIndex(0)
+				->setCellValue('A'.$idx, '新航快遞')
+				->setCellValue('B'.$idx, '')
+				->setCellValue('C'.$idx, '')
+				->setCellValue('D'.$idx, '')
+				->setCellValue('E'.$idx, '');
+	$objPHPExcel->getActiveSheet()->getStyle('A'.$idx.':E'.$idx)->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID);
+	$objPHPExcel->getActiveSheet()->getStyle('A'.$idx.':E'.$idx)->getFill()->getStartColor()->setRGB('F0E68C');
+	$objPHPExcel->setActiveSheetIndex(0)->mergeCells('A'.$idx.':E'.$idx);
+
+	$idx++;
+
+	foreach ($hiyes as $shipment) {
+		$objPHPExcel->setActiveSheetIndex(0)
+					->setCellValue('A'.$idx, $shipment['date'])
+					->setCellValue('B'.$idx, $shipment['addr'])
+					->setCellValue('C'.$idx, $shipment['type_chi'])
+					->setCellValue('D'.$idx, $shipment['tracking'])
+					->setCellValue('E'.$idx, $shipment['fee']);
+
+
+		$objPHPExcel->getActiveSheet()->getStyle('A'.$idx.':E'.$idx)->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID);
+//		$objPHPExcel->getActiveSheet()->getStyle('A'.$idx.':E'.$idx)->getFill()->getStartColor()->setRGB('F0E68C');
+
+		$idx++;
+		$total_ship_fee += $shipment['fee'];
+
+	}
+
+	$objPHPExcel->setActiveSheetIndex(0)
+				->setCellValue('A'.$idx, '新航快遞 Total')
+				->setCellValue('E'.$idx, $total_ship_fee);
+
+	$objPHPExcel->setActiveSheetIndex(0)->mergeCells('A'.$idx.':D'.$idx);
+	$objPHPExcel->getActiveSheet()->getStyle('A'.$idx.':E'.$idx)->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID);
+	$objPHPExcel->getActiveSheet()->getStyle('A'.$idx.':E'.$idx)->getFill()->getStartColor()->setRGB('FFA500');
+	$idx++;
+	$idx++;
+
+
+/******************************************************/
+
+	$objPHPExcel->setActiveSheetIndex(0)
+				->setCellValue('A'.$idx, '順豐快遞')
+				->setCellValue('B'.$idx, '')
+				->setCellValue('C'.$idx, '')
+				->setCellValue('D'.$idx, '')
+				->setCellValue('E'.$idx, '');
+	$objPHPExcel->getActiveSheet()->getStyle('A'.$idx.':E'.$idx)->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID);
+	$objPHPExcel->getActiveSheet()->getStyle('A'.$idx.':E'.$idx)->getFill()->getStartColor()->setRGB('F0E68C');
+	$objPHPExcel->setActiveSheetIndex(0)->mergeCells('A'.$idx.':E'.$idx);
+
+	$total_ship_fee = 0;
+	$idx++;
+
+	foreach ($sf as $shipment) {
+		$objPHPExcel->setActiveSheetIndex(0)
+					->setCellValue('A'.$idx, $shipment['date'])
+					->setCellValue('B'.$idx, $shipment['addr'])
+					->setCellValue('C'.$idx, $shipment['type_chi'])
+					->setCellValue('D'.$idx, $shipment['tracking'])
+					->setCellValue('E'.$idx, $shipment['fee']);
+
+
+		$objPHPExcel->getActiveSheet()->getStyle('A'.$idx.':E'.$idx)->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID);
+//		$objPHPExcel->getActiveSheet()->getStyle('A'.$idx.':E'.$idx)->getFill()->getStartColor()->setRGB('F0E68C');
+
+		$idx++;
+		$total_ship_fee += $shipment['fee'];
+
+	}
+
+	$objPHPExcel->setActiveSheetIndex(0)
+				->setCellValue('A'.$idx, '順豐快遞 Total')
+				->setCellValue('E'.$idx, $total_ship_fee);
+
+	$objPHPExcel->setActiveSheetIndex(0)->mergeCells('A'.$idx.':D'.$idx);
+	$objPHPExcel->getActiveSheet()->getStyle('A'.$idx.':E'.$idx)->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID);
+	$objPHPExcel->getActiveSheet()->getStyle('A'.$idx.':E'.$idx)->getFill()->getStartColor()->setRGB('FFA500');
+	$idx++;
+	$idx++;
+
+
+/******************************************************/
+
+	$objPHPExcel->setActiveSheetIndex(0)
+				->setCellValue('A'.$idx, '全球快遞')
+				->setCellValue('B'.$idx, '')
+				->setCellValue('C'.$idx, '')
+				->setCellValue('D'.$idx, '')
+				->setCellValue('E'.$idx, '');
+	$objPHPExcel->getActiveSheet()->getStyle('A'.$idx.':E'.$idx)->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID);
+	$objPHPExcel->getActiveSheet()->getStyle('A'.$idx.':E'.$idx)->getFill()->getStartColor()->setRGB('F0E68C');
+	$objPHPExcel->setActiveSheetIndex(0)->mergeCells('A'.$idx.':E'.$idx);
+
+	$total_ship_fee = 0;
+	$idx++;
+
+	foreach ($globlas as $shipment) {
+		$objPHPExcel->setActiveSheetIndex(0)
+					->setCellValue('A'.$idx, $shipment['date'])
+					->setCellValue('B'.$idx, $shipment['addr'])
+					->setCellValue('C'.$idx, $shipment['type_chi'])
+					->setCellValue('D'.$idx, $shipment['tracking'])
+					->setCellValue('E'.$idx, $shipment['fee']);
+
+
+		$objPHPExcel->getActiveSheet()->getStyle('A'.$idx.':E'.$idx)->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID);
+//		$objPHPExcel->getActiveSheet()->getStyle('A'.$idx.':E'.$idx)->getFill()->getStartColor()->setRGB('F0E68C');
+
+		$idx++;
+		$total_ship_fee += $shipment['fee'];
+
+	}
+
+	$objPHPExcel->setActiveSheetIndex(0)
+				->setCellValue('A'.$idx, '全球快遞 Total')
+				->setCellValue('E'.$idx, $total_ship_fee);
+
+	$objPHPExcel->setActiveSheetIndex(0)->mergeCells('A'.$idx.':D'.$idx);
+	$objPHPExcel->getActiveSheet()->getStyle('A'.$idx.':E'.$idx)->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID);
+	$objPHPExcel->getActiveSheet()->getStyle('A'.$idx.':E'.$idx)->getFill()->getStartColor()->setRGB('FFA500');
+	$idx++;
+	$idx++;
+
+
+/******************************************************/
+
+	$objPHPExcel->setActiveSheetIndex(0)
+				->setCellValue('A'.$idx, '中華郵政')
+				->setCellValue('B'.$idx, '')
+				->setCellValue('C'.$idx, '')
+				->setCellValue('D'.$idx, '')
+				->setCellValue('E'.$idx, '');
+	$objPHPExcel->getActiveSheet()->getStyle('A'.$idx.':E'.$idx)->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID);
+	$objPHPExcel->getActiveSheet()->getStyle('A'.$idx.':E'.$idx)->getFill()->getStartColor()->setRGB('F0E68C');
+	$objPHPExcel->setActiveSheetIndex(0)->mergeCells('A'.$idx.':E'.$idx);
+
+	$total_ship_fee = 0;
+	$idx++;
+
+	foreach ($post as $shipment) {
+		$objPHPExcel->setActiveSheetIndex(0)
+					->setCellValue('A'.$idx, $shipment['date'])
+					->setCellValue('B'.$idx, $shipment['addr'])
+					->setCellValue('C'.$idx, $shipment['type_chi'])
+					->setCellValue('D'.$idx, $shipment['tracking'])
+					->setCellValue('E'.$idx, $shipment['fee']);
+
+
+		$objPHPExcel->getActiveSheet()->getStyle('A'.$idx.':E'.$idx)->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID);
+//		$objPHPExcel->getActiveSheet()->getStyle('A'.$idx.':E'.$idx)->getFill()->getStartColor()->setRGB('F0E68C');
+
+		$idx++;
+		$total_ship_fee += $shipment['fee'];
+
+	}
+
+	$objPHPExcel->setActiveSheetIndex(0)
+				->setCellValue('A'.$idx, '中華郵政 Total')
+				->setCellValue('E'.$idx, $total_ship_fee);
+
+	$objPHPExcel->setActiveSheetIndex(0)->mergeCells('A'.$idx.':D'.$idx);
+	$objPHPExcel->getActiveSheet()->getStyle('A'.$idx.':E'.$idx)->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID);
+	$objPHPExcel->getActiveSheet()->getStyle('A'.$idx.':E'.$idx)->getFill()->getStartColor()->setRGB('FFA500');
+	$idx++;
+	$idx++;
+
+
+/******************************************************/
+
+	$objPHPExcel->setActiveSheetIndex(0)
+				->setCellValue('A'.$idx, '其他')
+				->setCellValue('B'.$idx, '')
+				->setCellValue('C'.$idx, '')
+				->setCellValue('D'.$idx, '')
+				->setCellValue('E'.$idx, '');
+	$objPHPExcel->getActiveSheet()->getStyle('A'.$idx.':E'.$idx)->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID);
+	$objPHPExcel->getActiveSheet()->getStyle('A'.$idx.':E'.$idx)->getFill()->getStartColor()->setRGB('F0E68C');
+	$objPHPExcel->setActiveSheetIndex(0)->mergeCells('A'.$idx.':E'.$idx);
+
+	$idx++;
+
+	foreach ($other as $shipment) {
+		$objPHPExcel->setActiveSheetIndex(0)
+					->setCellValue('A'.$idx, $shipment['date'])
+					->setCellValue('B'.$idx, $shipment['addr'])
+					->setCellValue('C'.$idx, $shipment['type_chi'])
+					->setCellValue('D'.$idx, $shipment['tracking'])
+					->setCellValue('E'.$idx, $shipment['fee']);
+
+
+		$objPHPExcel->getActiveSheet()->getStyle('A'.$idx.':E'.$idx)->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID);
+//		$objPHPExcel->getActiveSheet()->getStyle('A'.$idx.':E'.$idx)->getFill()->getStartColor()->setRGB('F0E68C');
+
+		$idx++;
+		$total_ship_fee += $shipment['fee'];
+
+	}
+
+/******************************************************/
+	// Rename worksheet
+	$objPHPExcel->getActiveSheet()->setTitle('服務費');
+	$objPHPExcel->getActiveSheet()->getStyle('A2:A'.$idx)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
+	$objPHPExcel->getActiveSheet()->getStyle('A1:E1')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+	$objPHPExcel->getActiveSheet(0)->getStyle('A1:E'.$idx)->getBorders()->getAllborders()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
+
+	// Set active sheet index to the first sheet, so Excel opens this as the first sheet
+	$objPHPExcel->setActiveSheetIndex(0);
+
+	// Redirect output to a client’s web browser (Excel5)
+	header('Content-Type: application/vnd.ms-excel');
+	header('Content-Disposition: attachment;filename="'.'PADI運費對帳單 '.date("Y-m", strtotime($to)).'.xls"');
+	header('Cache-Control: max-age=0');
+	// If you're serving to IE 9, then the following may be needed
+	header('Cache-Control: max-age=1');
+
+	// If you're serving to IE over SSL, then the following may be needed
+	header ('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
+	header ('Last-Modified: '.gmdate('D, d M Y H:i:s').' GMT'); // always modified
+	header ('Cache-Control: cache, must-revalidate'); // HTTP/1.1
+	header ('Pragma: public'); // HTTP/1.0
+
+	$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
+	ob_end_clean(); 
+
+	$objWriter->save('php://output');
+
+}
+
+
+
 ?>

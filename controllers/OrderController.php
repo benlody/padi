@@ -758,6 +758,7 @@ class OrderController extends \yii\web\Controller
 				$shipment['fee'] = $info['fee'];
 				$shipment['addr'] = $order['chinese_addr'];
 				$shipment['type'] = $info['type'];
+				$shipment['type_chi'] = \ShippingType::getTWType()[$info['type']];
 				if($shipment['type'] == 12){
 					array_push($hiyes, $shipment);
 				} else if ($shipment['type'] == 11){
@@ -778,39 +779,27 @@ class OrderController extends \yii\web\Controller
 			$shipment['fee'] = $cert_card['orig_fee'];
 			$shipment['addr'] = '深圳';
 			$shipment['type'] = 11;
+			$shipment['type_chi'] = \ShippingType::getTWType()[11];
 			array_push($sf, $shipment);
 		}		
-/*
+
 		foreach ($transfers_sfs as $transfers_sf) {
-			$ship_info = json_decode($order['shipping_info'], true);
-			foreach ($ship_info as $info) {
-				$shipment['date'] = $info['date'];
-				$shipment['tracking'] = '#'.substr($info['id'], 0, strpos($info['id'], '_'));
-				$shipment['fee'] = $info['fee'];
-				$shipment['addr'] = $order['chinese_addr'];
-				$shipment['type'] = $info['type'];
-				if($shipment['type'] == 12){
-					array_push($hiyes, $shipment);
-				} else if ($shipment['type'] == 11){
+			$ship_info = json_decode($transfers_sf['shipping_info'], true);
+			if(is_array($ship_info)){
+				foreach ($ship_info as $info) {
+					$shipment['date'] = $transfers_sf['send_date'];
+					$shipment['tracking'] = '#'.$info['id'];
+					$shipment['fee'] = $info['fee'];
+					$shipment['addr'] = '廈門';
+					$shipment['type'] = 11;
+					$shipment['type_chi'] = \ShippingType::getTWType()[11];
 					array_push($sf, $shipment);
-				} else if ($shipment['type'] == 10){
-					array_push($post, $shipment);
-				} else if ($shipment['type'] == 18){
-					array_push($globlas, $shipment);
-				} else {
-					array_push($other, $shipment);
 				}
 			}
 		}
-*/
-//		print_r($orders);
-//		print_r($cert_cards);
-//		print_r($hiyes);
-		print_r($sf);
-//		print_r($globlas);
-//		print_r($post);
-//		print_r($other);
-//		ship_download_service($orders, $warehouse, $from, $to);
+
+
+		match_download($hiyes, $sf, $globlas, $post, $other, $to, $from);
 	}
 
 	public function actionDownload_customs($from='', $to='')
