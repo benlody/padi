@@ -203,14 +203,14 @@ function ship_download($orders, $warehouse, $from, $to, $certcards){
 						->setCellValue('J'.$idx, $certcard['req_fee'])
 						->setCellValue('K'.$idx, '#'.$certcard['tracking'])
 						->setCellValue('L'.$idx, ' ');
-			$subtotal_service_fee += 9;
+			$subtotal_service_fee += 5;
 			$subtotal_ship_fee += $certcard['req_fee'];
 			$idx++;
 		}
 
 		$objPHPExcel->setActiveSheetIndex(0)
-					->setCellValue('A'.$idx, $order['id'].' Subtotal')
-					->setCellValue('B'.$idx, $order['id'].' Subtotal')
+					->setCellValue('A'.$idx, 'Cert Card Subtotal')
+					->setCellValue('B'.$idx, ' ')
 					->setCellValue('C'.$idx, ' ')
 					->setCellValue('D'.$idx, ' ')
 					->setCellValue('E'.$idx, ' ')
