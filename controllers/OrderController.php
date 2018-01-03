@@ -816,42 +816,42 @@ class OrderController extends \yii\web\Controller
 		}
 
 		$query = new Query;
-		$orders_export = $query->select('id, done_date, customer_id, customer_name')
+		$orders_export = $query->select('id, done_date, customer_id, customer_name, shipping_info')
 						->from('order')
 						->where('warehouse = "tw" AND ship_type = 24 AND (done_date BETWEEN  "'.$from.'" AND "'.$to.'")')
 						->orderBy('id ASC')
 						->all();
 
 		$query = new Query;
-		$orders_dhl = $query->select('id, done_date, customer_id, customer_name')
+		$orders_dhl = $query->select('id, done_date, customer_id, customer_name, shipping_info')
 						->from('order')
 						->where('warehouse = "tw" AND ship_type = 16 AND (done_date BETWEEN  "'.$from.'" AND "'.$to.'")')
 						->orderBy('id ASC')
 						->all();
 
 		$query = new Query;
-		$transfer_dhl_send = $query->select('id, send_date, dst_warehouse, content')
+		$transfer_dhl_send = $query->select('id, send_date, dst_warehouse, content, shipping_info')
 						->from('transfer')
 						->where('src_warehouse like "tw%" AND ship_type = "dhl" AND (send_date BETWEEN  "'.$from.'" AND "'.$to.'")')
 						->orderBy('id ASC')
 						->all();
 
 		$query = new Query;
-		$transfer_dhl_recv = $query->select('id, send_date, dst_warehouse, content')
+		$transfer_dhl_recv = $query->select('id, recv_date, src_warehouse, content, shipping_info')
 						->from('transfer')
 						->where('dst_warehouse like "tw%" AND ship_type = "dhl" AND (recv_date BETWEEN  "'.$from.'" AND "'.$to.'")')
 						->orderBy('id ASC')
 						->all();
 
 		$query = new Query;
-		$transfer_seaair_send = $query->select('id, send_date, dst_warehouse, content')
+		$transfer_seaair_send = $query->select('id, send_date, dst_warehouse, content, shipping_info')
 						->from('transfer')
 						->where('src_warehouse like "tw%" AND (ship_type = "sea" OR ship_type = "air") AND (send_date BETWEEN  "'.$from.'" AND "'.$to.'")')
 						->orderBy('id ASC')
 						->all();
 
 		$query = new Query;
-		$transfer_seaair_recv = $query->select('id, send_date, dst_warehouse, content')
+		$transfer_seaair_recv = $query->select('id, recv_date, src_warehouse, content, shipping_info')
 						->from('transfer')
 						->where('dst_warehouse like "tw%" AND (ship_type = "sea" OR ship_type = "air") AND (recv_date BETWEEN  "'.$from.'" AND "'.$to.'")')
 						->orderBy('id ASC')
@@ -864,15 +864,7 @@ class OrderController extends \yii\web\Controller
 						->orderBy('id ASC')
 						->all();
 
-
-		print_r($query);
-
-	//	print_r($orders_export);
-		print_r($orders_dhl);
-		print_r($transfer_dhl_send);
-		print_r($certcard_dhl_recv);
-
-//		ship_download_service($orders, $warehouse, $from, $to);
+		custom_download($orders_export, $orders_dhl, $transfer_dhl_send, $transfer_dhl_recv, $transfer_seaair_send, $transfer_seaair_recv, $certcard_dhl_recv, $to, $from);
 	}
 
 

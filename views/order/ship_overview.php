@@ -82,11 +82,17 @@ $this->registerCssFile(Yii::$app->request->getBaseUrl().'/css/transaction_table_
 		}
 
 		if($warehouse == 'tw'){
-			echo Html::a('下載台灣運費報價單', ['match',
+			echo Html::a('下載台灣運費對帳單', ['match',
 					'from' => $from,
 					'to' => $to,
 					'warehouse' => 'tw',
 				], ['class' => 'btn btn-success']).'&nbsp;&nbsp;';
+			echo Html::a('下載台灣進出口明細', ['download_customs',
+					'from' => $from,
+					'to' => $to,
+					'warehouse' => 'tw',
+				], ['class' => 'btn btn-success']).'&nbsp;&nbsp;';
+
 		}
 
 /*

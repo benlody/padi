@@ -39,6 +39,8 @@ return [
     'Order List' => '會員訂單列表',
     'Search Order' => '訂單搜尋',
     'Bill' => '出貨明細',
+    'Bill - T' => '出貨明細 - T',
+    'Bill - XDC' => '出貨明細 - XDC',
     'Order Statistics' => '訂單統計',
 
     'Tools' => '小工具',
