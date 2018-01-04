@@ -47,7 +47,7 @@ class Order extends \yii\db\ActiveRecord
 			[['id', 'customer_id', 'content', 'ship_type', 'date', 'warehouse', 'status'], 'required'],
 			[['customer_name', 'chinese_addr', 'english_addr', 'contact', 'tel', 'content', 'shipping_info', 'extra_info'], 'string'],
 			[['ship_type', 'status'], 'integer'],
-			[['date', 'done_date'], 'safe'],
+			[['date', 'done_date', 'ctime', 'dtime'], 'safe'],
 			[['id', 'customer_id', 'region', 'warehouse'], 'string', 'max' => 255]
 		];
 	}
@@ -73,6 +73,8 @@ class Order extends \yii\db\ActiveRecord
 			'warehouse' => Yii::t('app', 'Warehouse'),
 			'shipping_info' => Yii::t('app', 'Shipping Info'),
 			'status' => Yii::t('app', 'Status'),
+			'ctime' => Yii::t('app', 'Create Time'),
+			'dtime' => Yii::t('app', 'Done Time'),
 			'extra_info' => Yii::t('app', 'Extra Info'),
 		];
 	}

@@ -73,8 +73,7 @@ class OrderController extends \yii\web\Controller
 				$model->$key = $value;
 			}
 			$model->status = Order::STATUS_NEW;
-
-
+			$model->ctime = date("Y-m-d H:i:s", strtotime('now'));
 
 			//FIXME error handle
 			$model->insert();
@@ -119,6 +118,8 @@ class OrderController extends \yii\web\Controller
 				$model->$key = $value;
 			}
 			$model->status = Order::STATUS_NEW;
+			$model->ctime = date("Y-m-d H:i:s", strtotime('now'));
+
 
 			//FIXME error handle
 			$model->update();
@@ -429,6 +430,7 @@ class OrderController extends \yii\web\Controller
 			if($old_ship_array){
 				$model->shipping_info = json_encode(array_merge($old_ship_array, $new_ship_array));
 			} else {
+				$model->dtime = date("Y-m-d H:i:s", strtotime('now'));
 				$model->shipping_info = json_encode($new_ship_array);
 			}
 			$model->status = Order::STATUS_DONE;
