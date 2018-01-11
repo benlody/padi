@@ -339,18 +339,43 @@ function ship_download_service($orders, $warehouse, $from, $to){
 		}
 
 		foreach ($content['product'] as $product => $info) {
-			$service_fee = $info['cnt'] * 1.5;
-			$subtotal_service_fee += $service_fee;
+			if($product == '60020C' ||
+				$product == '60038C' ||
+				$product == '60303C' ||
+				$product == '60303SC' ||
+				$product == '60304C' ||
+				$product == '60330C' ||
+				$product == '60346C' ||
+				$product == '61301C' ||
+				$product == '70149C'
+			){
+				$service_fee = $info['cnt'] * 5;
+				$subtotal_service_fee += $service_fee;
 
-			$objPHPExcel->setActiveSheetIndex(0)
-						->setCellValue('A'.$idx, $order['id'])
-						->setCellValue('B'.$idx, $order['customer_id'])
-						->setCellValue('C'.$idx, $product)
-						->setCellValue('D'.$idx, '')
-						->setCellValue('E'.$idx, $info['cnt'])
-						->setCellValue('F'.$idx, $service_fee)
-						->setCellValue('G'.$idx, $order['date']);
-			$idx++;
+				$objPHPExcel->setActiveSheetIndex(0)
+							->setCellValue('A'.$idx, $order['id'])
+							->setCellValue('B'.$idx, $order['customer_id'])
+							->setCellValue('C'.$idx, $product)
+							->setCellValue('D'.$idx, $info['cnt'])
+							->setCellValue('E'.$idx, '')
+							->setCellValue('F'.$idx, $service_fee)
+							->setCellValue('G'.$idx, $order['date']);
+				$idx++;
+			} else {
+				$service_fee = $info['cnt'] * 1.5;
+				$subtotal_service_fee += $service_fee;
+
+				$objPHPExcel->setActiveSheetIndex(0)
+							->setCellValue('A'.$idx, $order['id'])
+							->setCellValue('B'.$idx, $order['customer_id'])
+							->setCellValue('C'.$idx, $product)
+							->setCellValue('D'.$idx, '')
+							->setCellValue('E'.$idx, $info['cnt'])
+							->setCellValue('F'.$idx, $service_fee)
+							->setCellValue('G'.$idx, $order['date']);
+				$idx++;
+			}
+
 		}
 
 		$objPHPExcel->setActiveSheetIndex(0)

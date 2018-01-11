@@ -30,9 +30,9 @@ class Fee
 			$crewpak == '79315CSP' || 
 			$crewpak == '79315KSP' || 
 			$crewpak == 'P79168CSP' || 
+			$crewpak == 'P70139CL' || 
+			$crewpak == 'P70139KL' || 
 			$crewpak == 'P79315CSP'
-
-
 		){
 			if(0 == strcmp('xm', $warehouse)){
 				$fee = 2 * $qty;
@@ -50,7 +50,23 @@ class Fee
 
 	static public function getProductServiceFee($qty, $warehouse, $product){
 
-		if($product == '70150K'){
+		if($product == '70150K' ||
+			$product == '60020C' ||
+			$product == '60020K' ||
+			$product == '60038C' ||
+			$product == '60134K' ||
+			$product == '60303C' ||
+			$product == '60303K' ||
+			$product == '60303SC' ||
+			$product == '60304C' ||
+			$product == '60304K' ||
+			$product == '60330C' ||
+			$product == '60330K' ||
+			$product == '60346C' ||
+			$product == '61301C' ||
+			$product == '61301K' ||
+			$product == '70149C'
+		){
 			if(0 == strcmp('xm', $warehouse)){
 				$fee = 7 * $qty;
 			} else {
