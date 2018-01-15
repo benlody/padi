@@ -30,10 +30,19 @@ $this->params['breadcrumbs'][] = $this->title;
 		<div class="help-block"></div>
 		</div>
 
-		<?= $form->field($assemble_order_model, 'warehouse', ['labelOptions' => ['label' => '倉儲']])->dropDownList([
-			'xm' => '廈門卡樂兒',
-			'tw' => '台灣光隆',
-			])
+		<?php 
+				if('fenix' == Yii::$app->user->identity->username){
+					$ware_opt = [
+						'tw' => '台灣光隆',
+					];
+				} else {
+					$ware_opt = [
+						'xm' => '廈門卡樂兒',
+						'tw' => '台灣光隆',
+					];
+				}
+
+			echo $form->field($assemble_order_model, 'warehouse', ['labelOptions' => ['label' => '倉儲']])->dropDownList($ware_opt)
 		?>
 
 		<div>

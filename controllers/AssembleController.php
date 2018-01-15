@@ -47,32 +47,70 @@ class AssembleController extends \yii\web\Controller
 			throw new NotFoundHttpException('The requested page does not exist.');
 		}
 
-		$assemble = new Assemble();
 		$assemble_order_model = new AssembleOrder;
-
 		$post_param = Yii::$app->request->post();
 
 		if($post_param["AssembleOrder"]){
 
+			$assemble = $post_param['AssembleOrder']['assemble'];
+			$assemble_model = Assemble::findOne($post_param['AssembleOrder']['assemble']);
 			$post_param['AssembleOrder']['date'] = date("Y-m-d", strtotime($post_param['AssembleOrder']['date']));
-			$post_param['AssembleOrder']['id'] = $post_param['AssembleOrder']['id'].'-'.$post_param['AssembleOrder']['assemble'];
+			$post_param['AssembleOrder']['id'] = $post_param['AssembleOrder']['id'].'-'.$post_param['AssembleOrder']['warehouse'].'-'.$post_param['AssembleOrder']['assemble'];
+			$post_param['AssembleOrder']['done_date'] = $post_param['AssembleOrder']['date'];
+			$done_date = $post_param['AssembleOrder']['done_date'];
+			$warehouse = $post_param['AssembleOrder']['warehouse'];
 
 			foreach ($post_param['AssembleOrder'] as $key => $value) {
 				$assemble_order_model->$key = $value;
 			}
-			$assemble_order_model->status = AssembleOrder::STATUS_NEW;
+			$assemble_order_model->status = AssembleOrder::STATUS_DONE;
 
 			//FIXME error handle
 			$assemble_order_model->insert();
 
+			$padi_balance_model = new Balance1($warehouse, 'padi');
+			$padi_transaction_model = new Transaction1($warehouse, 'padi');
+			get_balance($padi_balance_model, $warehouse, 'padi');
+
+			$now = strtotime('now');
+			$padi_transaction_model->serial = 'AO_'.$post_param['AssembleOrder']['id'].'_'.$now;;
+			$padi_balance_model->serial = 'AO_'.$post_param['AssembleOrder']['id'].'_'.$now;;
+			$padi_transaction_model->date = $done_date;
+			$padi_balance_model->date = $done_date;
+
+			$content = json_decode($assemble_model->content,true);
+			$qty = $assemble_order_model->qty;
+			$padi_transaction_model->$assemble = $qty;
+			$padi_balance_model->$assemble = $padi_balance_model->$assemble + $padi_transaction_model->$assemble;
+			foreach ($content as $key => $value) {
+				$padi_transaction_model->$key -= $value * $assemble_order_model->qty;
+				$padi_balance_model->$key = $padi_balance_model->$key + $padi_transaction_model->$key;
+			}
+
+			$padi_transaction_model->insert();
+			$padi_balance_model->insert();
+
+
+			$body = $this->renderPartial('done_mail', [
+						'id' => $post_param['AssembleOrder']['id'],
+						'warehouse' => $warehouse,
+						'product' => $assemble,
+						'qty' => $qty,
+						]);
+			$subject = YII_ENV_DEV ? 'Assemble Work Finished (Test) - '.$post_param['AssembleOrder']['id'] : 'Assemble Work Finished - '.$post_param['AssembleOrder']['id'];
+			$this->sendMail($body, $subject);
+
 			$log = new Log();
 			$log->username = Yii::$app->user->identity->username;
-			$log->action = 'Add Assemble Order ['.$model->id.']';
+			$log->action = 'Finish Assemble ['.$post_param['AssembleOrder']['id'].']';
 			$log->insert();
 
-			return $this->redirect(['list']);
+			return $this->redirect(['list', 'status' => 'done', 'sort' => '-done_date']);
+
+
 
 		} else {
+			$assemble = new Assemble();
 			return $this->render('add', [
 				'assemble_order_model' => $assemble_order_model,
 				'assemble' =>  $assemble->find()->column()

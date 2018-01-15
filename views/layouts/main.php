@@ -79,8 +79,8 @@ AppAsset::register($this);
 							 '<li class="divider"></li>',
 							 '<li class="dropdown-header" align="center"><font color="green">'.Yii::t('app', 'Assemble').'</font></li>',
 							 ['label' => Yii::t('app', 'Add Assemble'), 'url' => ['/assemble/add']],
-							 ['label' => Yii::t('app', 'Assemble List'), 'url' => ['/assemble/list', 'sort' => '-date']],
-							 ['label' => Yii::t('app', 'Assemble Bill'), 'url' => ['/assemble/bill']],
+							 ['label' => Yii::t('app', 'Assemble List'), 'url' => ['/assemble/list', 'status' => 'done', 'sort' => '-done_date']],
+//							 ['label' => Yii::t('app', 'Assemble Bill'), 'url' => ['/assemble/bill']],
 						],
 					],
 					[
@@ -303,8 +303,8 @@ AppAsset::register($this);
 							 '<li class="divider"></li>',
 							 '<li class="dropdown-header" align="center"><font color="green">'.Yii::t('app', 'Assemble').'</font></li>',
 							 ['label' => Yii::t('app', 'Add Assemble'), 'url' => ['/assemble/add']],
-							 ['label' => Yii::t('app', 'Assemble List'), 'url' => ['/assemble/list', 'sort' => '-date']],
-							 ['label' => Yii::t('app', 'Assemble Bill'), 'url' => ['/assemble/bill']],
+							 ['label' => Yii::t('app', 'Assemble List'), 'url' => ['/assemble/list', 'status' => 'done', 'sort' => '-done_date']],
+//							 ['label' => Yii::t('app', 'Assemble Bill'), 'url' => ['/assemble/bill']],
 						],
 					],
 					[

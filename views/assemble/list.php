@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use yii\grid\GridView;
 use app\models\Order;
+use app\models\User;
 
 require_once __DIR__  . '/../../utils/utils.php';
 
@@ -101,7 +102,12 @@ $this->params['breadcrumbs'][] = $this->title;
 		}
 	?>
 	<h1><?= Html::encode($this->title.$subtitle) ?></h1>
-	<?= Html::a($btn_lable, $btn_cfg, ['class' => 'btn btn-primary']) ?>
+	<?//= Html::a($btn_lable, $btn_cfg, ['class' => 'btn btn-primary']) ?>
+	<?php
+		if(Yii::$app->user->identity->group <= User::GROUP_KL){
+			echo Html::a(Yii::t('app', 'Add Assemble'), ['add'], ['class' => 'btn btn-success']);
+		}
+	?>
 	<?= GridView::widget($config); ?>
 
 </div>
