@@ -883,10 +883,13 @@ class OrderController extends \yii\web\Controller
 			$to = date("Y-m-d", strtotime("last day of this month"));
 		}
 
+		$to1 = str_replace('-', '/', $to);
+		$to2 = date('Y-m-d',strtotime($to1 . "+1 days"));
+
 		$query = new Query;
 		$orders_kpi = $query->select('id, ctime, dtime')
 						->from('order')
-						->where('warehouse = "'.$warehouse.'" AND status != 0 AND done_date IS NOT NULL AND (dtime BETWEEN  "'.$from.'" AND "'.$to.'" OR ctime BETWEEN  "'.$from.'" AND "'.$to.'")')
+						->where('warehouse = "'.$warehouse.'" AND status != 0 AND done_date IS NOT NULL AND (dtime BETWEEN  "'.$from.'" AND "'.$to2.'" OR ctime BETWEEN  "'.$from.'" AND "'.$to2.'")')
 						->orderBy('id ASC')
 						->all();
 
