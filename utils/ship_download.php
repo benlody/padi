@@ -1533,5 +1533,84 @@ function custom_download($orders_export, $orders_dhl, $transfer_dhl_send, $trans
 }
 
 
+function kpi_download($kpis, $warehouse, $from, $to){
+
+	$objPHPExcel = new \PHPExcel();
+
+	// Set document properties
+	$objPHPExcel->getProperties()->setCreator("Kuang Lung")
+								 ->setLastModifiedBy("Kuang Lung")
+								 ->setTitle('KPI report ('.$warehouse.') '.date("Y-m", strtotime($from)))
+								 ->setSubject('KPI report ('.$warehouse.') '.date("Y-m", strtotime($from)))
+								 ->setDescription('KPI report ('.$warehouse.') '.date("Y-m", strtotime($from)));
+
+	$idx = 2;
+	$total_service_fee = 0;
+	$total_req_fee = 0;
+
+	$objPHPExcel->getActiveSheet()->getColumnDimension('A')->setWidth(15);
+	$objPHPExcel->getActiveSheet()->getColumnDimension('B')->setWidth(20);
+	$objPHPExcel->getActiveSheet()->getColumnDimension('C')->setWidth(20);
+	$objPHPExcel->getActiveSheet()->getColumnDimension('D')->setWidth(15);
+
+	$objPHPExcel->setActiveSheetIndex(0)
+				->setCellValue('A1', 'KPI report ('.$warehouse.') '.date("Y-m", strtotime($from)));
+	$objPHPExcel->setActiveSheetIndex(0)->mergeCells('A1:D1');
+	$objPHPExcel->getActiveSheet()->getStyle('A1')->getFont()->setSize(22);
+
+	$objPHPExcel->setActiveSheetIndex(0)
+				->setCellValue('A'.$idx, 'Order#')
+				->setCellValue('B'.$idx, 'Create Time')
+				->setCellValue('C'.$idx, 'Delivery Time')
+				->setCellValue('D'.$idx, 'Pass');
+	$objPHPExcel->getActiveSheet()->getStyle('A'.$idx.':D'.$idx)->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID);
+	$objPHPExcel->getActiveSheet()->getStyle('A'.$idx.':D'.$idx)->getFill()->getStartColor()->setRGB('6ea9ec');
+
+
+	$idx++;
+
+	foreach ($kpis as $kpi) {
+
+		$objPHPExcel->setActiveSheetIndex(0)
+					->setCellValue('A'.$idx, $kpi['id'])
+					->setCellValue('B'.$idx, $kpi['ctime'])
+					->setCellValue('C'.$idx, $kpi['dtime'])
+					->setCellValue('D'.$idx, $kpi['pass'] ? 'TRUE' : 'FALSE');
+		$idx++;
+	}
+
+
+	// Rename worksheet
+	$objPHPExcel->getActiveSheet()->setTitle('kpi '.date("Y-m", strtotime($from)));
+	$objPHPExcel->getActiveSheet()->getStyle('B2:B'.$idx)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+	$objPHPExcel->getActiveSheet()->getStyle('C2:C'.$idx)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+	$objPHPExcel->getActiveSheet()->getStyle('D2:D'.$idx)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+	$objPHPExcel->getActiveSheet()->getStyle('A2:A'.$idx)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
+	$objPHPExcel->getActiveSheet()->getStyle('A1:D1')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+	$objPHPExcel->getActiveSheet(0)->getStyle('A1:D'.$idx)->getBorders()->getAllborders()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
+
+	// Set active sheet index to the first sheet, so Excel opens this as the first sheet
+	$objPHPExcel->setActiveSheetIndex(0);
+
+	// Redirect output to a client’s web browser (Excel5)
+	header('Content-Type: application/vnd.ms-excel');
+	header('Content-Disposition: attachment;filename="'.'KPI report ('.$warehouse.') '.date("Y-m", strtotime($from)).'.xls"');
+	header('Cache-Control: max-age=0');
+	// If you're serving to IE 9, then the following may be needed
+	header('Cache-Control: max-age=1');
+
+	// If you're serving to IE over SSL, then the following may be needed
+	header ('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
+	header ('Last-Modified: '.gmdate('D, d M Y H:i:s').' GMT'); // always modified
+	header ('Cache-Control: cache, must-revalidate'); // HTTP/1.1
+	header ('Pragma: public'); // HTTP/1.0
+
+	$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
+	ob_end_clean(); 
+
+	$objWriter->save('php://output');
+
+}
+
 
 ?>

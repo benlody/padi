@@ -869,6 +869,37 @@ class OrderController extends \yii\web\Controller
 		custom_download($orders_export, $orders_dhl, $transfer_dhl_send, $transfer_dhl_recv, $transfer_seaair_send, $transfer_seaair_recv, $certcard_dhl_recv, $to, $from);
 	}
 
+	public function actionDownload_kpi($warehouse='xm', $from='', $to='')
+	{
+		if(Yii::$app->user->identity->group > User::GROUP_KL){
+			throw new NotFoundHttpException('The requested page does not exist.');
+		}
+		$kpis = array();
+
+		if(!$from){
+			$from = date("Y-m-d", strtotime("first day of this month"));
+		}
+		if(!$to){
+			$to = date("Y-m-d", strtotime("last day of this month"));
+		}
+
+		$query = new Query;
+		$orders_kpi = $query->select('id, ctime, dtime')
+						->from('order')
+						->where('warehouse = "'.$warehouse.'" AND status != 0 AND done_date IS NOT NULL AND (dtime BETWEEN  "'.$from.'" AND "'.$to.'" OR ctime BETWEEN  "'.$from.'" AND "'.$to.'")')
+						->orderBy('id ASC')
+						->all();
+
+
+		foreach ($orders_kpi as $order_kpi) {
+			$order_kpi['interval'] = $this->number_of_working_days($order_kpi['ctime'], $order_kpi['dtime']);
+			$order_kpi['pass'] = $order_kpi['interval'] < 2;
+			array_push($kpis, $order_kpi);
+		}		
+
+
+		kpi_download($kpis, $warehouse, $to, $from);
+	}
 
 	public function actionAjaxFee()
 	{
@@ -877,6 +908,24 @@ class OrderController extends \yii\web\Controller
 		$req_fee = \Fee::getShipFreightFee($post_param['org_fee'], $post_param['region'], $post_param['warehouse'], $post_param['type'], $post_param['weight'], $post_param['box']);
 
 		return $req_fee;
+	}
+
+	protected function number_of_working_days($from, $to) {
+		$workingDays = [1, 2, 3, 4, 5]; # date format = N (1 = Monday, ...)
+
+		$from_ = new \DateTime($from);
+		$to_ = new \DateTime($to);
+		$from = new \DateTime($from_->format('Y-m-d'));
+		$to = new \DateTime($to_->format('Y-m-d'));
+		$interval = new \DateInterval('P1D');
+		$periods = new \DatePeriod($from, $interval, $to);
+
+		$days = 0;
+		foreach ($periods as $period) {
+			if (!in_array($period->format('N'), $workingDays)) continue;
+			$days++;
+		}
+		return $days;
 	}
 
 	protected function sendMail($body, $subject, $azure = false, $kitty = false, $gina = false, $kim = false, $young = false){

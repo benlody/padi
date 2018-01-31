@@ -12,5 +12,3 @@ use yii\helpers\Url;
 <p>Warehouse:<?= $warehouse?></p>
 <p>Product:<?= $product?></p>
 <p>Qty:<?= $qty?></p>
-
-?>

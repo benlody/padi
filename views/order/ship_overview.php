@@ -92,8 +92,14 @@ $this->registerCssFile(Yii::$app->request->getBaseUrl().'/css/transaction_table_
 					'to' => $to,
 					'warehouse' => 'tw',
 				], ['class' => 'btn btn-success']).'&nbsp;&nbsp;';
-
 		}
+
+		echo Html::a('下載KPI報表', ['download_kpi',
+				'from' => $from,
+				'to' => $to,
+				'warehouse' => $warehouse,
+			], ['class' => 'btn btn-success']).'&nbsp;&nbsp;';
+
 
 /*
 		if($warehouse == 'tw'){
