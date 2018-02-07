@@ -105,7 +105,7 @@ class CertcardController extends Controller
 
 			$log = new Log();
 			$log->username = Yii::$app->user->identity->username;
-			$log->action = 'Add CertCard ['.$model->DHL.']';
+			$log->action = 'Add CertCard ['.$post_param['Certcard']['DHL'].']';
 			$log->insert();
 
 			return $this->redirect(['list', 'sort' => '-t_send_date']);

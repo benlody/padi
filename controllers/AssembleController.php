@@ -90,14 +90,23 @@ class AssembleController extends \yii\web\Controller
 			$padi_transaction_model->insert();
 			$padi_balance_model->insert();
 
-
+			if($assemble == '60020C'){
+				$assemble_product = '70120C & 60020C';
+			} else {
+				$assemble_product = $assemble;
+			}
+			if (strpos($post_param['AssembleOrder']['id'], '60020C') !== false) {
+				$assemble_id = $post_param['AssembleOrder']['id'].' & 70120C';
+			} else {
+				$assemble_id = $post_param['AssembleOrder']['id'];
+			}
 			$body = $this->renderPartial('done_mail', [
-						'id' => $post_param['AssembleOrder']['id'],
+						'id' => $assemble_id,
 						'warehouse' => $warehouse,
-						'product' => $assemble,
+						'product' => $assemble_product,
 						'qty' => $qty,
 						]);
-			$subject = YII_ENV_DEV ? 'Assemble Work Finished (Test) - '.$post_param['AssembleOrder']['id'] : 'Assemble Work Finished - '.$post_param['AssembleOrder']['id'];
+			$subject = YII_ENV_DEV ? 'Assemble Work Finished (Test) - '.$assemble_id : 'Assemble Work Finished - '.$assemble_id;
 			$this->sendMail($body, $subject);
 
 			$log = new Log();
