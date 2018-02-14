@@ -895,8 +895,15 @@ class OrderController extends \yii\web\Controller
 
 
 		foreach ($orders_kpi as $order_kpi) {
+			$hour_ = new \DateTime($order_kpi['ctime']);
+			$hour = $hour_->format('H');
+
 			$order_kpi['interval'] = $this->number_of_working_days($order_kpi['ctime'], $order_kpi['dtime']);
-			$order_kpi['pass'] = $order_kpi['interval'] < 2;
+			if($hour < 12){
+				$order_kpi['pass'] = $order_kpi['interval'] < 1;
+			} else {
+				$order_kpi['pass'] = $order_kpi['interval'] < 2;
+			}
 			array_push($kpis, $order_kpi);
 		}		
 
