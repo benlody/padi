@@ -101,6 +101,19 @@ class AssembleController extends \yii\web\Controller
 				$subject = YII_ENV_DEV ? 'Assemble Work Finished (Test) - '.$a_id : 'Assemble Work Finished - '.$a_id;
 				$this->sendMail($body, $subject);
 			}
+
+			if($assemble == '60038C'){
+				$a_id = str_replace("60038C","70513C",$post_param['AssembleOrder']['id']);
+				$body = $this->renderPartial('done_mail', [
+							'id' => $a_id,
+							'warehouse' => $warehouse,
+							'product' => '70513C',
+							'qty' => $qty,
+							]);
+				$subject = YII_ENV_DEV ? 'Assemble Work Finished (Test) - '.$a_id : 'Assemble Work Finished - '.$a_id;
+				$this->sendMail($body, $subject);
+			}
+
 			$body = $this->renderPartial('done_mail', [
 						'id' => $post_param['AssembleOrder']['id'],
 						'warehouse' => $warehouse,
