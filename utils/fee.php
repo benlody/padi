@@ -54,6 +54,7 @@ class Fee
 			$product == '60020C' ||
 			$product == '60020K' ||
 			$product == '60038C' ||
+			$product == '60038K' ||
 			$product == '60134K' ||
 			$product == '60303C' ||
 			$product == '60303K' ||
