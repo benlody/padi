@@ -940,16 +940,15 @@ class OrderController extends \yii\web\Controller
 
 	protected function sendMail($body, $subject, $azure = false, $kitty = false, $gina = false, $kim = false, $young = false){
 		$mail = new \PHPMailer;
-
 		$mail->isSMTP();
-		$mail->Host = 'smtp.gmail.com';
+		$mail->Host = 'ssl://smtp.gmail.com';
 		$mail->SMTPAuth = true;
 		$mail->Username = 'notify@lang-win.com.tw';
-		$mail->Password = '23314526';
+		$mail->Password = '29999099lang';
 		$mail->SMTPSecure = 'tls';
-		$mail->Port = 587;
+		$mail->Port = 465;
 		$mail->setFrom('notify@lang-win.com.tw', 'Notification');
-		$mail->addAddress('jack@lang-win.com.tw');
+		$mail->addAddress('jack@lang-win.com.tw');		
 		$mail->addAddress('pc-mippi@lang-win.com.tw');
 		$mail->addAddress('jenny@lang-win.com.tw');
 		$mail->addAddress('yiyin.chen@lang-win.com.tw');
