@@ -197,6 +197,7 @@ class Fee
 					break;
 
 				case 'Sichuan': //'四川'
+				case 'Hunan': //'湖南'
 				case 'Chengdu': //'成都'
 				case 'Guiyang': //'貴陽'
 				case 'Chongqing': //'重慶'

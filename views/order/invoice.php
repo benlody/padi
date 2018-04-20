@@ -100,6 +100,7 @@ $this->registerJsFile(Yii::$app->request->getBaseUrl().'/js/order_invoice.js',['
 			<option value="Fuzhou">福州</option>
 			<option value="Xiamen">廈門</option>
 			<option value="Sichuan">四川</option>
+			<option value="Hunan">湖南</option>
 			<option value="Chengdu">成都</option>
 			<option value="HongKong">香港/澳門</option>
 			<option value="Korea">韓國</option>

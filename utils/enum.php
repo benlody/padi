@@ -146,6 +146,7 @@ class ShippingRegion
 			'Fuzhou' => '福州',
 			'Xiamen' => '廈門',
 			'Sichuan' => '四川',
+			'Hunan' => '湖南',
 			'Chengdu' => '成都',
 			'HongKong' => '香港/澳門',
 			'Korea' => '韓國',
