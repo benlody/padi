@@ -37,9 +37,53 @@ $this->registerJsFile(Yii::$app->request->getBaseUrl().'/js/inventory_overview.j
 				'safety:text:'.Yii::t('app', 'Safety Stock'),
 			],
 		];
+
+		$config_crewpak = [
+			'dataProvider' => $provider_crewpak,
+			'columns' => [
+				'warehouse:text:'.Yii::t('app', 'warehouse'),
+				'id:text:'.Yii::t('app', 'Product No.'),
+				[
+					'attribute' => 'padi',
+					'format' => 'raw',
+					'label' => Yii::t('app', 'Balance'),
+					'value' => function ($model) {
+						if($model['safety'] > $model['padi']){
+							return '<font color="red">'.$model['padi'].'</font>';
+						} else {
+							return $model['padi'];
+						}
+					}
+				],
+				'safety:text:'.Yii::t('app', 'Safety Stock'),
+			],
+		];
+
 	} else {
 		$config = [
 			'dataProvider' => $provider,
+			'columns' => [
+				'warehouse:text:'.Yii::t('app', 'warehouse'),
+				'id:text:'.Yii::t('app', 'Product No.'),
+				[
+					'attribute' => 'padi',
+					'format' => 'raw',
+					'label' => Yii::t('app', 'PADI Balance'),
+					'value' => function ($model) {
+						if($model['safety'] > $model['padi']){
+							return '<font color="red">'.$model['padi'].'</font>';
+						} else {
+							return $model['padi'];
+						}
+					}
+				],
+				'self:text:'.Yii::t('app', 'Self Balance'),
+				'safety:text:'.Yii::t('app', 'Safety Stock'),
+			],
+		];
+
+		$config_crewpak = [
+			'dataProvider' => $provider_crewpak,
 			'columns' => [
 				'warehouse:text:'.Yii::t('app', 'warehouse'),
 				'id:text:'.Yii::t('app', 'Product No.'),
@@ -63,6 +107,7 @@ $this->registerJsFile(Yii::$app->request->getBaseUrl().'/js/inventory_overview.j
 
 
 
+
 ?>
 <div>
 	<h2><? echo get_warehouse_name($warehouse).'&nbsp;&nbsp;&nbsp;&nbsp;'.date("Y-m-d", strtotime('now')); ?></h2>
@@ -80,6 +125,9 @@ $this->registerJsFile(Yii::$app->request->getBaseUrl().'/js/inventory_overview.j
 	<?= Html::button(Yii::t('app', 'Print'), ['class' => 'btn btn-success', 'onclick' => "PrintElem('#print', '".get_warehouse_name($warehouse).'&nbsp;&nbsp;&nbsp;&nbsp;'.date("Y-m-d", strtotime('now'))."')"]) ?>
 -->
 	<div id="print">
+		<h2>Crew Pak</h2>
+		<?= GridView::widget($config_crewpak); ?>
+		<h2>All Product</h2>
 		<?= GridView::widget($config); ?>
 	</div>
 </div>

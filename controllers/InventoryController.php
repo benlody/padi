@@ -125,6 +125,7 @@ class InventoryController extends \yii\web\Controller
 		$product = new Product();
 		$product_aray = $product->find()->column();
 		$overview = array();
+		$overview_crewpak = array();
 
 		if(Yii::$app->user->identity->group == User::GROUP_XM && $warehouse != 'xm'){
 			throw new NotFoundHttpException('The requested page does not exist.');
@@ -146,6 +147,13 @@ class InventoryController extends \yii\web\Controller
 						->from('product')
 						->all();
 
+		if('xm' == $warehouse){
+			$crewpak_array = array("60020C", "60038C", "60303C", "60303SC", "60304C", "60346SC", "61301C", "61301SC");
+		} else {
+			$crewpak_array = array("60020C", "60020K", "60038C", "60038K", "60134K", "60303C", "60303K", "60304C", 
+									"60304K", "60346C", "61301C", "61301K", "70120K", "70149C", "70150K", "70513KX");
+		}
+
 		foreach ($safety as $value) {
 			$safety_stock[$value['id']] = $value['warning_cnt_'.$warehouse];
 		}
@@ -157,6 +165,13 @@ class InventoryController extends \yii\web\Controller
 				$overview[$p]['padi'] = $padi_balance[$p] ? $padi_balance[$p] : 0;
 				$overview[$p]['self'] = $self_balance[$p] ? $self_balance[$p] : 0;
 				$overview[$p]['safety'] = $safety_stock[$p] ? $safety_stock[$p] : 0;
+				if (in_array($p, $crewpak_array)){
+					$overview_crewpak[$p]['warehouse'] = $warehouse;
+					$overview_crewpak[$p]['id'] = $p;
+					$overview_crewpak[$p]['padi'] = $padi_balance[$p] ? $padi_balance[$p] : 0;
+					$overview_crewpak[$p]['self'] = $self_balance[$p] ? $self_balance[$p] : 0;
+					$overview_crewpak[$p]['safety'] = $safety_stock[$p] ? $safety_stock[$p] : 0;
+				}
 			}
 		}
 
@@ -167,9 +182,18 @@ class InventoryController extends \yii\web\Controller
 				],
 		]);
 
+		$provider_crewpak = new ArrayDataProvider([
+				'allModels' => $overview_crewpak,
+				'pagination' => [
+					'pageSize' => 500,
+				],
+		]);
+
+
 		return $this->render('overview', [
 				'warehouse' => $warehouse,
 				'provider' => $provider,
+				'provider_crewpak' => $provider_crewpak,
 		]);
 	}
 
