@@ -1548,23 +1548,27 @@ function kpi_download($kpis, $warehouse, $from, $to){
 	$total_service_fee = 0;
 	$total_req_fee = 0;
 
-	$objPHPExcel->getActiveSheet()->getColumnDimension('A')->setWidth(15);
-	$objPHPExcel->getActiveSheet()->getColumnDimension('B')->setWidth(20);
+	$objPHPExcel->getActiveSheet()->getColumnDimension('A')->setWidth(12);
+	$objPHPExcel->getActiveSheet()->getColumnDimension('B')->setWidth(15);
 	$objPHPExcel->getActiveSheet()->getColumnDimension('C')->setWidth(20);
-	$objPHPExcel->getActiveSheet()->getColumnDimension('D')->setWidth(15);
+	$objPHPExcel->getActiveSheet()->getColumnDimension('D')->setWidth(20);
+	$objPHPExcel->getActiveSheet()->getColumnDimension('E')->setWidth(15);
+	$objPHPExcel->getActiveSheet()->getColumnDimension('F')->setWidth(35);
 
 	$objPHPExcel->setActiveSheetIndex(0)
 				->setCellValue('A1', 'KPI report ('.$warehouse.') '.date("Y-m", strtotime($from)));
-	$objPHPExcel->setActiveSheetIndex(0)->mergeCells('A1:D1');
+	$objPHPExcel->setActiveSheetIndex(0)->mergeCells('A1:F1');
 	$objPHPExcel->getActiveSheet()->getStyle('A1')->getFont()->setSize(22);
 
 	$objPHPExcel->setActiveSheetIndex(0)
-				->setCellValue('A'.$idx, 'Order#')
-				->setCellValue('B'.$idx, 'Create Time')
-				->setCellValue('C'.$idx, 'Delivery Time')
-				->setCellValue('D'.$idx, 'Pass');
-	$objPHPExcel->getActiveSheet()->getStyle('A'.$idx.':D'.$idx)->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID);
-	$objPHPExcel->getActiveSheet()->getStyle('A'.$idx.':D'.$idx)->getFill()->getStartColor()->setRGB('6ea9ec');
+				->setCellValue('A'.$idx, 'No')
+				->setCellValue('B'.$idx, 'Order#')
+				->setCellValue('C'.$idx, 'Create Time')
+				->setCellValue('D'.$idx, 'Delivery Time')
+				->setCellValue('E'.$idx, 'Pass')
+				->setCellValue('F'.$idx, 'Remark');
+	$objPHPExcel->getActiveSheet()->getStyle('A'.$idx.':F'.$idx)->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID);
+	$objPHPExcel->getActiveSheet()->getStyle('A'.$idx.':F'.$idx)->getFill()->getStartColor()->setRGB('6ea9ec');
 
 
 	$idx++;
@@ -1572,22 +1576,21 @@ function kpi_download($kpis, $warehouse, $from, $to){
 	foreach ($kpis as $kpi) {
 
 		$objPHPExcel->setActiveSheetIndex(0)
-					->setCellValue('A'.$idx, $kpi['id'])
-					->setCellValue('B'.$idx, $kpi['ctime'])
-					->setCellValue('C'.$idx, $kpi['dtime'])
-					->setCellValue('D'.$idx, $kpi['pass'] ? 'TRUE' : 'FALSE');
+					->setCellValue('A'.$idx, $idx-2)
+					->setCellValue('B'.$idx, $kpi['id'])
+					->setCellValue('C'.$idx, $kpi['ctime'])
+					->setCellValue('D'.$idx, $kpi['dtime'])
+					->setCellValue('E'.$idx, $kpi['pass'] ? 'TRUE' : 'FALSE');
 		$idx++;
 	}
 
 
 	// Rename worksheet
 	$objPHPExcel->getActiveSheet()->setTitle('kpi '.date("Y-m", strtotime($from)));
-	$objPHPExcel->getActiveSheet()->getStyle('B2:B'.$idx)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
-	$objPHPExcel->getActiveSheet()->getStyle('C2:C'.$idx)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
-	$objPHPExcel->getActiveSheet()->getStyle('D2:D'.$idx)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
-	$objPHPExcel->getActiveSheet()->getStyle('A2:A'.$idx)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
-	$objPHPExcel->getActiveSheet()->getStyle('A1:D1')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
-	$objPHPExcel->getActiveSheet(0)->getStyle('A1:D'.$idx)->getBorders()->getAllborders()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
+	$objPHPExcel->getActiveSheet()->getStyle('A2:E'.$idx)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+	$objPHPExcel->getActiveSheet()->getStyle('F2:F'.$idx)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
+	$objPHPExcel->getActiveSheet()->getStyle('A1:F1')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+	$objPHPExcel->getActiveSheet(0)->getStyle('A1:F'.$idx)->getBorders()->getAllborders()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
 
 	// Set active sheet index to the first sheet, so Excel opens this as the first sheet
 	$objPHPExcel->setActiveSheetIndex(0);

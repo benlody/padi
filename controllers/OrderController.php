@@ -890,7 +890,7 @@ class OrderController extends \yii\web\Controller
 		$orders_kpi = $query->select('id, ctime, dtime')
 						->from('order')
 						->where('warehouse = "'.$warehouse.'" AND status != 0 AND done_date IS NOT NULL AND (dtime BETWEEN  "'.$from.'" AND "'.$to2.'" OR ctime BETWEEN  "'.$from.'" AND "'.$to2.'")')
-						->orderBy('id ASC')
+						->orderBy('dtime ASC')
 						->all();
 
 
