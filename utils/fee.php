@@ -35,15 +35,15 @@ class Fee
 			$crewpak == 'P79315CSP'
 		){
 			if(0 == strcmp('xm', $warehouse)){
-				$fee = 2 * $qty;
+				$fee = 2.6 * $qty;
 			} else {
-				$fee = round((5 * $qty) * 100 / 22) / 100;
+				$fee = round((6.5 * $qty) * 100 / 22) / 100;
 			}
 		}
 		else if(0 == strcmp('xm', $warehouse)){
-			$fee = 7 * $qty;
+			$fee = 9.1 * $qty;
 		} else {
-			$fee = round((30 * $qty) * 100 / 22) / 100;
+			$fee = round((39 * $qty) * 100 / 22) / 100;
 		}
 		return $fee;
 	}
@@ -69,15 +69,15 @@ class Fee
 			$product == '70149C'
 		){
 			if(0 == strcmp('xm', $warehouse)){
-				$fee = 7 * $qty;
+				$fee = 9.1 * $qty;
 			} else {
-				$fee = round((30 * $qty) * 100 / 22) / 100;
+				$fee = round((39 * $qty) * 100 / 22) / 100;
 			}
 		} else {
 			if(0 == strcmp('xm', $warehouse)){
-				$fee = 2 * $qty;
+				$fee = 2.6 * $qty;
 			} else {
-				$fee = round((5 * $qty) * 100 / 22) / 100;
+				$fee = round((6.5 * $qty) * 100 / 22) / 100;
 			}
 		}
 
