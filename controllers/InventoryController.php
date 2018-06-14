@@ -400,7 +400,7 @@ class InventoryController extends \yii\web\Controller
 	{
 		$post_param = Yii::$app->request->post();
 		$query = new Query;
-		$balance = $query->select($post_param["id"])
+		$balance = $query->select('`'.$post_param["id"].'`')
 						->from($post_param["balance"])
 						->orderBy('ts DESC')
 						->limit(1)
