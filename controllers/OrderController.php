@@ -1258,6 +1258,8 @@ class OrderController extends \yii\web\Controller
 			echo chineseToUnicode('送货方式：□顺丰次日 □顺丰隔日 ■顺丰物流普运').'</p>';
 		} else if ($model->ship_type == \ShippingType::T_SELFPICK){
 			echo chineseToUnicode('送货方式：□顺丰次日 □顺丰隔日 □顺丰物流普运 ■客戶自取').'</p>';
+		} else if ($model->ship_type == \ShippingType::T_DPN){
+			echo chineseToUnicode('送货方式：■德邦物流').'</p>';
 		} else {
 			echo chineseToUnicode('送货方式：□顺丰次日 □顺丰隔日 □顺丰物流普运').'</p>';
 		}

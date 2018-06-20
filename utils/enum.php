@@ -6,6 +6,7 @@ class ShippingType
 	const T_STD_EXPR = 0;
 	const T_SF_SP = 1;
 	const T_SF_NORMAL = 2;
+	const T_DPN = 3;
 	const T_CHI_MAIL = 10;
 	const T_SF = 11;
 	const T_NEW = 12;
@@ -26,7 +27,8 @@ class ShippingType
 			'' => '',
 			0 => '順丰次日',
 			1 => '順丰隔日',
-			2 => '物流普運',
+			2 => '順丰物流普運',
+			3 => '德邦物流',
 			10 => '中華郵政',
 			11 => '順丰快遞',
 			12 => '新航快遞',
@@ -48,7 +50,8 @@ class ShippingType
 			'' => '',
 			0 => 'SF Next Day',
 			1 => 'SF Third Day',
-			2 => 'Land',
+			2 => 'SF Land',
+			3 => 'Deppon',
 			10 => 'Post Office',
 			11 => 'SF Express',
 			12 => 'Hiyes Express',
@@ -79,7 +82,8 @@ class ShippingType
 			'' => '',
 			0 => '順丰次日',
 			1 => '順丰隔日',
-			2 => '物流普運',
+			2 => '順丰物流普運',
+			3 => '德邦物流',
 			20 => '客戶自取'
 		);
 	}
