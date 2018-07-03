@@ -51,22 +51,33 @@ class Fee
 	static public function getProductServiceFee($qty, $warehouse, $product){
 
 		if($product == '70150K' ||
+			$product == '70150C' ||
+			$product == '70150SC' ||
 			$product == '60020C' ||
+			$product == '60020SC' ||
 			$product == '60020K' ||
 			$product == '60038C' ||
 			$product == '60038K' ||
+			$product == '60134C' ||
+			$product == '60134SC' ||
 			$product == '60134K' ||
 			$product == '60303C' ||
-			$product == '60303K' ||
 			$product == '60303SC' ||
+			$product == '60303K' ||
 			$product == '60304C' ||
+			$product == '60304SC' ||
 			$product == '60304K' ||
 			$product == '60330C' ||
+			$product == '60330SC' ||
 			$product == '60330K' ||
 			$product == '60346C' ||
+			$product == '60346SC' ||
+			$product == '60346K' ||
 			$product == '61301C' ||
+			$product == '61301SC' ||
 			$product == '61301K' ||
-			$product == '70149C'
+			$product == '70149C' ||
+			$product == '70149SC'
 		){
 			if(0 == strcmp('xm', $warehouse)){
 				$fee = 9.1 * $qty;
