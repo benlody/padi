@@ -342,6 +342,7 @@ function ship_download_service($orders, $warehouse, $from, $to){
 			if($product == '60020C' ||
 				$product == '60038C' ||
 				$product == '60303C' ||
+				$product == '61301SC' ||
 				$product == '60303SC' ||
 				$product == '60304C' ||
 				$product == '60330C' ||
