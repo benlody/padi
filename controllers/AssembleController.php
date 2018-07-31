@@ -513,7 +513,7 @@ class AssembleController extends \yii\web\Controller
 		$mail->setFrom('notify@lang-win.com.tw', 'Notification');
 		$mail->addAddress('jack@lang-win.com.tw');
 		$mail->addAddress('yiyin.chen@lang-win.com.tw');
-		$mail->addAddress('Vivian.Li@padi.com.au');
+		$mail->addAddress('Raelene.Jefferson@padi.com.au');
 		$mail->addAddress('Stuart.Terrell@padi.com.au');
 		$mail->addAddress('mostafa.said@padi.com.au');
 		$mail->addAddress('Nicole.Forster@padi.com.au');
