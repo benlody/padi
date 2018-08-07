@@ -479,7 +479,7 @@ class OrderController extends \yii\web\Controller
 						'region' => $post_param['Order']['region'],
 						]);
 			$subject = YII_ENV_DEV ? 'Freight Info (Test) - '.$post_param['Order']['id'] : 'Freight Info - '.$post_param['Order']['id'];
-			$this->sendMail($body, $subject, $post_param['send_padi'], $post_param['send_kitty'], $post_param['send_gina'], $post_param['send_kim'], $post_param['send_young']);
+			$this->sendMail($body, $subject, $post_param['send_padi'], $post_param['send_justin_smile'], $post_param['send_gina'], $post_param['send_kim'], $post_param['send_young']);
 
 			$log = new Log();
 			$log->username = Yii::$app->user->identity->username;
@@ -938,7 +938,7 @@ class OrderController extends \yii\web\Controller
 		return $days;
 	}
 
-	protected function sendMail($body, $subject, $azure = false, $kitty = false, $gina = false, $kim = false, $young = false){
+	protected function sendMail($body, $subject, $azure = false, $justin_smile = false, $gina = false, $kim = false, $young = false){
 		$mail = new \PHPMailer;
 		$mail->isSMTP();
 		$mail->Host = 'ssl://smtp.gmail.com';
@@ -964,8 +964,9 @@ class OrderController extends \yii\web\Controller
 			$mail->addAddress('kelly.liu@padi.com.au');
 			$mail->addAddress('Kim.jin@padi.com');
 		}
-		if(!YII_ENV_DEV && $kitty){
-			$mail->addAddress('Kitty.Hu@padi.com.au');
+		if(!YII_ENV_DEV && $justin_smile){
+			$mail->addAddress('Justin.He@padi.com.au');
+			$mail->addAddress('Smile.Wang@padi.com');
 		}
 		if(!YII_ENV_DEV && $gina){
 			$mail->addAddress('Gina.Park@padi.com.au');
