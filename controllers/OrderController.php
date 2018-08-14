@@ -980,7 +980,14 @@ class OrderController extends \yii\web\Controller
 		$mail->isHTML(true);
 		$mail->Subject = $subject;
 		$mail->Body = $body;
-		$mail->send();
+		if(!YII_ENV_DEV){
+			if(!$mail->send()){
+				$log = new Log();
+				$log->username = Yii::$app->user->identity->username;
+				$log->action = 'Send Mail Error ['.$subject.']'." Mailer Error: " . $mail->ErrorInfo;
+				$log->insert();
+			}
+		}
 	}
 
 	/**

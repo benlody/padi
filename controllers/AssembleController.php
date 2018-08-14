@@ -517,11 +517,19 @@ class AssembleController extends \yii\web\Controller
 		$mail->addAddress('Stuart.Terrell@padi.com.au');
 		$mail->addAddress('mostafa.said@padi.com.au');
 		$mail->addAddress('Nicole.Forster@padi.com.au');
+		if('fenix' == Yii::$app->user->identity->username){
+			$mail->addAddress('fenix@lang-win.com.tw');
+		}
 		$mail->isHTML(true);
 		$mail->Subject = $subject;
 		$mail->Body = $body;
 		if(!YII_ENV_DEV){
-			$mail->send();
+			if(!$mail->send()){
+				$log = new Log();
+				$log->username = Yii::$app->user->identity->username;
+				$log->action = 'Send Mail Error ['.$subject.']'." Mailer Error: " . $mail->ErrorInfo;
+				$log->insert();
+			}
 		}
 	}
 	protected function get_content($post_param){
