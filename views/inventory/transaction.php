@@ -55,7 +55,7 @@ $this->registerCssFile(Yii::$app->request->getBaseUrl().'/css/transaction_table_
 			echo '<label class="control-label" for="from">Choose a Product:  </label>';
 			echo '<select class="form-group" name="single_product">';
 			echo '<option value="'.$single_product.'" selected>'.$single_product.'</option>';
-			foreach ($product as $p) {
+			foreach ($product_all as $p) {
 				echo '<option value="'.$p.'">'.$p.'</option>';
 			}
 			echo '</select>';

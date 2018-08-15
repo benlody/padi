@@ -375,6 +375,7 @@ class InventoryController extends \yii\web\Controller
 			'end_balance' => $end_balance,
 			'transaction' => $transaction,
 			'product' => $product_show,
+			'product_all' => $product,
 			'single_product' => $single_product,
 			'crew_list' => $crew_list
 		]);
