@@ -113,167 +113,442 @@ class Fee
 		}
 
 		if(0 == strcmp('xm', $warehouse)){
-//			$fee = 1.1 * $org_fee;
 
-			switch ($region) {
+			if(ShippingType::T_DPN == $type){
+				$fee = 1.1 * $org_fee;
 
-				case 'Shandong': //'山東'
-				case 'Beijing': //'北京'
-				case 'Hebei': //'河北'
-				case 'Qingdao': //'青島'
-				case 'Jinan': //'濟南'
-				case 'Zibo': //'淄博'
-				case 'Tianjin': //'天津'
-				case 'Qinhuangdao': //'秦皇島'
-				case 'Tangshan': //'唐山'
-					if(ShippingType::T_STD_EXPR== $type){
-						$fee = ceil(1.1 * (12 + 10 * $weight));
-					} else if (ShippingType::T_SF_SP== $type) {
-						$fee = ceil(1.1 * (13 + 5 * $weight));
-					} else if (ShippingType::T_SF_NORMAL== $type) {
-						$fee = ceil(1.1 * (($weight < 30) ? (150) : (($weight <= 50) ? (5 * $weight) : (4.5 * $weight))));
-					} else {
-						$fee = 1.1 * $org_fee;
-					}
-					break;
 
-				case 'Yunnan': //'雲南'
-				case 'Kunming': //'昆明'
-					if(ShippingType::T_STD_EXPR== $type){
-						$fee = ceil(1.1 * (10 + 13 * $weight));
-					} else if (ShippingType::T_SF_SP== $type) {
-						$fee = ceil(1.1 * (12 + 6 * $weight));
-					} else if (ShippingType::T_SF_NORMAL== $type) {
-						$fee = ceil(1.1 * (($weight < 30) ? (150) : (($weight <= 50) ? (5 * $weight) : (4.5 * $weight))));
-					} else {
-						$fee = 1.1 * $org_fee;
-					}
-					break;
-				
-				case 'Shanghai': //'上海'
-					if(ShippingType::T_STD_EXPR== $type){
-						$fee = ceil(1.1 * (12 + 10 * $weight));
-					} else if (ShippingType::T_SF_SP== $type) {
-						$fee = ceil(1.1 * (13 + 5 * $weight));
-					} else if (ShippingType::T_SF_NORMAL== $type) {
-						$fee = ceil(1.1 * (($weight < 38) ? (150) : (($weight <= 50) ? (4 * $weight) : (3.5 * $weight))));
-					} else {
-						$fee = 1.1 * $org_fee;
-					}
-					break;
+				switch ($region) {
 
-				case 'Guangdong': //'廣東'
-				case 'Shenzhen': //'深圳'
-				case 'Guangzhou': //'廣州'
-				case 'Zhuhai': //'珠海'
-				case 'Zhanjiang': //'湛江'
-				case 'Huizhou': //'惠州'
-					if(ShippingType::T_STD_EXPR== $type || ShippingType::T_SF_SP== $type){
-						$fee = ceil(1.1 * (12 + 8 * $weight));
-					} else if (ShippingType::T_SF_NORMAL== $type) {
-						$fee = ceil(1.1 * (($weight < 38) ? (150) : (($weight <= 50) ? (4 * $weight) : (3.5 * $weight))));
-					} else {
-						$fee = 1.1 * $org_fee;
-					}
-					break;
+					case 'Beijing': //'北京'
+						$kg_1 = 10;
+						$kg_2 = 13;
+						$kg3_first = 14.4;
+						$kg3_addtional = 3.2;
+						$rate = 2.58;
+						$traffic_base = 80;
+						break;
 
-				case 'Hainan': //'海南'
-				case 'Sanya': //'三亞'
-				case 'Guangxi': //'廣西'
-				case 'Nanning': //'南寧'
-				case 'Wenchang ': //'海南文昌'
-					if(ShippingType::T_STD_EXPR== $type){
-						$fee = ceil(1.1 * (13 + 10 * $weight));
-					} else if (ShippingType::T_SF_SP== $type) {
-						$fee = ceil(1.1 * (13 + 5 * $weight));
-					} else if (ShippingType::T_SF_NORMAL== $type) {
-						$fee = ceil(1.1 * (($weight < 38) ? (150) : (($weight <= 50) ? (4 * $weight) : (3.5 * $weight))));
-					} else {
-						$fee = 1.1 * $org_fee;
-					}
-					break;
-				
-				case 'Liaoning': //'遼寧'
-				case 'Shenyang': //'瀋陽'
-				case 'Dalian': //'大連'
-					if(ShippingType::T_STD_EXPR== $type){
-						$fee = ceil(1.1 * (10 + 13 * $weight));
-					} else if (ShippingType::T_SF_SP== $type) {
-						$fee = ceil(1.1 * (12 + 6 * $weight));
-					} else if (ShippingType::T_SF_NORMAL== $type) {
-						$fee = ceil(1.1 * (($weight < 30) ? (150) : (($weight <= 50) ? (5 * $weight) : (4.5 * $weight))));
-					} else {
-						$fee = 1.1 * $org_fee;
-					}
-					break;
+					case 'Tianjin': //'天津'
+						$kg_1 = 10;
+						$kg_2 = 13;
+						$kg3_first = 14.4;
+						$kg3_addtional = 3.2;
+						$rate = 2.34;
+						$traffic_base = 55;
+						break;
 
-				case 'Sichuan': //'四川'
-				case 'Hunan': //'湖南'
-				case 'Chengdu': //'成都'
-				case 'Guiyang': //'貴陽'
-				case 'Chongqing': //'重慶'
-					if(ShippingType::T_STD_EXPR== $type){
-						$fee = ceil(1.1 * (10 + 13 * $weight));
-					} else if (ShippingType::T_SF_SP== $type) {
-						$fee = ceil(1.1 * (12 + 6 * $weight));
-					} else if (ShippingType::T_SF_NORMAL== $type) {
-						$fee = ceil(1.1 * (($weight < 34) ? (150) : (($weight <= 50) ? (4.5 * $weight) : (4 * $weight))));
-					} else {
-						$fee = 1.1 * $org_fee;
-					}
-					break;
+					case 'Shanghai': //'上海'
+						$kg_1 = 10;
+						$kg_2 = 13;
+						$kg3_first = 14.4;
+						$kg3_addtional = 3.2;
+						$rate = 1.69;
+						$traffic_base = 80;
+						break;
 
-				case 'Shaanxi': //'陝西'
-				case 'Xian': //'西安'
-					if(ShippingType::T_STD_EXPR== $type){
-						$fee = ceil(1.1 * (10 + 13 * $weight));
-					} else if (ShippingType::T_SF_SP== $type) {
-						$fee = ceil(1.1 * (12 + 6 * $weight));
-					} else if (ShippingType::T_SF_NORMAL== $type) {
-						$fee = ceil(1.1 * (($weight < 30) ? (150) : (($weight <= 50) ? (5 * $weight) : (4.5 * $weight))));
-					} else {
-						$fee = 1.1 * $org_fee;
-					}
-					break;
+					case 'Jiangsu': // 江蘇
+					case 'Suzhou': //'蘇州'
+					case 'Xuzhou': //'徐州'
+					case 'Nanjing': //'南京'
+						$kg_1 = 10;
+						$kg_2 = 13;
+						$kg3_first = 14.4;
+						$kg3_addtional = 3.2;
+						$rate = 2.57;
+						$traffic_base = 55;
+						break;
 
-				case 'Fuzhou': //'福州'
-					if(ShippingType::T_STD_EXPR== $type || ShippingType::T_SF_SP== $type){
-						$fee = ceil(1.1 * (11 + 2 * $weight));
-					} else if (ShippingType::T_SF_NORMAL== $type) {
-						$fee = ceil(1.1 * (($weight < 120) ? (120) : ($weight)));
-					} else {
-						$fee = 1.1 * $org_fee;
-					}
-					break;
+					case 'Zhejiang': // 浙江
+					case 'Hangzhou': //'杭州'
+						$kg_1 = 10;
+						$kg_2 = 13;
+						$kg3_first = 14.4;
+						$kg3_addtional = 3.2;
+						$rate = 2.07;
+						$traffic_base = 55;
+						break;
 
-				case 'Xiamen': //'廈門'
-					if(ShippingType::T_STD_EXPR== $type || ShippingType::T_SF_SP== $type){
-						$fee = ceil(1.1 * (11 + $weight));
-					} else if (ShippingType::T_SF_NORMAL== $type) {
-						$fee = ceil(1.1 * (($weight < 120) ? (120) : ($weight)));
-					} else {
-						$fee = 1.1 * $org_fee;
-					}
-					break;
+					case 'Shenzhen': //'深圳'
+					case 'Guangzhou': //'廣州'
+					case 'Zhuhai': //'珠海'
+					case 'Zhanjiang': //'湛江'
+					case 'Huizhou': //'惠州'
+					case 'Guangdong': //'廣東'
+						$kg_1 = 9;
+						$kg_2 = 12;
+						$kg3_first = 13.6;
+						$kg3_addtional = 3.2;
+						$rate = 2.06;
+						$traffic_base = 55;
+						break;
 
-				case 'Suzhou': //'蘇州'
-				case 'Xuzhou': //'徐州'
-				case 'Nanjing': //'南京'
-				case 'Hangzhou': //'杭州'
-					if(ShippingType::T_STD_EXPR== $type){
-						$fee = ceil(1.1 * (12 + 10 * $weight));
-					} else if (ShippingType::T_SF_SP== $type) {
-						$fee = ceil(1.1 * (12 + 6 * $weight));
-					} else if (ShippingType::T_SF_NORMAL== $type) {
-						$fee = ceil(1.1 * (($weight < 38) ? (150) : (($weight <= 50) ? (4 * $weight) : (3.5 * $weight))));
-					} else {
-						$fee = 1.1 * $org_fee;
-					}
-					break;
+					case 'Fujian': // 福建
+					case 'Fuzhou': //'福州'
+					case 'Xiamen': //'廈門'
+						$kg_1 = 8;
+						$kg_2 = 10;
+						$kg3_first = 10.4;
+						$kg3_addtional = 0.8;
+						$rate = 1;
+						$traffic_base = 40;
+						break;
 
-				default:
-					$fee = 1.1 * $org_fee;
-					break;
+					case 'Jiangxi': // 江西
+						$kg_1 = 9;
+						$kg_2 = 12;
+						$kg3_first = 13.6;
+						$kg3_addtional = 3.2;
+						$rate = 2.36;
+						$traffic_base = 55;
+						break;
+
+					case 'Hunan': //'湖南'
+						$kg_1 = 10;
+						$kg_2 = 13;
+						$kg3_first = 14.4;
+						$kg3_addtional = 3.2;
+						$rate = 2.54;
+						$traffic_base = 55;
+						break;
+
+					case 'Hubei': //'湖北'
+						$kg_1 = 10;
+						$kg_2 = 13;
+						$kg3_first = 14.4;
+						$kg3_addtional = 3.2;
+						$rate = 2.55;
+						$traffic_base = 55;
+						break;
+
+					case 'Sanya': //'三亞'
+					case 'Wenchang ': //'海南文昌'
+					case 'Wanning': //'海南萬寧',
+					case 'Hainan': //'海南'
+						$kg_1 = 10;
+						$kg_2 = 13;
+						$kg3_first = 14.4;
+						$kg3_addtional = 3.2;
+						$rate = 2.5;
+						$traffic_base = 80;
+						break;
+
+					case 'Anhui': //安徽
+						$kg_1 = 10;
+						$kg_2 = 13;
+						$kg3_first = 14.4;
+						$kg3_addtional = 3.2;
+						$rate = 2.61;
+						$traffic_base = 55;
+						break;
+
+					case 'Guangxi': //'廣西'
+					case 'Nanning': //'南寧'
+						$kg_1 = 10;
+						$kg_2 = 13;
+						$kg3_first = 14.4;
+						$kg3_addtional = 3.2;
+						$rate = 2.61;
+						$traffic_base = 55;
+						break;
+
+					case 'Chongqing': //'重慶'
+						$kg_1 = 10;
+						$kg_2 = 13;
+						$kg3_first = 14.4;
+						$kg3_addtional = 3.2;
+						$rate = 2.85;
+						$traffic_base = 55;
+						break;
+
+					case 'Henan': //河南
+						$kg_1 = 10;
+						$kg_2 = 13;
+						$kg3_first = 14.4;
+						$kg3_addtional = 3.2;
+						$rate = 2.87;
+						$traffic_base = 55;
+						break;
+
+					case 'Shandong': //'山東'
+					case 'Qingdao': //'青島'
+					case 'Jinan': //'濟南'
+					case 'Zibo': //'淄博'
+						$kg_1 = 10;
+						$kg_2 = 13;
+						$kg3_first = 14.4;
+						$kg3_addtional = 3.2;
+						$rate = 3.4;
+						$traffic_base = 55;
+						break;
+
+					case 'Shaanxi': //'陝西'
+					case 'Xian': //'西安'
+						$kg_1 = 10;
+						$kg_2 = 13;
+						$kg3_first = 14.4;
+						$kg3_addtional = 3.2;
+						$rate = 2.89;
+						$traffic_base = 55;
+						break;
+
+					case 'Guizhou': // 貴州
+					case 'Guiyang': //'貴陽'
+						$kg_1 = 10;
+						$kg_2 = 13;
+						$kg3_first = 14.4;
+						$kg3_addtional = 3.2;
+						$rate = 3.42;
+						$traffic_base = 55;
+						break;
+
+					case 'Sichuan': //'四川'
+					case 'Chengdu': //'成都'
+						$kg_1 = 10;
+						$kg_2 = 14;
+						$kg3_first = 15.2;
+						$kg3_addtional = 3.2;
+						$rate = 3.49;
+						$traffic_base = 55;
+						break;
+
+					case 'Hebei': //'河北'
+					case 'Tangshan': //'唐山'
+					case 'Qinhuangdao': //'秦皇島'
+						$kg_1 = 10;
+						$kg_2 = 14;
+						$kg3_first = 15.2;
+						$kg3_addtional = 3.2;
+						$rate = 5.93;
+						$traffic_base = 55;
+						break;
+
+					case 'Shanxi': //山西
+						$kg_1 = 10;
+						$kg_2 = 14;
+						$kg3_first = 15.2;
+						$kg3_addtional = 3.2;
+						$rate = 3.31;
+						$traffic_base = 55;
+						break;
+
+					case 'Yunnan': //'雲南'
+					case 'Kunming': //'昆明'
+						$kg_1 = 10;
+						$kg_2 = 14;
+						$kg3_first = 15.2;
+						$kg3_addtional = 3.2;
+						$rate = 3.46;
+						$traffic_base = 65;
+						break;
+
+					case 'Liaoning': //'遼寧'
+					case 'Shenyang': //'瀋陽'
+					case 'Dalian': //'大連'
+						$kg_1 = 11;
+						$kg_2 = 16;
+						$kg3_first = 19.2;
+						$kg3_addtional = 4.8;
+						$rate = 3.69;
+						$traffic_base = 55;
+						break;
+
+					// Jilin, Heilongjiang, Ningxia, Gansu
+
+					default:
+						$dp_fee = $org_fee;
+						break;
+				}
+
+
+				if($weight <= 1){
+					$dp_fee = $kg_1;
+				} else if ($weight <= 2) {
+					$dp_fee = $kg_2;
+				} else if ($weight <= 30) {
+					$dp_fee = round($kg3_first + $kg3_addtional * ($weight - 3));
+				} else if ($weight <= 60) {
+					$dp_fee = round(2 * $kg3_first + $kg3_addtional * ($weight - 3));
+				} else {
+
+					$traffic_fee = ($weight < 276) ? $traffic_base : max(100, $weight * 0.2);
+					$upstair_fee = ($weight < 51) ? 30 : $weight;
+					$dp_fee = ceil($weight * $rate) + $traffic_fee + $upstair_fee + 24;
+				}
+
+				$fee = ceil(1.1 * $dp_fee - 0.01);
+
+			} else {
+
+				switch ($region) {
+
+					case 'Shandong': //'山東'
+					case 'Beijing': //'北京'
+					case 'Hebei': //'河北'
+					case 'Henan': //河南
+					case 'Qingdao': //'青島'
+					case 'Jinan': //'濟南'
+					case 'Zibo': //'淄博'
+					case 'Tianjin': //'天津'
+					case 'Qinhuangdao': //'秦皇島'
+					case 'Tangshan': //'唐山'
+						if(ShippingType::T_STD_EXPR== $type){
+							$fee = ceil(1.1 * (12 + 10 * $weight));
+						} else if (ShippingType::T_SF_SP== $type) {
+							$fee = ceil(1.1 * (13 + 5 * $weight));
+						} else if (ShippingType::T_SF_NORMAL== $type) {
+							$fee = ceil(1.1 * (($weight < 30) ? (150) : (($weight <= 50) ? (5 * $weight) : (4.5 * $weight))));
+						} else {
+							$fee = 1.1 * $org_fee;
+						}
+						break;
+
+					case 'Yunnan': //'雲南'
+					case 'Kunming': //'昆明'
+						if(ShippingType::T_STD_EXPR== $type){
+							$fee = ceil(1.1 * (10 + 13 * $weight));
+						} else if (ShippingType::T_SF_SP== $type) {
+							$fee = ceil(1.1 * (12 + 6 * $weight));
+						} else if (ShippingType::T_SF_NORMAL== $type) {
+							$fee = ceil(1.1 * (($weight < 30) ? (150) : (($weight <= 50) ? (5 * $weight) : (4.5 * $weight))));
+						} else {
+							$fee = 1.1 * $org_fee;
+						}
+						break;
+					
+					case 'Shanghai': //'上海'
+						if(ShippingType::T_STD_EXPR== $type){
+							$fee = ceil(1.1 * (12 + 10 * $weight));
+						} else if (ShippingType::T_SF_SP== $type) {
+							$fee = ceil(1.1 * (13 + 5 * $weight));
+						} else if (ShippingType::T_SF_NORMAL== $type) {
+							$fee = ceil(1.1 * (($weight < 38) ? (150) : (($weight <= 50) ? (4 * $weight) : (3.5 * $weight))));
+						} else {
+							$fee = 1.1 * $org_fee;
+						}
+						break;
+
+					case 'Guangdong': //'廣東'
+					case 'Shenzhen': //'深圳'
+					case 'Guangzhou': //'廣州'
+					case 'Zhuhai': //'珠海'
+					case 'Zhanjiang': //'湛江'
+					case 'Huizhou': //'惠州'
+						if(ShippingType::T_STD_EXPR== $type || ShippingType::T_SF_SP== $type){
+							$fee = ceil(1.1 * (12 + 8 * $weight));
+						} else if (ShippingType::T_SF_NORMAL== $type) {
+							$fee = ceil(1.1 * (($weight < 38) ? (150) : (($weight <= 50) ? (4 * $weight) : (3.5 * $weight))));
+						} else {
+							$fee = 1.1 * $org_fee;
+						}
+						break;
+
+					case 'Hainan': //'海南'
+					case 'Sanya': //'三亞'
+					case 'Guangxi': //'廣西'
+					case 'Nanning': //'南寧'
+					case 'Wenchang ': //'海南文昌'
+						if(ShippingType::T_STD_EXPR== $type){
+							$fee = ceil(1.1 * (13 + 10 * $weight));
+						} else if (ShippingType::T_SF_SP== $type) {
+							$fee = ceil(1.1 * (13 + 5 * $weight));
+						} else if (ShippingType::T_SF_NORMAL== $type) {
+							$fee = ceil(1.1 * (($weight < 38) ? (150) : (($weight <= 50) ? (4 * $weight) : (3.5 * $weight))));
+						} else {
+							$fee = 1.1 * $org_fee;
+						}
+						break;
+					
+					case 'Liaoning': //'遼寧'
+					case 'Shenyang': //'瀋陽'
+					case 'Dalian': //'大連'
+						if(ShippingType::T_STD_EXPR== $type){
+							$fee = ceil(1.1 * (10 + 13 * $weight));
+						} else if (ShippingType::T_SF_SP== $type) {
+							$fee = ceil(1.1 * (12 + 6 * $weight));
+						} else if (ShippingType::T_SF_NORMAL== $type) {
+							$fee = ceil(1.1 * (($weight < 30) ? (150) : (($weight <= 50) ? (5 * $weight) : (4.5 * $weight))));
+						} else {
+							$fee = 1.1 * $org_fee;
+						}
+						break;
+
+					case 'Sichuan': //'四川'
+					case 'Hubei': //'湖北'
+					case 'Jiangxi': // 江西
+					case 'Hunan': //'湖南'
+					case 'Chengdu': //'成都'
+					case 'Guizhou': // 貴州
+					case 'Guiyang': //'貴陽'
+					case 'Chongqing': //'重慶'
+						if(ShippingType::T_STD_EXPR== $type){
+							$fee = ceil(1.1 * (10 + 13 * $weight));
+						} else if (ShippingType::T_SF_SP== $type) {
+							$fee = ceil(1.1 * (12 + 6 * $weight));
+						} else if (ShippingType::T_SF_NORMAL== $type) {
+							$fee = ceil(1.1 * (($weight < 34) ? (150) : (($weight <= 50) ? (4.5 * $weight) : (4 * $weight))));
+						} else {
+							$fee = 1.1 * $org_fee;
+						}
+						break;
+
+					case 'Shanxi': //山西
+					case 'Shaanxi': //'陝西'
+					case 'Xian': //'西安'
+						if(ShippingType::T_STD_EXPR== $type){
+							$fee = ceil(1.1 * (10 + 13 * $weight));
+						} else if (ShippingType::T_SF_SP== $type) {
+							$fee = ceil(1.1 * (12 + 6 * $weight));
+						} else if (ShippingType::T_SF_NORMAL== $type) {
+							$fee = ceil(1.1 * (($weight < 30) ? (150) : (($weight <= 50) ? (5 * $weight) : (4.5 * $weight))));
+						} else {
+							$fee = 1.1 * $org_fee;
+						}
+						break;
+
+					case 'Fujian': // 福建
+					case 'Fuzhou': //'福州'
+						if(ShippingType::T_STD_EXPR== $type || ShippingType::T_SF_SP== $type){
+							$fee = ceil(1.1 * (11 + 2 * $weight));
+						} else if (ShippingType::T_SF_NORMAL== $type) {
+							$fee = ceil(1.1 * (($weight < 120) ? (120) : ($weight)));
+						} else {
+							$fee = 1.1 * $org_fee;
+						}
+						break;
+
+					case 'Xiamen': //'廈門'
+						if(ShippingType::T_STD_EXPR== $type || ShippingType::T_SF_SP== $type){
+							$fee = ceil(1.1 * (11 + $weight));
+						} else if (ShippingType::T_SF_NORMAL== $type) {
+							$fee = ceil(1.1 * (($weight < 120) ? (120) : ($weight)));
+						} else {
+							$fee = 1.1 * $org_fee;
+						}
+						break;
+
+					case 'Jiangsu': // 江蘇
+					case 'Suzhou': //'蘇州'
+					case 'Xuzhou': //'徐州'
+					case 'Nanjing': //'南京'
+					case 'Zhejiang': // 浙江
+					case 'Hangzhou': //'杭州'
+					case 'Anhui': //安徽
+						if(ShippingType::T_STD_EXPR== $type){
+							$fee = ceil(1.1 * (12 + 10 * $weight));
+						} else if (ShippingType::T_SF_SP== $type) {
+							$fee = ceil(1.1 * (12 + 6 * $weight));
+						} else if (ShippingType::T_SF_NORMAL== $type) {
+							$fee = ceil(1.1 * (($weight < 38) ? (150) : (($weight <= 50) ? (4 * $weight) : (3.5 * $weight))));
+						} else {
+							$fee = 1.1 * $org_fee;
+						}
+						break;
+
+					default:
+						$fee = 1.1 * $org_fee;
+						break;
+				}
 			}
 
 		} else {
