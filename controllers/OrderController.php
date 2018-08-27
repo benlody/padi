@@ -660,9 +660,17 @@ class OrderController extends \yii\web\Controller
 								->where(' t_send_date BETWEEN  "'.$from.'" AND "'.$to.'"')
 								->orderBy('id ASC')
 								->all();
+
+			$query3 = new Query;
+			$transfer_sf_send = $query3->select('id, send_date, dst_warehouse, content, shipping_info')
+							->from('transfer')
+							->where('src_warehouse = "tw_padi" AND ship_type = "sf" AND (send_date BETWEEN  "'.$from.'" AND "'.$to.'")')
+							->orderBy('id ASC')
+							->all();
+
 		}
 
-		ship_download($orders, $warehouse, $from, $to, $certcards);
+		ship_download($orders, $warehouse, $from, $to, $certcards, $transfer_sf_send);
 	}
 
 

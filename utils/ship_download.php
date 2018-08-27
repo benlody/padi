@@ -3,7 +3,7 @@
 
 require_once __DIR__  . '/utils.php';
 
-function ship_download($orders, $warehouse, $from, $to, $certcards){
+function ship_download($orders, $warehouse, $from, $to, $certcards, $transfer_sf_send){
 
 	$objPHPExcel = new \PHPExcel();
 
@@ -218,6 +218,76 @@ function ship_download($orders, $warehouse, $from, $to, $certcards){
 					->setCellValue('G'.$idx, ' ')
 					->setCellValue('H'.$idx, ' ')
 					->setCellValue('I'.$idx, $subtotal_service_fee)
+					->setCellValue('J'.$idx, $subtotal_ship_fee)
+					->setCellValue('K'.$idx, ' ')
+					->setCellValue('L'.$idx, ' ');
+
+		$objPHPExcel->setActiveSheetIndex(0)->mergeCells('A'.$idx.':B'.$idx);
+
+		$objPHPExcel->getActiveSheet()->getStyle('A'.$idx.':L'.$idx)->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID);
+		$objPHPExcel->getActiveSheet()->getStyle('A'.$idx.':L'.$idx)->getFill()->getStartColor()->setRGB('F0E68C');
+
+		$idx++;
+
+		$total_service_fee += $subtotal_service_fee;
+		$total_ship_fee += $subtotal_ship_fee;
+
+	}
+
+
+
+	if($warehouse == 'tw'){
+		$objPHPExcel->setActiveSheetIndex(0)
+			->setCellValue('A'.$idx, 'SF#')
+			->setCellValue('B'.$idx, ' ')
+			->setCellValue('C'.$idx, 'NAME')
+			->setCellValue('D'.$idx, ' ')
+			->setCellValue('E'.$idx, ' ')
+			->setCellValue('F'.$idx, 'T Send Date')
+			->setCellValue('G'.$idx, ' ')
+			->setCellValue('H'.$idx, 'SHIPPING TYPE')
+			->setCellValue('I'.$idx, '')
+			->setCellValue('J'.$idx, 'FREIGTH')
+			->setCellValue('K'.$idx, 'Tracking#')
+			->setCellValue('L'.$idx, ' ');
+		$objPHPExcel->getActiveSheet()->getStyle('A'.$idx.':L'.$idx)->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID);
+		$objPHPExcel->getActiveSheet()->getStyle('A'.$idx.':L'.$idx)->getFill()->getStartColor()->setRGB('6ea9ec');
+				$idx++;
+
+		$subtotal_service_fee = 0;
+		$subtotal_ship_fee = 0;
+
+
+		foreach ($transfer_sf_send as $transfer) {
+			$ship_info = json_decode($transfer['shipping_info'], true);
+
+			$objPHPExcel->setActiveSheetIndex(0)
+						->setCellValue('A'.$idx, $transfer['id'])
+						->setCellValue('B'.$idx, ' ')
+						->setCellValue('C'.$idx, 'Warehouse XDC')
+						->setCellValue('D'.$idx, '')
+						->setCellValue('E'.$idx, '')
+						->setCellValue('F'.$idx, $transfer['send_date'])
+						->setCellValue('G'.$idx, ' ')
+						->setCellValue('H'.$idx, 'SF Express')
+						->setCellValue('I'.$idx, '')
+						->setCellValue('J'.$idx, $ship_info[0]['req_fee'])
+						->setCellValue('K'.$idx, '#'.$ship_info[0]['id'])
+						->setCellValue('L'.$idx, ' ');
+			$subtotal_ship_fee += $ship_info[0]['req_fee'];
+			$idx++;
+		}
+
+		$objPHPExcel->setActiveSheetIndex(0)
+					->setCellValue('A'.$idx, 'Transfer T -> XDC Total')
+					->setCellValue('B'.$idx, ' ')
+					->setCellValue('C'.$idx, ' ')
+					->setCellValue('D'.$idx, ' ')
+					->setCellValue('E'.$idx, ' ')
+					->setCellValue('F'.$idx, ' ')
+					->setCellValue('G'.$idx, ' ')
+					->setCellValue('H'.$idx, ' ')
+					->setCellValue('I'.$idx, ' ')
 					->setCellValue('J'.$idx, $subtotal_ship_fee)
 					->setCellValue('K'.$idx, ' ')
 					->setCellValue('L'.$idx, ' ');
