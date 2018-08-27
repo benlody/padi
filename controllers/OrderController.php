@@ -952,6 +952,7 @@ class OrderController extends \yii\web\Controller
 		$mail->addAddress('pc-mippi@lang-win.com.tw');
 		$mail->addAddress('jenny@lang-win.com.tw');
 		$mail->addAddress('yiyin.chen@lang-win.com.tw');
+		$mail->addAddress('kevin@lang-win.com.tw');
 		$mail->addAddress('Raelene.Jefferson@padi.com.au');
 		$mail->addAddress('Stuart.Terrell@padi.com.au');
 		$mail->addAddress('mostafa.said@padi.com.au');

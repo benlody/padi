@@ -519,6 +519,7 @@ class AssembleController extends \yii\web\Controller
 		$mail->addAddress('Nicole.Forster@padi.com.au');
 		if('fenix' == Yii::$app->user->identity->username){
 			$mail->addAddress('fenix@lang-win.com.tw');
+			$mail->addAddress('kevin@lang-win.com.tw');
 		}
 		$mail->isHTML(true);
 		$mail->Subject = $subject;
