@@ -115,9 +115,6 @@ class Fee
 		if(0 == strcmp('xm', $warehouse)){
 
 			if(ShippingType::T_DPN == $type){
-				$fee = 1.1 * $org_fee;
-
-
 				switch ($region) {
 
 					case 'Beijing': //'北京'
@@ -549,6 +546,7 @@ class Fee
 						$fee = 1.1 * $org_fee;
 						break;
 				}
+				$fee = ceil($fee);
 			}
 
 		} else {
@@ -557,8 +555,14 @@ class Fee
 					$fee = ceil($weight / 18) * 11;
 				break;
 				case 'Korea': 
-
 					$fee = ceil((floor($weight/20)*1780 + ($weight%20)*80 + 180)*1.1/21 - 0.0001);
+				break;
+				case 'HongKong': 
+					if($weight < 11){
+						$fee = 8.25 + $weight*5;
+					} else {
+						$fee = 0.25 + $weight*5;
+					}
 				break;
 				default:
 					$fee = 1.1 * $org_fee / 21;
@@ -566,7 +570,7 @@ class Fee
 			}
 		}
 
-		return ceil($fee);
+		return $fee;
 	}
 
 }
