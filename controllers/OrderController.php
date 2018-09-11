@@ -64,7 +64,7 @@ class OrderController extends \yii\web\Controller
 			$post_param['Order']['date'] = date("Y-m-d", strtotime($post_param['Order']['date']));
 
 			//get ship type by estimate weight (XM)
-			if(isset($content['estimate_w']) && (0 == strcmp($post_param['Order']['warehouse'], 'xm'))){
+			if(isset($content['estimate_w']) && (0 == strcmp($post_param['Order']['warehouse'], 'xm')) && \ShippingType::T_DPN != $post_param['Order']['ship_type']){
 				$post_param['Order']['ship_type'] = get_ship_type_xm($post_param['Order']['region'], $content['estimate_w']);
 			}
 
