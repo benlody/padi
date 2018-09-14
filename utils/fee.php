@@ -565,7 +565,7 @@ class Fee
 					}
 				break;
 				default:
-					$fee = 1.1 * $org_fee / 21;
+					$fee = ceil(1.1 * $org_fee / 21);
 					break;
 			}
 		}
