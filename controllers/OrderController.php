@@ -970,7 +970,7 @@ class OrderController extends \yii\web\Controller
 //		$mail->addAddress('langchen@lang-win.com.tw');
 		if(!YII_ENV_DEV && $azure){
 			$mail->addAddress('julie.yuan@padi.com.au');
-			$mail->addAddress('kelly.liu@padi.com.au');
+//			$mail->addAddress('kelly.liu@padi.com.au');
 			$mail->addAddress('Kim.jin@padi.com');
 		}
 		if(!YII_ENV_DEV && $justin_smile){
@@ -980,9 +980,9 @@ class OrderController extends \yii\web\Controller
 		if(!YII_ENV_DEV && $gina){
 			$mail->addAddress('Gina.Park@padi.com.au');
 		}
-		if(!YII_ENV_DEV && $kim){
-			$mail->addAddress('Kim.Ngan@padi.com.au');
-		}
+//		if(!YII_ENV_DEV && $kim){
+//			$mail->addAddress('Kim.Ngan@padi.com.au');
+//		}
 		if(!YII_ENV_DEV && $young){
 			$mail->addAddress('younghee.simpson@padi.com.au');
 		}

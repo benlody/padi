@@ -77,8 +77,8 @@ $this->registerJsFile(Yii::$app->request->getBaseUrl().'/js/order_edit.js',['dep
 		<label>寄給Justin & Smile</label><br>
 		<?= Html::checkbox('send_gina', false) ?>
 		<label>寄給Gina</label><br>
-		<?= Html::checkbox('send_kim', false) ?>
-		<label>寄給Kim</label><br>
+		<?//= Html::checkbox('send_kim', false) ?>
+		<!--label>寄給Kim</label><br-->
 		<?= Html::checkbox('send_young', false) ?>
 		<label>寄給Young</label><br>
 
