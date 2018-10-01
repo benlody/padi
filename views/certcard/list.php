@@ -46,8 +46,10 @@ $this->params['breadcrumbs'][] = $this->title;
 						'format' => 'raw',
 						'value' => function ($model) {
 							if(true){
-								$opt = '<a href="'.Yii::$app->request->getBaseUrl().'?r=certcard%2Fedit&amp;id='.urlencode($model->id).'" title="出貨" data-pjax="0"><span class="glyphicon glyphicon glyphicon-ok"></span></a>'.
-									'<a href="'.Yii::$app->request->getBaseUrl().'?r=certcard%2Fdelete&amp;id='.urlencode($model->id).'" title="刪除" data-confirm="確定要刪除嗎?"><span class="glyphicon glyphicon glyphicon-trash"></span></a>';
+//								$opt = '<a href="'.Yii::$app->request->getBaseUrl().'?r=certcard%2Fedit&amp;id='.urlencode($model->id).'" title="出貨" data-pjax="0"><span class="glyphicon glyphicon glyphicon-ok"></span></a>'.
+//									'<a href="'.Yii::$app->request->getBaseUrl().'?r=certcard%2Fdelete&amp;id='.urlencode($model->id).'" title="刪除" data-confirm="確定要刪除嗎?"><span class="glyphicon glyphicon glyphicon-trash"></span></a>';
+								$opt = '<a href="'.Yii::$app->request->getBaseUrl().'?r=certcard%2Fedit&amp;id='.urlencode($model->id).'" title="出貨" data-pjax="0"><span class="glyphicon glyphicon glyphicon-ok"></span></a>';
+
 							}
 							return $opt;
 
