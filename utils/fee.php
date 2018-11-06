@@ -15,6 +15,7 @@ class Fee
 			$crewpak == 'P70092CL' || 
 			$crewpak == '70092CL' || 
 			$crewpak == 'P70092KL' || 
+			$crewpak == 'P70080CL' || 
 			$crewpak == 'P70080KL' || 
 			$crewpak == 'P70179CSP' || 
 			$crewpak == 'P71142CL' || 
@@ -31,6 +32,7 @@ class Fee
 			$crewpak == '79315KSP' || 
 			$crewpak == 'P79168CSP' || 
 			$crewpak == 'P70139CL' || 
+			$crewpak == 'P70139SCL' || 
 			$crewpak == 'P70139KL' || 
 			$crewpak == 'P79315CSP'
 		){
@@ -59,6 +61,7 @@ class Fee
 			$product == '60038C' ||
 			$product == '60038K' ||
 			$product == '60134C' ||
+			$product == '60134C_XM' ||
 			$product == '60134SC' ||
 			$product == '60134K' ||
 			$product == '60303C' ||
