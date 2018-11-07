@@ -148,7 +148,7 @@ class InventoryController extends \yii\web\Controller
 						->all();
 
 		if('xm' == $warehouse){
-			$crewpak_array = array("60020C", "60038C", "60303C", "60303SC", "60304C", "60346SC", "61301C", "61301SC", "70149C");
+			$crewpak_array = array("60020C", "60038C", "60303C", "60303SC", "60304C", "60346SC", "61301C", "61301SC", "70149C", "60134C_XM");
 		} else {
 			$crewpak_array = array("60020C", "60020K", "60134C", "60038C", "60038K", "60134K", "60303C", "60330C", "60303K", "60304C", 
 									"60304K", "60346C", "61301C", "61301K", "60330K", "70120K", "70149C", "70150K", "70513KX");
