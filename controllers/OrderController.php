@@ -465,7 +465,7 @@ class OrderController extends \yii\web\Controller
 							'order_id' => $post_param['Order']['id'],
 						]);
 				$subject = YII_ENV_DEV ? 'Inventory Warning (Test) - '.$post_param['Order']['done_date'] : 'Inventory Warning - '.$post_param['Order']['done_date'];
-				$this->sendMail($body, $subject);
+				$this->sendMail($body, $subject, $warehouse);
 			}
 
 			$body = $this->renderPartial('order_out', [
@@ -479,7 +479,7 @@ class OrderController extends \yii\web\Controller
 						'region' => $post_param['Order']['region'],
 						]);
 			$subject = YII_ENV_DEV ? 'Freight Info (Test) - '.$post_param['Order']['id'] : 'Freight Info - '.$post_param['Order']['id'];
-			$this->sendMail($body, $subject, $post_param['send_padi'], $post_param['send_justin_smile'], $post_param['send_gina'], $post_param['send_kim'], $post_param['send_young']);
+			$this->sendMail($body, $subject, $warehouse, $post_param['send_padi'], $post_param['send_justin_smile'], $post_param['send_gina'], $post_param['send_kim'], $post_param['send_young']);
 
 			$log = new Log();
 			$log->username = Yii::$app->user->identity->username;
@@ -946,7 +946,7 @@ class OrderController extends \yii\web\Controller
 		return $days;
 	}
 
-	protected function sendMail($body, $subject, $azure = false, $justin_smile = false, $gina = false, $kim = false, $young = false){
+	protected function sendMail($body, $subject, $warehouse, $azure = false, $justin_smile = false, $gina = false, $kim = false, $young = false){
 		$mail = new \PHPMailer;
 		$mail->isSMTP();
 		$mail->Host = 'ssl://smtp.gmail.com';
@@ -956,21 +956,21 @@ class OrderController extends \yii\web\Controller
 		$mail->SMTPSecure = 'tls';
 		$mail->Port = 465;
 		$mail->setFrom('notify@lang-win.com.tw', 'Notification');
-		$mail->addAddress('jack@lang-win.com.tw');		
-		$mail->addAddress('pc-mippi@lang-win.com.tw');
-		$mail->addAddress('jenny@lang-win.com.tw');
+		if($warehouse == 'xm'){
+			$mail->addAddress('jenny@lang-win.com.tw');
+		} else {
+			$mail->addAddress('kevin.cheng@lang-win.com.tw');
+			$mail->addAddress('fenix@lang-win.com.tw');
+		}
+		$mail->addAddress('jack@lang-win.com.tw');
 		$mail->addAddress('yiyin.chen@lang-win.com.tw');
-		$mail->addAddress('kevin.cheng@lang-win.com.tw');
 		$mail->addAddress('Raelene.Jefferson@padi.com.au');
 		$mail->addAddress('Stuart.Terrell@padi.com.au');
 		$mail->addAddress('mostafa.said@padi.com.au');
 		$mail->addAddress('Nicole.Forster@padi.com.au');
 		$mail->addAddress('ar@padi.com.au');
-//		$mail->addAddress('susan@lang-win.com.tw');
-//		$mail->addAddress('langchen@lang-win.com.tw');
 		if(!YII_ENV_DEV && $azure){
 			$mail->addAddress('julie.yuan@padi.com.au');
-//			$mail->addAddress('kelly.liu@padi.com.au');
 			$mail->addAddress('Kim.jin@padi.com');
 		}
 		if(!YII_ENV_DEV && $justin_smile){
@@ -980,9 +980,6 @@ class OrderController extends \yii\web\Controller
 		if(!YII_ENV_DEV && $gina){
 			$mail->addAddress('Gina.Park@padi.com.au');
 		}
-//		if(!YII_ENV_DEV && $kim){
-//			$mail->addAddress('Kim.Ngan@padi.com.au');
-//		}
 		if(!YII_ENV_DEV && $young){
 			$mail->addAddress('younghee.simpson@padi.com.au');
 		}
