@@ -551,7 +551,10 @@ class OrderController extends \yii\web\Controller
 			$inv_content = $this->get_inv_content($post_param);
 			print_r($inv_content);
 
-			if(0 == strcmp($post_param['Order']['region'], 'Korea')){
+			if( 0 == strcmp($post_param['Order']['region'], 'Korea') || 
+				0 == strcmp($post_param['Order']['region'], 'Philippines') ||
+				0 == strcmp($post_param['Order']['region'], 'Malaysia')
+				){
 				invoice_download_korea($post_param['Order'], $inv_content);
 			} else {
 				invoice_download($post_param['Order'], $inv_content);
