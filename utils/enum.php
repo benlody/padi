@@ -43,7 +43,9 @@ class ShippingType
 			21 => '兆太國際物流',
 			22 => '順豐快遞貨到付款',
 			23 => '黑貓到付',
-			24 => '海運空運出口'
+			24 => '海運空運出口',
+			25 => '黑貓宅急便'
+
 		);
 
 	protected static $type_enu = array(
@@ -66,7 +68,8 @@ class ShippingType
 			21 => 'JSD LOGISTICS',
 			22 => 'SF Express (COD)',
 			23 => 'Black Cat (COD)',
-			24 => 'SEA/AIR Export'
+			24 => 'SEA/AIR Export',
+			25 => 'Black Cat'
 		);
 
 	public function getType(){
@@ -106,7 +109,8 @@ class ShippingType
 			21 => '兆太國際物流',
 			22 => '順豐快遞貨到付款',
 			23 => '黑貓到付',
-			24 => '海運空運出口'
+			24 => '海運空運出口',
+			25 => '黑貓宅急便'
 		);
 	}
 
