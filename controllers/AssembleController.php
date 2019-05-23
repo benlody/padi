@@ -515,7 +515,6 @@ class AssembleController extends \yii\web\Controller
 		$mail->addAddress('yiyin.chen@lang-win.com.tw');
 		$mail->addAddress('Raelene.Jefferson@padi.com.au');
 		$mail->addAddress('Stuart.Terrell@padi.com.au');
-		$mail->addAddress('mostafa.said@padi.com.au');
 		$mail->addAddress('Nicole.Forster@padi.com.au');
 		if('fenix' == Yii::$app->user->identity->username){
 			$mail->addAddress('fenix@lang-win.com.tw');
