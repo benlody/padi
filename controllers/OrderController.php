@@ -955,7 +955,7 @@ class OrderController extends \yii\web\Controller
 		$mail->Host = 'ssl://smtp.gmail.com';
 		$mail->SMTPAuth = true;
 		$mail->Username = 'notify@lang-win.com.tw';
-		$mail->Password = '29999099lang';
+		$mail->Password = '29999099WINlang';
 		$mail->SMTPSecure = 'tls';
 		$mail->Port = 465;
 		$mail->setFrom('notify@lang-win.com.tw', 'Notification');
