@@ -11,6 +11,7 @@ use app\models\Assemble;
 use app\models\AssembleSearch;
 use app\models\Balance1;
 use app\models\Transaction1;
+use app\models\Notify;
 use yii\db\Query;
 use Yii;
 use yii\filters\AccessControl;
@@ -502,15 +503,18 @@ class AssembleController extends \yii\web\Controller
 	}
 
 	protected function sendMail($body, $subject){
+
+		$notify = Notify::findOne(0);
+
 		$mail = new \PHPMailer;
 		$mail->isSMTP();
 		$mail->Host = 'ssl://smtp.gmail.com';
 		$mail->SMTPAuth = true;
-		$mail->Username = 'notify@lang-win.com.tw';
-		$mail->Password = 'langWIN03183405';
+		$mail->Username = $notify->name;
+		$mail->Password = $notify->pw;
 		$mail->SMTPSecure = 'tls';
 		$mail->Port = 465;
-		$mail->setFrom('notify@lang-win.com.tw', 'Notification');
+		$mail->setFrom($notify->name, 'Notification');
 		$mail->addAddress('jack@lang-win.com.tw');
 		$mail->addAddress('yiyin.chen@lang-win.com.tw');
 		$mail->addAddress('Raelene.Jefferson@padi.com.au');

@@ -14,6 +14,7 @@ use app\models\Balance2;
 use app\models\Transaction1;
 use app\models\Transaction2;
 use app\models\Transfer;
+use app\models\Notify;
 use yii\data\ActiveDataProvider;
 use yii\data\ArrayDataProvider;
 use yii\db\Query;
@@ -183,6 +184,7 @@ class OrderController extends \yii\web\Controller
 //		if(Yii::$app->user->identity->group > User::GROUP_KL){
 //			throw new NotFoundHttpException('The requested page does not exist.');
 //		}
+
 
 		$searchModel = new OrderSearch();
 		if(0 == strcmp($status, 'done')){
@@ -950,15 +952,18 @@ class OrderController extends \yii\web\Controller
 	}
 
 	protected function sendMail($body, $subject, $warehouse, $azure = false, $justin_smile = false, $gina = false, $kim = false, $young = false){
+
+		$notify = Notify::findOne(0);
+
 		$mail = new \PHPMailer;
 		$mail->isSMTP();
 		$mail->Host = 'ssl://smtp.gmail.com';
 		$mail->SMTPAuth = true;
-		$mail->Username = 'notify@lang-win.com.tw';
-		$mail->Password = 'langWIN03183405';
+		$mail->Username = $notify->name;
+		$mail->Password = $notify->pw;
 		$mail->SMTPSecure = 'tls';
 		$mail->Port = 465;
-		$mail->setFrom('notify@lang-win.com.tw', 'Notification');
+		$mail->setFrom($notify->name, 'Notification');
 		if($warehouse == 'xm'){
 			$mail->addAddress('jenny@lang-win.com.tw');
 		} else {
