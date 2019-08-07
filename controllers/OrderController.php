@@ -977,9 +977,9 @@ class OrderController extends \yii\web\Controller
 		$mail->addAddress('Nicole.Forster@padi.com.au');
 		$mail->addAddress('ar@padi.com.au');
 		$mail->addAddress('warehouse@padi.com.au');
+		$mail->addAddress('Min.Wang@padi.com');
 		if(!YII_ENV_DEV && $azure){
 			$mail->addAddress('Smile.Wang@padi.com');
-			$mail->addAddress('Min.Wang@padi.com');
 		}
 		if(!YII_ENV_DEV && $justin_smile){
 			$mail->addAddress('Justin.He@padi.com.au');
