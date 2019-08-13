@@ -1049,12 +1049,7 @@ class OrderController extends \yii\web\Controller
 				continue;
 			}
 
-//			$product_id =  $post_param[$product_idx];
-			if(0 == strcmp($post_param[$product_idx], "60020C") && $post_param['Order']['warehouse'] == 'xm'){
-				$product_id =  "60020C_XM";
-			} else {
-				$product_id =  $post_param[$product_idx];
-			}
+			$product_id =  $post_param[$product_idx];
 			$product_content[$product_id]['cnt'] = $product_cnt;
 			$product_content[$product_id]['done'] = false;
 			$weight = get_weight($product_id);
