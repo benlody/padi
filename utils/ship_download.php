@@ -193,7 +193,7 @@ function ship_download($orders, $warehouse, $from, $to, $certcards, $transfer_sf
 			$objPHPExcel->setActiveSheetIndex(0)
 						->setCellValue('A'.$idx, '#'.$certcard['DHL'])
 						->setCellValue('B'.$idx, ' ')
-						->setCellValue('C'.$idx, 'PADI Shenzhen')
+						->setCellValue('C'.$idx, 'PADI China')
 						->setCellValue('D'.$idx, 'ID Cards')
 						->setCellValue('E'.$idx, '1 carton')
 						->setCellValue('F'.$idx, $certcard['t_send_date'])

@@ -792,7 +792,7 @@ class OrderController extends \yii\web\Controller
 			$shipment['date'] = $cert_card['t_send_date'];
 			$shipment['tracking'] = '#'.preg_replace('/\s(?=)|-/', '', $cert_card['tracking']);
 			$shipment['fee'] = $cert_card['orig_fee'];
-			$shipment['addr'] = '深圳';
+			$shipment['addr'] = '北京';
 			$shipment['type'] = 11;
 			$shipment['type_chi'] = \ShippingType::getTWType()[11];
 			array_push($sf, $shipment);

@@ -17,14 +17,14 @@ $this->params['breadcrumbs'][] = $this->title;
 
 	<?php
 		if(0 == strcmp($status, 'done')){
-			$subtitle = ' - 已寄達深圳';
+			$subtitle = ' - 已寄達';
 			$btn_lable = '列出未完成列表';
 			$btn_cfg = ['list', 'status' => '', 'sort' => '-t_send_date'];
 			$config = [
 				'dataProvider' => $dataProvider,
 				'columns' => [
 					'DHL:text:DHL tracking',					
-					's_recv_date:text:深圳收到日期',
+					's_recv_date:text:收到日期',
 					'tracking:text:順豐Tracking',
 					'small_box:text:small box',
 					'extra_info:text:備註',
