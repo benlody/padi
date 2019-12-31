@@ -11,6 +11,7 @@ class ShippingType
 	const T_SF = 11;
 	const T_NEW = 12;
 	const T_SELFPICK = 20;
+	const T_BLACKCAT = 25;
 
 
 	protected static $transfer_type = array(
@@ -69,7 +70,7 @@ class ShippingType
 			22 => 'SF Express (COD)',
 			23 => 'Black Cat (COD)',
 			24 => 'SEA/AIR Export',
-			25 => 'Black Cat'
+			25 => 'President Transnet(Black Cat)'
 		);
 
 	public function getType(){
@@ -189,6 +190,8 @@ class ShippingRegion
 			'Shanxi' => '山西',
 			'Philippines' => '菲律賓',
 			'Malaysia' => '馬來西亞',
+			'GreenIsland' => '綠島',
+			'Liuqiu_Henchun' => '琉球_恆春',
 			'Else' => '其他',
 		);
 
