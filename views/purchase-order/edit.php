@@ -31,6 +31,7 @@ $this->registerJsFile(Yii::$app->request->getBaseUrl().'/js/purchase_order_edit.
 			echo DatePicker::widget([
 				'name' => 'PurchaseOrder[done_date]',
 				'value' => date("Y-m-d", strtotime('today')),
+				'dateFormat' => 'MM/dd/yyyy',
 			]);
 		?>
 		<div class="help-block"></div>

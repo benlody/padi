@@ -22,6 +22,7 @@ $this->registerJsFile(Yii::$app->request->getBaseUrl().'/js/market_edit.js',['de
 		echo DatePicker::widget([
 			'name' => 'date',
 			'value' => date("Y-m-d", strtotime('today')),
+			'dateFormat' => 'MM/dd/yyyy',
 		]);
 	?>
 	<div class="help-block"></div>

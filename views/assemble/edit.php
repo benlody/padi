@@ -30,6 +30,7 @@ $this->params['breadcrumbs'][] = $this->title;
 			echo DatePicker::widget([
 				'name' => 'AssembleOrder[done_date]',
 				'value' => date("Y-m-d", strtotime('today')),
+				'dateFormat' => 'MM/dd/yyyy',
 			]);
 		?>
 		<div class="help-block"></div>

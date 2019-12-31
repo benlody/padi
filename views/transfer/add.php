@@ -57,6 +57,7 @@ $this->registerJsFile(Yii::$app->request->getBaseUrl().'/js/transfer_add.js',['d
 			echo DatePicker::widget([
 				'name' => 'date',
 				'value' => date("Y-m-d", strtotime('today')),
+				'dateFormat' => 'MM/dd/yyyy',
 			]);
 		?>
 		<div class="help-block"></div>
