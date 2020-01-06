@@ -39,13 +39,13 @@ class Fee
 			if(0 == strcmp('xm', $warehouse)){
 				$fee = 2.6 * $qty;
 			} else {
-				$fee = round((6.5 * $qty) * 100 / 21) / 100;
+				$fee = round((6.5 * $qty) * 100 / 20) / 100;
 			}
 		}
 		else if(0 == strcmp('xm', $warehouse)){
 			$fee = 9.1 * $qty;
 		} else {
-			$fee = round((39 * $qty) * 100 / 21) / 100;
+			$fee = round((39 * $qty) * 100 / 20) / 100;
 		}
 		return $fee;
 	}
@@ -86,13 +86,13 @@ class Fee
 			if(0 == strcmp('xm', $warehouse)){
 				$fee = 9.1 * $qty;
 			} else {
-				$fee = round((39 * $qty) * 100 / 21) / 100;
+				$fee = round((39 * $qty) * 100 / 20) / 100;
 			}
 		} else {
 			if(0 == strcmp('xm', $warehouse)){
 				$fee = 2.6 * $qty;
 			} else {
-				$fee = round((6.5 * $qty) * 100 / 21) / 100;
+				$fee = round((6.5 * $qty) * 100 / 20) / 100;
 			}
 		}
 
@@ -104,7 +104,7 @@ class Fee
 		if(0 == strcmp('xm', $warehouse)){
 			$fee = 7 * $qty;
 		} else {
-			$fee = round((30 * $qty) * 100 / 21) / 100;
+			$fee = round((30 * $qty) * 100 / 20) / 100;
 		}
 
 		return $fee;
@@ -2589,13 +2589,13 @@ class Fee
 						case 999:	$fee = 7326.40;	break;
 						case 1000:	$fee = 7333.70;	break;
 						default:
-							$fee = ceil(1.1 * $org_fee / 21);
+							$fee = ceil(1.1 * $org_fee / 20);
 							break;
 					}
 
 				break;
 				default:
-					$fee = ceil(1.1 * $org_fee / 21);
+					$fee = ceil(1.1 * $org_fee / 20);
 					break;
 			}
 		}
