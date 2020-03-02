@@ -80,6 +80,16 @@ class Fee
 			$product == '61301C' ||
 			$product == '61301SC' ||
 			$product == '61301K' ||
+			$product == '60233C' ||
+			$product == '60233SC' ||
+			$product == '60235C' ||
+			$product == '60235SC' ||
+			$product == '60236C' ||
+			$product == '60236SC' ||
+			$product == '60249C' ||
+			$product == '60249SC' ||
+			$product == '60253C' ||
+			$product == '60253SC' ||
 			$product == '70149C' ||
 			$product == '70149SC'
 		){
