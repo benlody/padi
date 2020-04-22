@@ -17,6 +17,8 @@ function ship_download($orders, $warehouse, $from, $to, $certcards, $transfer_sf
 	$idx = 1;
 	$total_service_fee = 0;
 	$total_ship_fee = 0;
+	$total_box = 0;
+	$total_weight = 0;
 
 	$objPHPExcel->setActiveSheetIndex(0)
 				->setCellValue('A'.$idx, 'PO#')
@@ -123,6 +125,10 @@ function ship_download($orders, $warehouse, $from, $to, $certcards, $transfer_sf
 
 			$ship_fee = isset($info['req_fee']) ? $info['req_fee'] : Fee::getShipFreightFee($info['fee'], $region, $warehouse, $info['type'], $info['weight'], $info['box']);
 			$subtotal_ship_fee += $ship_fee;
+
+			$total_box += $info['box'];
+			$total_weight += $info['weight'];
+
 
 			$objPHPExcel->setActiveSheetIndex(0)
 						->setCellValue('A'.$idx, $order['id'])
@@ -312,17 +318,17 @@ function ship_download($orders, $warehouse, $from, $to, $certcards, $transfer_sf
 				->setCellValue('A'.$idx, 'Total')
 				->setCellValue('B'.$idx, 'Total')
 				->setCellValue('C'.$idx, ' ')
-				->setCellValue('D'.$idx, ' ')
-				->setCellValue('E'.$idx, ' ')
-				->setCellValue('F'.$idx, ' ')
-				->setCellValue('G'.$idx, ' ')
+				->setCellValue('D'.$idx, 'Total box:')
+				->setCellValue('E'.$idx, $total_box)
+				->setCellValue('F'.$idx, 'Total weight: ')
+				->setCellValue('G'.$idx, $total_weight)
 				->setCellValue('H'.$idx, ' ')
 				->setCellValue('I'.$idx, $total_service_fee)
 				->setCellValue('J'.$idx, $total_ship_fee)
 				->setCellValue('K'.$idx, ' ')
 				->setCellValue('L'.$idx, ' ');
 
-	$objPHPExcel->setActiveSheetIndex(0)->mergeCells('A'.$idx.':E'.$idx);
+	$objPHPExcel->setActiveSheetIndex(0)->mergeCells('A'.$idx.':C'.$idx);
 	$objPHPExcel->getActiveSheet()->getStyle('A'.$idx.':L'.$idx)->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID);
 	$objPHPExcel->getActiveSheet()->getStyle('A'.$idx.':L'.$idx)->getFill()->getStartColor()->setRGB('FFA500');
 
