@@ -205,7 +205,7 @@ function ship_download($orders, $warehouse, $from, $to, $certcards, $transfer_sf
 						->setCellValue('F'.$idx, $certcard['t_send_date'])
 						->setCellValue('G'.$idx, ' ')
 						->setCellValue('H'.$idx, 'SF Express')
-						->setCellValue('I'.$idx, '5')
+						->setCellValue('I'.$idx, '6')
 						->setCellValue('J'.$idx, $certcard['req_fee'])
 						->setCellValue('K'.$idx, '#'.$certcard['tracking'])
 						->setCellValue('L'.$idx, ' ');
